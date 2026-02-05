@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH | CEO & DESTEK</title>
+    <title>AHTECH | CEO & MARKET</title>
 
     <script type="text/javascript">
       window.$crisp=[];
@@ -19,30 +19,38 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #05070a; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-        .kart { background: #0d1117; border-radius: 20px; width: 100%; max-width: 800px; padding: 25px; border: 2px solid #30363d; position: relative; }
-        .ceo-border { border: 2px solid #ff00ff; box-shadow: 0 0 40px rgba(255, 0, 255, 0.2); }
+        
+        /* DDOS EKRANI */
+        #ddos-shield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .shield-icon { width: 50px; height: 50px; border: 4px solid #00f2ff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* CANLI SOHBET ALANI (HEM MÜŞTERİ HEM CEO İÇİN) */
-        .chat-container { background: #05070a; border: 1px solid #00f2ff; border-radius: 15px; height: 350px; display: flex; flex-direction: column; overflow: hidden; margin-top: 15px; }
-        .chat-header { background: #00f2ff; color: #000; padding: 10px; font-weight: bold; font-family: 'Orbitron'; text-align: center; font-size: 14px; }
-        .chat-view { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 8px 12px; border-radius: 10px; font-size: 13px; max-width: 80%; }
-        .bot-msg { background: #1e232d; align-self: flex-start; }
-        .user-msg { background: #7000ff; align-self: flex-end; margin-left: auto; }
+        .kart { background: #0d1117; border-radius: 20px; width: 100%; max-width: 600px; padding: 25px; border: 2px solid #30363d; position: relative; }
+        .ceo-border { border: 2px solid #ff00ff; box-shadow: 0 0 30px rgba(255, 0, 255, 0.2); }
 
-        /* CEO VERİLERİ */
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .stat-box { background: #161b22; padding: 15px; border-radius: 12px; border: 1px solid #333; text-align: center; }
-        .stat-box h3 { font-size: 22px; margin-bottom: 3px; }
-        .stat-box p { color: #888; font-size: 10px; text-transform: uppercase; font-weight: bold; }
-
-        /* GİRİŞ VE DİĞERLERİ */
-        #market-panel, #ceo-panel, #sohbet-panel { display: none; }
+        h1 { font-family: 'Orbitron', sans-serif; text-align: center; margin-bottom: 20px; color: #00f2ff; }
         input { width: 100%; padding: 12px; background: #05070a; border: 1px solid #1e232d; color: #fff; border-radius: 8px; margin-bottom: 10px; font-family: 'Rajdhani'; outline: none; }
         .buton { width: 100%; padding: 12px; background: #00f2ff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+
+        /* SOHBET TASARIMI */
+        .chat-container { background: #05070a; border: 1px solid #00f2ff; border-radius: 15px; height: 300px; display: flex; flex-direction: column; overflow: hidden; margin-top: 15px; }
+        .chat-header { background: #00f2ff; color: #000; padding: 8px; font-weight: bold; text-align: center; font-size: 13px; }
+        .chat-view { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .msg { padding: 8px 12px; border-radius: 10px; font-size: 13px; max-width: 85%; background: #1e232d; }
+
+        /* CEO VERİLERİ */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { background: #161b22; padding: 15px; border-radius: 12px; border: 1px solid #333; text-align: center; }
+        .stat-box h3 { font-size: 20px; margin-bottom: 2px; }
+        .stat-box p { color: #888; font-size: 10px; text-transform: uppercase; }
+
+        #market-panel, #ceo-panel, #sohbet-panel { display: none; }
     </style>
 
     <script>
+        // DDOS KONTROLÜ
+        window.onload = function() { setTimeout(function() { document.getElementById('ddos-shield').style.display = 'none'; }, 2000); };
+
         let ciro = 2450; 
         let musteriler = 42;
 
@@ -51,4 +59,26 @@
             const tel = document.getElementById('tel').value;
 
             if (ad === "ahmet" && tel === "05303004513") {
-                alert("Yönetici girişi algılandı."); // [cite: image_
+                alert("Yönetici girişi algılandı."); //
+                document.getElementById('giris-pencere').style.display = 'none';
+                document.getElementById('ceo-panel').style.display = 'block';
+                return;
+            }
+            if (ad && tel) {
+                document.getElementById('giris-pencere').style.display = 'none';
+                document.getElementById('market-panel').style.display = 'block';
+                $crisp.push(["set", "user:nickname", [ad]]);
+            }
+        }
+
+        function satinAl(urun, fiyat) {
+            ciro += fiyat;
+            musteriler += 1;
+            document.getElementById('live-ciro').innerText = ciro + " TL";
+            document.getElementById('live-musteri').innerText = musteriler;
+
+            document.getElementById('market-panel').style.display = 'none';
+            document.getElementById('sohbet-panel').style.display = 'block';
+            $crisp.push(["do", "chat:show"]);
+            $crisp.push(["do", "chat:open"]);
+            $crisp.push(["do", "message:send", ["text", urun + " al
