@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH MARKET | GİRİŞ YAP</title>
+    <title>AHTECH MARKET | CEO PANEL</title>
 
     <script type="text/javascript">
       window.$crisp=[];
@@ -19,132 +19,84 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0b0e14; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        
-        /* İtemSatış Tarzı Kart */
-        .market-kart { background: #151921; border-radius: 20px; width: 100%; max-width: 450px; padding: 40px; border: 1px solid #1e232d; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .logo-alanı { text-align: center; margin-bottom: 30px; }
-        .logo-alanı h1 { color: #00f2ff; font-size: 32px; letter-spacing: 2px; }
-        .logo-alanı span { color: #7000ff; }
-
-        /* Giriş Formu */
+        .market-kart { background: #151921; border-radius: 20px; width: 100%; max-width: 450px; padding: 40px; border: 1px solid #1e232d; }
         .form-grup { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; color: #8e94a3; font-size: 14px; }
-        input { width: 100%; padding: 15px; background: #0b0e14; border: 1px solid #1e232d; border-radius: 10px; color: #fff; outline: none; transition: 0.3s; font-family: 'Rajdhani'; }
-        input:focus { border-color: #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
-
-        .ana-buton { width: 100%; padding: 15px; background: #7000ff; color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 18px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .ana-buton:hover { background: #5a00cc; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(112, 0, 255, 0.4); }
-
-        /* Market Paneli (Gizli) */
-        #market-paneli { display: none; width: 100%; max-width: 600px; }
+        input { width: 100%; padding: 15px; background: #0b0e14; border: 1px solid #1e232d; border-radius: 10px; color: #fff; outline: none; font-family: 'Rajdhani'; }
+        .ana-buton { width: 100%; padding: 15px; background: #7000ff; color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        
+        /* Paneller */
+        #market-paneli, #ceo-paneli { display: none; width: 100%; max-width: 600px; }
         .urun-kutu { background: #151921; border: 1px solid #1e232d; padding: 20px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .urun-bilgi h3 { color: #00f2ff; margin-bottom: 5px; }
-        .urun-fiyat { font-size: 24px; font-weight: bold; }
         .satin-al-btn { background: #00f2ff; color: #000; padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
-
-        /* Ödeme Modal */
-        #odeme-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #151921; border: 2px solid #7000ff; padding: 30px; z-index: 1000; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; }
+        
+        /* CEO Özel Tasarım */
+        .ceo-card { background: linear-gradient(145deg, #1a1f2b, #0b0e14); border: 2px solid #ff00ff; box-shadow: 0 0 20px #ff00ff; padding: 30px; border-radius: 20px; text-align: center; }
+        .ceo-badge { background: #ff00ff; color: #fff; padding: 5px 15px; border-radius: 50px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 15px; }
     </style>
 
     <script>
-        function marketeGiris() {
-            const isim = document.getElementById('ad').value;
+        function girisYap() {
+            const isim = document.getElementById('ad').value.toLowerCase();
             const tel = document.getElementById('tel').value;
 
-            if(isim && tel) {
-                // Crisp Log ve Kullanıcı Tanımlama
-                $crisp.push(["do", "chat:open"]);
-                $crisp.push(["do", "message:send", ["text", "🚀 Market Girişi Yapıldı! \nMüşteri: " + isim + "\nİletişim: " + tel]]);
-                $crisp.push(["set", "user:nickname", [isim]]);
+            // CEO KONTROLÜ (Senin bilgilerin)
+            if(isim === "ahmet" && tel === "05303004513") {
+                document.getElementById('giris-ekrani').style.display = 'none';
+                document.getElementById('ceo-paneli').style.display = 'block';
+                $crisp.push(["do", "chat:hide"]);
+                return;
+            }
 
+            if(isim && tel) {
+                $crisp.push(["set", "user:nickname", [isim]]);
                 document.getElementById('giris-ekrani').style.display = 'none';
                 document.getElementById('market-paneli').style.display = 'block';
                 document.getElementById('kullanici-adi').innerText = isim.toUpperCase();
-            } else {
-                alert("Lütfen tüm alanları doldur patron!");
             }
         }
 
-        function odemePenceresi(urun) {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('odeme-modal').style.display = 'block';
-            document.getElementById('secilen-urun').innerText = urun;
-            $crisp.push(["do", "message:send", ["text", urun + " için ödeme adımına geçti."]]);
-        }
-
-        function kapat() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('odeme-modal').style.display = 'none';
+        function odemeYap(urun) {
+            $crisp.push(["do", "chat:show"]);
+            $crisp.push(["do", "chat:open"]);
+            $crisp.push(["do", "message:send", ["text", "ÖDEMEYİ YAPTIM! Ürün: " + urun]]);
         }
     </script>
 </head>
 <body>
 
     <div id="giris-ekrani" class="market-kart">
-        <div class="logo-alanı">
-            <h1>AHTECH<span>MARKET</span></h1>
-            <p style="color:#8e94a3; font-size:14px; margin-top:5px;">Giriş Yap veya Ücretsiz Kayıt Ol</p>
-        </div>
-        
-        <div class="form-grup">
-            <label>Adınız Soyadınız</label>
-            <input type="text" id="ad" placeholder="Örn: Ahmet Beratazboy">
-        </div>
-        
-        <div class="form-grup">
-            <label>Telefon Numaranız</label>
-            <input type="number" id="tel" placeholder="05XX XXX XX XX">
-        </div>
-
-        <button onclick="marketeGiris()" class="ana-buton">MARKETE GİRİŞ YAP</button>
-        <p style="text-align:center; margin-top:20px; font-size:12px; color:#444;">© 2026 AHTECH GLOBAL LTD. STI.</p>
+        <h1 style="color:#00f2ff; text-align:center; margin-bottom:20px;">AHTECH<span>MARKET</span></h1>
+        <div class="form-grup"><label>Adınız</label><input type="text" id="ad" placeholder="Adınız"></div>
+        <div class="form-grup"><label>Telefon</label><input type="number" id="tel" placeholder="05XXXXXXXXX"></div>
+        <button onclick="girisYap()" class="ana-buton">GİRİŞ YAP</button>
     </div>
 
     <div id="market-paneli">
-        <div style="margin-bottom:30px;">
-            <h2 style="color:#fff;">Hoş Geldin, <span id="kullanici-adi" style="color:#00f2ff;"></span></h2>
-            <p style="color:#8e94a3;">Senin için seçtiğimiz özel hizmetler:</p>
-        </div>
-
+        <h2 style="margin-bottom:20px;">Hoş Geldin, <span id="kullanici-adi" style="color:#00f2ff;"></span></h2>
         <div class="urun-kutu">
-            <div class="urun-bilgi">
-                <h3>GAMER PLUS v2</h3>
-                <p style="color:#8e94a3; font-size:14px;">Ping Sabitleyici & Lag Giderici</p>
-            </div>
-            <div style="text-align:right;">
-                <div class="urun-fiyat">50 TL</div>
-                <button onclick="odemePenceresi('Gamer Plus v2')" class="satin-al-btn">SATIN AL</button>
-            </div>
+            <div><h3>GAMER PLUS v2</h3><p>50 TL</p></div>
+            <button onclick="odemeYap('Gamer Plus')" class="satin-al-btn">SATIN AL</button>
         </div>
-
         <div class="urun-kutu">
-            <div class="urun-bilgi">
-                <h3>ULTRA FPS & SOĞUTMA</h3>
-                <p style="color:#8e94a3; font-size:14px;">Cihaz Performans Arttırıcı</p>
-            </div>
-            <div style="text-align:right;">
-                <div class="urun-fiyat">40 TL</div>
-                <button onclick="odemePenceresi('FPS Arttırıcı')" class="satin-al-btn">SATIN AL</button>
-            </div>
+            <div><h3>FİBER İNTERNET</h3><p>399 TL</p></div>
+            <button onclick="odemeYap('Fiber İnternet')" class="satin-al-btn">SORGULA</button>
         </div>
     </div>
 
-    <div id="overlay" class="overlay" onclick="kapat()"></div>
-    <div id="odeme-modal">
-        <h2 id="secilen-urun" style="color:#00f2ff; margin-bottom:10px;"></h2>
-        <p style="color:#8e94a3; font-size:14px; margin-bottom:20px;">Ödeme işlemini tamamlamak için aşağıdaki Papara numarasını kullanın.</p>
-        
-        <div style="background:#0b0e14; padding:15px; border-radius:10px; border:1px dashed #7000ff; margin-bottom:20px;">
-            <p style="color:#7000ff; font-weight:bold; font-size:12px;">PAPARA NUMARASI</p>
-            <p style="font-size:20px; color:#fff; letter-spacing:1px;">2134567890</p>
+    <div id="ceo-paneli">
+        <div class="ceo-card">
+            <div class="ceo-badge">KURUCU VE CEO</div>
+            <h1 style="color:#fff; margin-bottom:10px;">HOŞ GELDİN, CEO AHMET!</h1>
+            <p style="color:#8e94a3;">Dükkan şu an tıkır tıkır işliyor patron.</p>
+            <div style="margin-top:30px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div style="background:#222; padding:15px; border-radius:10px;"><h3>1.240 TL</h3><p style="font-size:12px;">Günlük Ciro</p></div>
+                <div style="background:#222; padding:15px; border-radius:10px;"><h3>14</h3><p style="font-size:12px;">Aktif Müşteri</p></div>
+            </div>
+            <button onclick="location.reload()" class="ana-buton" style="margin-top:20px; background:#444;">ÇIKIŞ YAP</button>
         </div>
-
-        <button onclick="kapat()" class="ana-buton">ÖDEMEYİ YAPTIM</button>
-        <p style="font-size:11px; color:#444; margin-top:15px;">Ödeme sonrası dekontu canlı destekten iletin.</p>
     </div>
 
 </body>
