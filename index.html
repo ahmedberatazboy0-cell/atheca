@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH GLOBAL | AI & FIBER</title>
+    <title>AHTECH GLOBAL | CYBER TECH</title>
 
     <script type="text/javascript">
       window.$crisp=[];
@@ -18,45 +18,123 @@
     </script>
 
     <style>
-        body { background-color: #000; color: #00ff00; font-family: 'Courier New', monospace; text-align: center; padding: 20px; }
-        .kutu { background: #111; border: 1px solid #00ff00; border-radius: 15px; padding: 20px; margin: 15px auto; max-width: 450px; position: relative; }
-        .ai-etiket { position: absolute; top: 10px; right: 10px; background: #00ff00; color: #000; font-size: 10px; padding: 2px 5px; font-weight: bold; border-radius: 3px; }
-        h1 { border-bottom: 2px solid #00ff00; display: inline-block; padding-bottom: 5px; }
-        .fiyat { font-size: 28px; color: white; font-weight: bold; margin: 10px 0; }
-        .buton { background: #00ff00; color: #000; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block; width: 80%; border: none; cursor: pointer; font-family: 'Courier New', monospace; }
-        .buton:hover { background: #fff; }
-        .is-etiket { background: #ff6600; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px; margin-bottom: 10px; display: inline-block; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        body { 
+            background: radial-gradient(circle, #0d0d0d 0%, #000 100%); 
+            color: #00f2ff; 
+            font-family: 'Orbitron', sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            overflow-x: hidden;
+        }
+
+        .cyber-header { 
+            text-transform: uppercase;
+            font-size: 35px;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px #00f2ff, 0 0 40px #7000ff;
+            margin-bottom: 5px;
+        }
+
+        .ceo-label { color: #fff; font-size: 14px; margin-bottom: 30px; border: 1px solid #7000ff; display: inline-block; padding: 5px 15px; border-radius: 50px; background: rgba(112, 0, 255, 0.2); }
+
+        .konteynır { max-width: 600px; margin: auto; }
+
+        .kutu { 
+            background: rgba(15, 15, 15, 0.9); 
+            border: 2px solid #7000ff; 
+            border-radius: 20px; 
+            padding: 25px; 
+            margin: 20px auto; 
+            position: relative; 
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(112, 0, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .kutu::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, #00f2ff);
+            animation: rotate 4s linear infinite; z-index: -1;
+        }
+
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .kutu:hover { 
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00f2ff;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+        }
+
+        .etiket { 
+            position: absolute; top: 0; right: 0; 
+            background: #7000ff; color: white; 
+            padding: 5px 15px; font-size: 10px; 
+            border-radius: 0 18px 0 18px; font-weight: bold;
+        }
+
+        .fiyat { font-size: 32px; color: #fff; margin: 15px 0; text-shadow: 0 0 10px #fff; }
+
+        .buton { 
+            background: linear-gradient(45deg, #7000ff, #00f2ff); 
+            color: #fff; padding: 15px; 
+            text-decoration: none; font-weight: bold; 
+            border-radius: 12px; display: block; width: 100%; 
+            border: none; cursor: pointer; font-family: 'Orbitron', sans-serif;
+            font-size: 16px; transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .buton:hover { filter: brightness(1.3); box-shadow: 0 0 20px #00f2ff; }
+
+        .footer { margin-top: 50px; color: #444; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <h1>AHTECH GLOBAL AI</h1>
-    <p>CEO: AHMET | 📞 0530 300 45 13</p>
+    <div class="konteynır">
+        <div class="cyber-header">AHTECH GLOBAL</div>
+        <div class="ceo-label">CHIEF EXECUTIVE OFFICER: AHMET</div>
+        <p style="color: #7000ff; font-size: 12px;">MANISA / TURKEY | EST. 2026</p>
 
-    <div class="kutu" style="border-color: #ff6600;">
-        <div class="is-etiket">YENİ HİZMET</div>
-        <h3>🌐 AHTECH FIBER INTERNET</h3>
-        <p>1000 Mbps Işık Hızında Altyapı.</p>
-        <div class="fiyat">399 TL</div>
-        <button onclick="$crisp.push(['do', 'chat:open']); $crisp.push(['do', 'message:send', ['text', 'Selam! İnternet altyapı sorgulamak istiyorum.']]);" class="buton" style="background: #ff6600;">ALTYAPI SORGULA</button>
+        <div class="kutu">
+            <div class="etiket">ULTRA SPEED</div>
+            <h3>🌐 FIBER INTERNET</h3>
+            <p style="color: #ccc;">1000 Mbps Fiber Altyapı Desteği.</p>
+            <div class="fiyat">399 TL</div>
+            <button onclick="window.$crisp.push(['do', 'chat:open'])" class="buton">ALTYAPI SORGULA</button>
+        </div>
+
+        <div class="kutu">
+            <div class="etiket">BEST SELLER</div>
+            <h3>🚀 GAMER PLUS AI</h3>
+            <p style="color: #ccc;">Ping Optimizasyonu & Sifir Lag Garantisi.</p>
+            <div class="fiyat">50 TL</div>
+            <button onclick="window.$crisp.push(['do', 'chat:open'])" class="buton">SATIN AL</button>
+        </div>
+
+        <div class="kutu">
+            <div class="etiket">SYSTEM COOLER</div>
+            <h3>🔥 FPS & CIHAZ SOGUTMA</h3>
+            <p style="color: #ccc;">Sistem Isınmasını ve Kasmasını Önler.</p>
+            <div class="fiyat">40 TL</div>
+            <button onclick="window.$crisp.push(['do', 'chat:open'])" class="buton">HEMEN AKTIF ET</button>
+        </div>
+
+        <div class="kutu">
+            <div class="etiket">MINORIA STUDIO</div>
+            <h3>🎨 LOGO TASARIM</h3>
+            <p style="color: #ccc;">Sirketinize Ozel Siber Tasarimlar.</p>
+            <div class="fiyat">100 TL</div>
+            <button onclick="window.$crisp.push(['do', 'chat:open'])" class="buton">TEKLIF AL</button>
+        </div>
+
+        <div class="footer">
+            <p>PAYMENT: PAPARA & ININAL | 📞 0530 300 45 13</p>
+            <p>© 2026 AHTECH YAZILIM A.S. ALL RIGHTS RESERVED.</p>
+        </div>
     </div>
-
-    <div class="kutu">
-        <div class="ai-etiket">AI POWERED</div>
-        <h3>🚀 GAMER PAKETI</h3>
-        <p>Ping Düşürür, Lagı Bitirir.</p>
-        <div class="fiyat">50 TL</div>
-        <button onclick="$crisp.push(['do', 'chat:open']); $crisp.push(['do', 'message:send', ['text', 'Selam! Gamer Paket satın almak istiyorum.']]);" class="buton">AI ILE SATIN AL</button>
-    </div>
-
-    <div class="kutu">
-        <h3>🔥 FPS & SOGUTMA AYARI</h3>
-        <p>Telefon Kasmalarına Kesin Çözüm.</p>
-        <div class="fiyat">40 TL</div>
-        <button onclick="$crisp.push(['do', 'chat:open']); $crisp.push(['do', 'message:send', ['text', 'Selam! FPS ayarı yaptırmak istiyorum.']]);" class="buton">AI ILE SATIN AL</button>
-    </div>
-
-    <p style="color: #555; font-size: 12px; margin-top: 40px;">© 2026 AHTECH YAZILIM A.S. | MANISA</p>
 
 </body>
 </html>
