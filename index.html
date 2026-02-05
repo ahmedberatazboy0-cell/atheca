@@ -81,4 +81,53 @@
             document.getElementById('sohbet-panel').style.display = 'block';
             $crisp.push(["do", "chat:show"]);
             $crisp.push(["do", "chat:open"]);
-            $crisp.push(["do", "message:send", ["text", urun + " al
+            $crisp.push(["do", "message:send", ["text", urun + " alımı yapıldı."]]);
+        }
+    </script>
+</head>
+<body>
+
+    <div id="ddos-shield"><div class="shield-icon"></div><p>AHTECH GÜVENLİK DUVARI...</p></div>
+
+    <div id="giris-pencere" class="kart">
+        <h1>AHTECH GLOBAL</h1>
+        <input type="text" id="ad" placeholder="Kullanıcı Adı">
+        <input type="password" id="tel" placeholder="Şifre / Telefon">
+        <button onclick="girisYap()" class="buton">GİRİŞ YAP</button>
+    </div>
+
+    <div id="market-panel" class="kart">
+        <h1>MARKET</h1>
+        <div style="background:#161b22; padding:15px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div><h3>GAMER PLUS</h3><p>50 TL</p></div>
+            <button onclick="satinAl('Gamer Plus', 50)" class="buton" style="width:70px;">AL</button>
+        </div>
+    </div>
+
+    <div id="sohbet-panel" class="kart">
+        <div class="chat-container">
+            <div class="chat-header">AHTECH DESTEK SİSTEMİ</div>
+            <div class="chat-view">
+                <div class="msg">Hoş geldin patron! Ödemeyi yaptıysan dekontu buradan atabilirsin.</div>
+            </div>
+        </div>
+        <p style="text-align:center; margin-top:10px; font-size:12px; color:#444;">Sohbet için sağ alttaki balonu kullanın.</p>
+    </div>
+
+    <div id="ceo-panel" class="kart ceo-border">
+        <h1 style="color:#ff00ff;">CEO YÖNETİM MERKEZİ</h1>
+        <div class="stat-grid">
+            <div class="stat-box"><h3 id="live-ciro">2.450 TL</h3><p>Toplam Ciro</p></div>
+            <div class="stat-box"><h3 id="live-musteri">42</h3><p>Kayıtlı Müşteri</p></div>
+        </div>
+        <div class="chat-container" style="border-color:#ff00ff;">
+            <div class="chat-header" style="background:#ff00ff; color:#fff;">CANLI SOHBET TAKİBİ</div>
+            <div class="chat-view">
+                <div class="msg" style="border-left: 3px solid #ff00ff;">CEO Ahmet bağlandı. Mesajlar Crisp'ten takip ediliyor.</div>
+            </div>
+        </div>
+        <button onclick="location.reload()" class="buton" style="background:#333; color:#fff; margin-top:10px;">ÇIKIŞ YAP</button>
+    </div>
+
+</body>
+</html>
