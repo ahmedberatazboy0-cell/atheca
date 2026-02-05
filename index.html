@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH GLOBAL | ÖDEME MERKEZİ</title>
+    <title>AHTECH GLOBAL | ÜYE PANELİ</title>
 
     <script type="text/javascript">
       window.$crisp=[];
@@ -20,71 +20,92 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap');
         body { background: #050505; color: #fff; font-family: 'Rajdhani', sans-serif; text-align: center; padding: 20px; }
-        .kutu { background: rgba(20, 20, 20, 0.9); border: 1px solid #7000ff; border-radius: 15px; padding: 25px; margin: 20px auto; max-width: 450px; transition: 0.3s; }
-        .kutu:hover { box-shadow: 0 0 20px #7000ff; transform: translateY(-5px); }
-        h1 { color: #00f2ff; text-shadow: 0 0 15px #00f2ff; font-size: 35px; }
-        .fiyat { font-size: 30px; color: #fff; margin: 15px 0; font-weight: bold; }
-        .buton { 
-            background: linear-gradient(45deg, #7000ff, #00f2ff); 
-            color: #000; padding: 15px; width: 100%; border: none; 
-            border-radius: 10px; font-weight: bold; font-size: 18px; 
-            cursor: pointer; font-family: 'Rajdhani', sans-serif;
-        }
-        /* Ödeme Pop-up Tasarımı */
-        #odeme-ekrani { 
-            display: none; position: fixed; top: 50%; left: 50%; 
-            transform: translate(-50%, -50%); background: #111; 
-            border: 2px solid #00f2ff; padding: 30px; z-index: 1000; 
-            border-radius: 20px; width: 90%; max-width: 400px;
-            box-shadow: 0 0 50px #000;
-        }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; }
+        .konteynır { max-width: 500px; margin: auto; }
+        .kutu { background: rgba(20, 20, 20, 0.9); border: 1px solid #7000ff; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+        h1 { color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
+        input { width: 90%; padding: 12px; margin: 10px 0; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: 'Rajdhani'; }
+        .buton { background: linear-gradient(45deg, #7000ff, #00f2ff); color: #000; padding: 15px; width: 90%; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        
+        /* Gizli Paneller */
+        #kayit-formu { display: block; }
+        #ana-sayfa { display: none; }
+        #odeme-ekrani { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; border: 2px solid #00f2ff; padding: 25px; z-index: 1000; border-radius: 20px; width: 85%; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; }
     </style>
 
     <script>
-        function odemeBaslat(urun, fiyat) {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('odeme-ekrani').style.display = 'block';
-            document.getElementById('urun-ad').innerText = urun;
-            document.getElementById('urun-fiyat').innerText = fiyat;
-            
-            // Crisp'e Log Düşürme (Senin paneline bildirim gelir)
-            $crisp.push(["do", "chat:open"]);
-            $crisp.push(["do", "message:send", ["text", urun + " için ödeme sayfasına girdi!"]]);
+        function kayitOl() {
+            var isim = document.getElementById('user_name').value;
+            var tel = document.getElementById('user_tel').value;
+
+            if(isim != "" && tel != "") {
+                // Crisp'e üye bilgilerini logla (Senin paneline düşer)
+                $crisp.push(["do", "chat:open"]);
+                $crisp.push(["do", "message:send", ["text", "YENİ ÜYE KAYDI! \nİsim: " + isim + "\nTelefon: " + tel]]);
+                $crisp.push(["set", "user:nickname", [isim]]);
+                
+                document.getElementById('kayit-formu').style.display = 'none';
+                document.getElementById('ana-sayfa').style.display = 'block';
+                document.getElementById('welcome-msg').innerText = "HOŞ GELDİN, " + isim.toUpperCase();
+            } else {
+                alert("Lütfen tüm alanları doldur patron!");
+            }
         }
 
-        function odemeTamam() {
-            // Müşteriye numaranı verir ve chat'i tam açar
-            $crisp.push(["do", "message:show", ["text", "Ödeme bilgileri yukarıdadır. Dekontu buraya atın. İletişim: 0530 300 45 13"]]);
-            alert("Ödeme bilgileri kopyalandı! Sohbet üzerinden dekont gönderiniz.");
-            location.reload();
+        function odemeAc(urun, fiyat) {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('odeme-ekrani').style.display = 'block';
+            document.getElementById('urun-baslik').innerText = urun;
+            // Log düşür
+            $crisp.push(["do", "message:send", ["text", urun + " paketiyle ilgileniyor!"]]);
+        }
+
+        function kapatsana() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('odeme-ekrani').style.display = 'none';
         }
     </script>
 </head>
 <body>
 
-    <h1>AHTECH GLOBAL</h1>
-    <p>GÜVENLİ ÖDEME MERKEZİ</p>
+    <div class="konteynır">
+        <h1>AHTECH GLOBAL</h1>
 
-    <div class="kutu">
-        <h3>🚀 GAMER PLUS PAKETİ</h3>
-        <div class="fiyat">50 TL</div>
-        <button onclick="odemeBaslat('Gamer Plus', '50 TL')" class="buton">SATIN AL</button>
+        <div id="kayit-formu" class="kutu">
+            <h2 style="color:#7000ff">MÜŞTERİ KAYDI</h2>
+            <p style="font-size:12px; color:#666">Hizmet almak için kayıt olmalısın.</p>
+            <input type="text" id="user_name" placeholder="Adın Soyadın">
+            <input type="number" id="user_tel" placeholder="Telefon Numaran">
+            <button onclick="kayitOl()" class="buton">KAYIT OL VE GİRİŞ YAP</button>
+        </div>
+
+        <div id="ana-sayfa">
+            <h3 id="welcome-msg" style="margin-bottom:20px; color:#00f2ff"></h3>
+            
+            <div class="kutu">
+                <h3>🚀 GAMER PLUS</h3>
+                <p>Ping Düşürme & Lag Engelleme</p>
+                <button onclick="odemeAc('Gamer Plus', '50 TL')" class="buton">50 TL - SATIN AL</button>
+            </div>
+
+            <div class="kutu">
+                <h3>🌐 FİBER İNTERNET</h3>
+                <p>1000 Mbps Altyapı Desteği</p>
+                <button onclick="odemeAc('Fiber İnternet', '399 TL')" class="buton">399 TL - SORGULA</button>
+            </div>
+        </div>
     </div>
 
-    <div id="overlay" class="overlay"></div>
+    <div id="overlay" class="overlay" onclick="kapatsana()"></div>
     <div id="odeme-ekrani">
-        <h2 id="urun-ad" style="color:#00f2ff"></h2>
-        <p>Ödenecek Tutar: <span id="urun-fiyat" style="font-weight:bold"></span></p>
-        <hr style="margin:15px 0; border:0.5px solid #333">
-        <p style="color:#7000ff; font-weight:bold">PAPARA NO:</p>
-        <p style="font-size:20px; background:#222; padding:10px; border-radius:5px;">2134567890 (Temsili)</p>
-        <p style="font-size:12px; margin-top:10px;">*Ödeme yaptıktan sonra dekontu canlı desteğe atın.</p>
+        <h2 id="urun-baslik" style="color:#00f2ff"></h2>
+        <hr style="border:0.5px solid #222; margin:15px 0">
+        <p style="color:#7000ff">PAPARA NO:</p>
+        <p style="font-size:22px; background:#222; padding:10px; border-radius:10px; margin:10px 0">2134567890</p>
+        <p style="font-size:13px">Ödeme yaptıktan sonra dekontu canlı desteğe iletin. Kaydınız sistemde görünüyor.</p>
         <br>
-        <button onclick="odemeTamam()" class="buton">ÖDEMEYİ YAPTIM</button>
+        <button onclick="kapatsana()" class="buton">ANLADIM</button>
     </div>
-
-    <div style="margin-top:50px; color:#333; font-size:12px;">© 2026 AHTECH YAZILIM</div>
 
 </body>
 </html>
