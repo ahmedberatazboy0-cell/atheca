@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH GLOBAL | KURUMSAL PANEL</title>
+    <title>AHTECH GLOBAL | MARKET & CEO</title>
 
     <script type="text/javascript">
       window.$crisp=[];
@@ -12,117 +12,116 @@
         d=document; s=d.createElement("script"); s.src="https://client.crisp.chat/l.js"; s.async=1;
         d.getElementsByTagName("head")[0].appendChild(s);
       })();
+      $crisp.push(["do", "chat:hide"]);
     </script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #05070a; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-
-        /* Arkaplan Neon Efekti */
-        body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 80%); z-index: -1; }
-
-        .kart { background: #0d1117; border: 1px solid #1e232d; border-radius: 20px; width: 100%; max-width: 480px; padding: 30px; box-shadow: 0 10px 50px rgba(0,0,0,0.7); border-top: 4px solid #00f2ff; }
+        body { background: #05070a; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         
-        h1 { font-family: 'Orbitron', sans-serif; color: #00f2ff; text-align: center; font-size: 28px; text-shadow: 0 0 15px rgba(0, 242, 255, 0.5); margin-bottom: 25px; }
+        /* Kart Tasarımları */
+        .kart { background: #0d1117; border: 2px solid #1e232d; border-radius: 20px; width: 100%; max-width: 600px; padding: 30px; box-shadow: 0 0 30px rgba(0,242,255,0.1); }
+        .neon-border { border-top: 4px solid #00f2ff; box-shadow: 0 0 20px rgba(0, 242, 255, 0.3); }
+        .ceo-border { border: 2px solid #ff00ff; box-shadow: 0 0 30px rgba(255, 0, 255, 0.4); }
 
-        input, .buton { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; font-family: 'Rajdhani'; font-weight: bold; border: none; transition: 0.3s; }
-        input { background: #05070a; border: 1px solid #1e232d; color: #fff; }
-        input:focus { border-color: #00f2ff; outline: none; }
+        h1 { font-family: 'Orbitron', sans-serif; color: #00f2ff; text-align: center; margin-bottom: 20px; text-shadow: 0 0 10px #00f2ff; }
+        .urun-listesi { display: grid; gap: 15px; margin-top: 20px; }
+        .urun { background: #161b22; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #30363d; transition: 0.3s; }
+        .urun:hover { border-color: #00f2ff; transform: scale(1.02); }
         
-        .buton { background: linear-gradient(90deg, #00f2ff, #7000ff); color: #fff; cursor: pointer; font-size: 16px; text-transform: uppercase; }
-        .buton:hover { filter: brightness(1.2); transform: scale(1.02); }
+        .buton { background: linear-gradient(90deg, #00f2ff, #7000ff); color: #fff; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Rajdhani'; text-transform: uppercase; }
+        .buton:hover { filter: brightness(1.2); box-shadow: 0 0 15px #00f2ff; }
 
-        /* CEO Panel Görünümü */
-        #ceo-panel { display: none; width: 100%; max-width: 600px; text-align: center; }
-        .ceo-ekran { background: #0d1117; border: 2px solid #ff00ff; border-radius: 20px; padding: 25px; box-shadow: 0 0 30px rgba(255, 0, 255, 0.2); }
-        
-        /* Müşteri Sohbet Penceresi */
-        .chat-box { background: #05070a; border: 1px solid #333; height: 350px; border-radius: 12px; margin-top: 15px; display: flex; flex-direction: column; overflow: hidden; }
-        .chat-header { background: #00f2ff; color: #000; padding: 10px; font-weight: bold; font-size: 14px; }
-        .messages { flex: 1; padding: 15px; overflow-y: auto; text-align: left; font-size: 14px; }
-        .msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 8px; max-width: 80%; line-height: 1.4; }
-        .bot { background: #1e232d; align-self: flex-start; }
-        .user { background: #7000ff; align-self: flex-end; margin-left: auto; }
+        /* Sohbet Ekranı (İtemSatış Tarzı) */
+        #sohbet-ekrani { display: none; width: 100%; }
+        .chat-container { background: #0d1117; border: 2px solid #00f2ff; border-radius: 15px; height: 450px; display: flex; flex-direction: column; overflow: hidden; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; background: #05070a; }
+        .msg { margin-bottom: 12px; padding: 10px 15px; border-radius: 10px; max-width: 80%; }
+        .bot-msg { background: #1e232d; align-self: flex-start; }
+        .user-msg { background: #7000ff; align-self: flex-end; margin-left: auto; }
 
-        /* Dosya Yükleme Alanı */
-        .file-upload { margin-top: 10px; display: flex; align-items: center; gap: 10px; background: #1e232d; padding: 10px; border-radius: 8px; cursor: pointer; }
-        .file-upload label { font-size: 12px; cursor: pointer; color: #00f2ff; }
+        /* CEO Panel Detaylar */
+        .stat-box { background: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #ff00ff; text-align: center; }
+        .stat-box h3 { color: #ff00ff; font-size: 24px; }
     </style>
 
     <script>
-        function girisSistemi() {
+        function girisYap() {
             const ad = document.getElementById('ad').value.toLowerCase();
             const tel = document.getElementById('tel').value;
-
             if(ad === "ahmet" && tel === "05303004513") {
-                document.getElementById('giris-ekran').style.display = 'none';
-                document.getElementById('ceo-panel').style.display = 'block';
-                $crisp.push(["do", "chat:hide"]); // CEO girince Crisp baloncuğu gizlensin
+                document.getElementById('giris-pencere').style.display = 'none';
+                document.getElementById('ceo-pencere').style.display = 'block';
                 return;
             }
-
             if(ad && tel) {
-                document.getElementById('giris-ekran').style.display = 'none';
-                document.getElementById('market-ekran').style.display = 'block';
+                document.getElementById('giris-pencere').style.display = 'none';
+                document.getElementById('market-pencere').style.display = 'block';
                 $crisp.push(["set", "user:nickname", [ad]]);
-                $crisp.push(["set", "user:phone", [tel]]);
             }
         }
 
-        function dosyaYukle() {
-            // Müşteri dekont yüklemek isterse Crisp'in kendi dosya yükleme sistemini tetikler
-            $crisp.push(["do", "chat:open"]);
-            alert("Dekont yüklemek için açılan sohbet penceresindeki 'ataç' simgesini kullanabilirsin patron!");
+        function odemePenceresi(urun) {
+            alert(urun + " seçildi! \nPapara: 2134567890 \nÖdemeyi yaptıysan 'TAMAM' de, sohbete bağlan!");
+            document.getElementById('market-pencere').style.display = 'none';
+            document.getElementById('sohbet-ekrani').style.display = 'block';
+            $crisp.push(["do", "chat:show"]);
+            $crisp.push(["do", "message:send", ["text", urun + " ödemesi yapıldı. Dekont yükleniyor..."]]);
         }
 
-        function ceoCevap() {
-            const m = document.getElementById('ceo-input').value;
-            if(m) {
-                $crisp.push(["do", "message:send", ["text", "CEO AHMET: " + m]]);
-                document.getElementById('ceo-chat-box').innerHTML += `<div class="msg user">Siz: ${m}</div>`;
-                document.getElementById('ceo-input').value = "";
+        function mesajGonder() {
+            const val = document.getElementById('m-input').value;
+            if(val) {
+                document.getElementById('chat-box').innerHTML += `<div class="msg user-msg">${val}</div>`;
+                $crisp.push(["do", "message:send", ["text", val]]);
+                document.getElementById('m-input').value = "";
             }
         }
     </script>
 </head>
 <body>
 
-    <div id="giris-ekran" class="kart">
+    <div id="giris-pencere" class="kart neon-border">
         <h1>AHTECH GLOBAL</h1>
-        <input type="text" id="ad" placeholder="Kullanıcı Adı">
-        <input type="number" id="tel" placeholder="Telefon">
-        <button onclick="girisSistemi()" class="buton">SİSTEME GİRİŞ YAP</button>
+        <input type="text" id="ad" placeholder="Kullanıcı Adı" style="width:100%; padding:15px; background:#05070a; border:1px solid #1e232d; color:#fff; border-radius:10px; margin-bottom:10px;">
+        <input type="number" id="tel" placeholder="Telefon" style="width:100%; padding:15px; background:#05070a; border:1px solid #1e232d; color:#fff; border-radius:10px; margin-bottom:15px;">
+        <button onclick="girisYap()" class="buton" style="width:100%">SİSTEME GİRİŞ YAP</button>
     </div>
 
-    <div id="market-ekran" class="kart" style="display:none;">
-        <h1>AHTECH MARKET</h1>
-        <div style="background:#1e232d; padding:15px; border-radius:12px; margin-bottom:15px;">
-            <h3>🚀 GAMER PLUS v2</h3>
-            <p style="color:#8e94a3; font-size:13px;">Fiyat: 50 TL</p>
-            <button onclick="dosyaYukle()" class="buton" style="margin-top:10px; padding:8px;">SATIN AL & DEKONT YÜKLE</button>
+    <div id="market-pencere" class="kart neon-border" style="display:none;">
+        <h1>TÜM PAKETLER</h1>
+        <div class="urun-listesi">
+            <div class="urun"><div><h3>🚀 GAMER PLUS v2</h3><p>50 TL</p></div><button onclick="odemePenceresi('Gamer Plus')" class="buton">AL</button></div>
+            <div class="urun"><div><h3>🌐 FİBER İNTERNET</h3><p>399 TL</p></div><button onclick="odemePenceresi('Fiber')" class="buton">AL</button></div>
+            <div class="urun"><div><h3>🔥 FPS & SOĞUTMA</h3><p>40 TL</p></div><button onclick="odemePenceresi('FPS')" class="buton">AL</button></div>
+            <div class="urun"><div><h3>🎨 LOGO TASARIM</h3><p>100 TL</p></div><button onclick="odemePenceresi('Logo')" class="buton">AL</button></div>
+            <div class="urun"><div><h3>🎮 ROBLOX SCRIPT</h3><p>75 TL</p></div><button onclick="odemePenceresi('Roblox')" class="buton">AL</button></div>
         </div>
-        <p style="font-size:12px; color:#444; text-align:center;">Dekont yükleyince CEO onayına düşer.</p>
     </div>
 
-    <div id="ceo-panel">
-        <div class="ceo-ekran">
-            <div style="background:#ff00ff; color:#fff; padding:5px 15px; border-radius:50px; display:inline-block; font-size:12px; margin-bottom:15px;">CEO YETKİ PANELİ</div>
-            <h2 style="color:#fff; margin-bottom:20px;">HOŞ GELDİN AHMET PATRON</h2>
-            
-            <div class="chat-box">
-                <div class="chat-header">AKTİF MÜŞTERİ MESAJLARI</div>
-                <div id="ceo-chat-box" class="messages">
-                    <div class="msg bot">Sistem aktif. Crisp paneline düşen mesajları buradan simüle edebilirsin.</div>
-                </div>
-                <div style="padding:10px; background:#151921; display:flex; gap:10px;">
-                    <input type="text" id="ceo-input" placeholder="Müşteriye cevap yaz..." style="margin:0;">
-                    <button onclick="ceoCevap()" class="buton" style="margin:0; width:80px;">GÖNDER</button>
-                </div>
+    <div id="sohbet-ekrani" class="kart neon-border">
+        <div class="chat-container">
+            <div style="background:#00f2ff; color:#000; padding:10px; text-align:center; font-weight:bold;">AHTECH DESTEK (İTEMSATIŞ)</div>
+            <div id="chat-box" class="chat-messages">
+                <div class="msg bot-msg">Selam patron! Ödemeyi yaptıysan dekontu buradan at, CEO Ahmet onaylasın.</div>
             </div>
-            <button onclick="location.reload()" class="buton" style="background:#333; margin-top:20px;">ÇIKIŞ YAP</button>
+            <div style="padding:15px; background:#161b22; display:flex; gap:10px;">
+                <input type="text" id="m-input" placeholder="Mesajını yaz..." style="flex:1; background:#05070a; border:1px solid #333; color:#fff; padding:10px; border-radius:8px;">
+                <button onclick="mesajGonder()" class="buton">GÖNDER</button>
+            </div>
         </div>
+    </div>
+
+    <div id="ceo-pencere" class="kart ceo-border" style="display:none;">
+        <h1 style="color:#ff00ff; text-shadow: 0 0 10px #ff00ff;">CEO YÖNETİM MERKEZİ</h1>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;">
+            <div class="stat-box"><h3>2.450 TL</h3><p>Toplam Ciro</p></div>
+            <div class="stat-box"><h3>42</h3><p>Kayıtlı Müşteri</p></div>
+            <div class="stat-box"><h3>3</h3><p>Bekleyen Onay</p></div>
+            <div class="stat-box"><h3>%100</h3><p>Müşteri Memnuniyeti</p></div>
+        </div>
+        <button onclick="location.reload()" class="buton" style="background:#333; width:100%">PANELDEN ÇIKIŞ YAP</button>
     </div>
 
 </body>
