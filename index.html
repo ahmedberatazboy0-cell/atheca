@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH GLOBAL | KESİNTİSİZ MARKET</title>
+    <title>AHTECH GLOBAL | KESİNTİSİZ SOHBET</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,20 +12,14 @@
         .ceo-border { border: 2px solid #ff00ff; box-shadow: 0 0 30px rgba(255, 0, 255, 0.2); }
         h1 { font-family: 'Orbitron', sans-serif; text-align: center; margin-bottom: 20px; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
         input { width: 100%; padding: 12px; background: #05070a; border: 1px solid #1e232d; color: #fff; border-radius: 8px; margin-bottom: 10px; font-family: 'Rajdhani'; outline: none; }
-        .buton { width: 100%; padding: 12px; background: #00f2ff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .buton:hover { filter: brightness(1.2); }
+        .buton { width: 100%; padding: 12px; background: #00f2ff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
 
-        /* SOHBET SİSTEMİ */
         .chat-pencere { background: #05070a; border: 1px solid #333; border-radius: 15px; height: 380px; display: flex; flex-direction: column; overflow: hidden; margin-top: 15px; }
         .mesajlar { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
         .balon { padding: 10px 15px; border-radius: 12px; font-size: 13px; max-width: 85%; }
         .m-bot { background: #1e232d; align-self: flex-start; border-left: 3px solid #00f2ff; }
         .m-user { background: #7000ff; align-self: flex-end; }
         .m-ceo { background: #ff00ff; align-self: flex-start; border-left: 3px solid #fff; }
-
-        /* PAKETLER */
-        .urun-listesi { display: grid; gap: 10px; margin-bottom: 15px; max-height: 400px; overflow-y: auto; }
-        .urun { background: #161b22; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
         
         #market-panel, #ceo-panel, #sohbet-panel { display: none; }
     </style>
@@ -41,22 +35,16 @@
 
     <div id="market-panel" class="kart">
         <h1>MARKET</h1>
-        <div class="urun-listesi">
-            <div class="urun"><div><h3>GAMER PLUS v2</h3><p>50 TL</p></div><button onclick="satinAl('Gamer Plus')" class="buton" style="width:70px;">AL</button></div>
-            <div class="urun"><div><h3>FİBER İNTERNET</h3><p>399 TL</p></div><button onclick="satinAl('Fiber')" class="buton" style="width:70px;">AL</button></div>
-            <div class="urun"><div><h3>FPS & SOĞUTMA</h3><p>40 TL</p></div><button onclick="satinAl('FPS Ayarı')" class="buton" style="width:70px;">AL</button></div>
-            <div class="urun"><div><h3>LOGO TASARIM</h3><p>100 TL</p></div><button onclick="satinAl('Logo')" class="buton" style="width:70px;">AL</button></div>
-            <div class="urun"><div><h3>ROBLOX SCRIPT</h3><p>75 TL</p></div><button onclick="satinAl('Roblox Script')" class="buton" style="width:70px;">AL</button></div>
+        <div style="background:#161b22; padding:15px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div><h3>GAMER PLUS v2</h3><p>50 TL</p></div>
+            <button onclick="satinAl('Gamer Plus')" class="buton" style="width:70px;">AL</button>
         </div>
-        <button onclick="location.reload()" class="buton" style="background:#333; color:#fff;">ÇIKIŞ YAP</button>
     </div>
 
     <div id="sohbet-panel" class="kart">
-        <h1>DESTEK SİSTEMİ</h1>
+        <h1>DESTEK TALEBİ</h1>
         <div class="chat-pencere">
-            <div id="m-box" class="mesajlar">
-                <div class="balon m-bot">Sistem: Talebiniz alındı. Ödemeyi (Papara: 2134567890) yaptıysanız dekont bekliyoruz. CEO Ahmet bakacak.</div>
-            </div>
+            <div id="m-box" class="mesajlar"></div>
             <div style="padding:10px; background:#161b22; display:flex; gap:10px;">
                 <input type="text" id="m-input" placeholder="Mesaj yazın...">
                 <button onclick="gonder('m')" class="buton" style="width:80px;">GÖNDER</button>
@@ -66,14 +54,8 @@
 
     <div id="ceo-panel" class="kart ceo-border">
         <h1 style="color:#ff00ff;">CEO PANELİ</h1>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
-            <div style="background:#161b22; padding:10px; border-radius:10px; text-align:center;"><h3>2.450 TL</h3><p>Ciro</p></div>
-            <div style="background:#161b22; padding:10px; border-radius:10px; text-align:center;"><h3>42</h3><p>Müşteri</p></div>
-        </div>
         <div class="chat-pencere" style="border-color:#ff00ff;">
-            <div id="ceo-box" class="mesajlar">
-                <div class="balon m-bot">CEO Ahmet bağlandı. Mesaj bekleniyor...</div>
-            </div>
+            <div id="ceo-box" class="mesajlar"></div>
             <div style="padding:10px; background:#161b22; display:flex; gap:10px;">
                 <input type="text" id="ceo-input" placeholder="Müşteriye cevap...">
                 <button onclick="gonder('ceo')" class="buton" style="width:80px; background:#ff00ff; color:#fff;">CEVAPLA</button>
@@ -83,43 +65,57 @@
     </div>
 
     <script>
+        // SOHBET KAYDINI YÜKLE
+        function loadChat() {
+            const history = JSON.parse(localStorage.getItem('ahtech_chat')) || [];
+            const mBox = document.getElementById('m-box');
+            const cBox = document.getElementById('ceo-box');
+            if(mBox) mBox.innerHTML = '<div class="balon m-bot">Sistem: Ödemeyi yaptıysanız dekont bekliyoruz patron.</div>';
+            if(cBox) cBox.innerHTML = '<div class="balon m-bot">CEO Ahmet bağlandı.</div>';
+            
+            history.forEach(msg => {
+                if(mBox) mBox.innerHTML += `<div class="balon ${msg.cls}">${msg.sender}: ${msg.txt}</div>`;
+                if(cBox) cBox.innerHTML += `<div class="balon ${msg.cls}">${msg.sender}: ${msg.txt}</div>`;
+            });
+        }
+
         function girisYap() {
             const ad = document.getElementById('ad').value.toLowerCase();
             const tel = document.getElementById('tel').value;
             if (ad === "ahmet" && tel === "05303004513") {
-                alert("Hoş geldin CEO Ahmet!");
                 document.getElementById('giris-pencere').style.display = 'none';
                 document.getElementById('ceo-panel').style.display = 'block';
+                loadChat();
             } else if (ad !== "" && tel !== "") {
                 document.getElementById('giris-pencere').style.display = 'none';
                 document.getElementById('market-panel').style.display = 'block';
-            } else { alert("Boş bırakma patron!"); }
+            }
         }
 
         function satinAl(urun) {
             document.getElementById('market-panel').style.display = 'none';
             document.getElementById('sohbet-panel').style.display = 'block';
+            loadChat();
         }
 
         function gonder(kim) {
             const mIn = document.getElementById('m-input');
             const cIn = document.getElementById('ceo-input');
-            const mBox = document.getElementById('m-box');
-            const cBox = document.getElementById('ceo-box');
+            let txt = kim === 'm' ? mIn.value : cIn.value;
+            if(!txt) return;
 
-            if(kim === 'm' && mIn.value) {
-                const txt = mIn.value;
-                mBox.innerHTML += `<div class="balon m-user">${txt}</div>`;
-                cBox.innerHTML += `<div class="balon m-user">Müşteri: ${txt}</div>`;
-                mIn.value = "";
-            } else if (kim === 'ceo' && cIn.value) {
-                const txt = cIn.value;
-                cBox.innerHTML += `<div class="balon m-ceo">Siz: ${txt}</div>`;
-                mBox.innerHTML += `<div class="balon m-ceo">CEO AHMET: ${txt}</div>`;
-                cIn.value = "";
-            }
-            mBox.scrollTop = mBox.scrollHeight;
-            cBox.scrollTop = cBox.scrollHeight;
+            let history = JSON.parse(localStorage.getItem('ahtech_chat')) || [];
+            let newMsg = {
+                sender: kim === 'm' ? 'Müşteri' : 'CEO Ahmet',
+                txt: txt,
+                cls: kim === 'm' ? 'm-user' : 'm-ceo'
+            };
+            history.push(newMsg);
+            localStorage.setItem('ahtech_chat', JSON.stringify(history));
+            
+            if(mIn) mIn.value = "";
+            if(cIn) cIn.value = "";
+            loadChat();
         }
     </script>
 </body>
