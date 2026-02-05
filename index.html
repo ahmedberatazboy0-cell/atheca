@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH GLOBAL | FIXED</title>
+    <title>AHTECH GLOBAL | V14 BOSS</title>
 
     <script type="text/javascript">
       window.$crisp=[];
@@ -12,52 +12,77 @@
         d=document; s=d.createElement("script"); s.src="https://client.crisp.chat/l.js"; s.async=1;
         d.getElementsByTagName("head")[0].appendChild(s);
       })();
+      // Başlangıçta gizle, girişte açarız
       $crisp.push(["do", "chat:hide"]);
     </script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #05070a; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .kart { background: #0d1117; border-radius: 20px; width: 100%; max-width: 500px; padding: 30px; border: 2px solid #30363d; }
-        h1 { font-family: 'Orbitron', sans-serif; color: #00f2ff; text-align: center; margin-bottom: 20px; }
-        input { width: 100%; padding: 15px; background: #05070a; border: 1px solid #1e232d; color: #fff; border-radius: 10px; margin-bottom: 15px; font-family: 'Rajdhani'; }
-        .buton { width: 100%; padding: 15px; background: linear-gradient(90deg, #00f2ff, #7000ff); color: #fff; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        body { background: #05070a; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
         
-        /* Gizli Bölümler */
-        #market-pencere, #ceo-full-pencere, #sohbet-ekrani { display: none; }
+        .kart { background: #0d1117; border-radius: 20px; width: 100%; max-width: 600px; padding: 25px; border: 2px solid #30363d; position: relative; }
+        h1 { font-family: 'Orbitron', sans-serif; text-align: center; margin-bottom: 20px; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
         
-        .urun { background: #161b22; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
-        .ceo-card { border: 2px solid #ff00ff; box-shadow: 0 0 20px #ff00ff; padding: 20px; border-radius: 15px; text-align: center; }
+        input { width: 100%; padding: 15px; background: #05070a; border: 1px solid #1e232d; color: #fff; border-radius: 12px; margin-bottom: 15px; font-size: 16px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+        
+        .buton { width: 100%; padding: 15px; background: linear-gradient(90deg, #00f2ff, #7000ff); color: #fff; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron'; font-size: 14px; }
+        .buton:hover { filter: brightness(1.2); transform: scale(1.02); }
+
+        /* SAYFA GEÇİŞLERİ */
+        #market-pencere, #ceo-pencere, #sohbet-pencere { display: none; }
+
+        /* MARKET LİSTESİ */
+        .urun-listesi { display: grid; gap: 12px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
+        .urun { background: #161b22; padding: 15px; border-radius: 15px; border: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .urun:hover { border-color: #00f2ff; }
+        .urun-bilgi h3 { color: #fff; font-size: 18px; }
+        .urun-bilgi p { color: #00f2ff; font-weight: bold; font-size: 14px; }
+        .al-btn { background: #00f2ff; color: #000; padding: 8px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+
+        /* CEO PANEL - MATRIX STYLE */
+        .ceo-border { border: 2px solid #ff00ff; box-shadow: 0 0 30px rgba(255, 0, 255, 0.2); }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .stat-box { background: #05070a; border: 1px solid #ff00ff; padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-box h2 { color: #ff00ff; font-size: 24px; }
+
+        /* SOHBET GEÇİŞ */
+        .sohbet-onay { text-align: center; padding: 40px 10px; }
+        .loader { width: 40px; height: 40px; border: 4px solid #7000ff; border-top-color: #00f2ff; border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 
     <script>
         function girisYap() {
-            const ad = document.getElementById('ad').value.toLowerCase();
-            const tel = document.getElementById('tel').value;
+            const ad = document.getElementById('ad').value.trim();
+            const sifre = document.getElementById('sifre').value.trim();
 
-            if (ad === "ahmet" && tel === "05303004513") {
+            if (ad.toLowerCase() === "ahmet" && sifre === "05303004513") {
                 document.getElementById('giris-pencere').style.display = 'none';
-                document.getElementById('ceo-full-pencere').style.display = 'block';
+                document.getElementById('ceo-pencere').style.display = 'block';
                 return;
             }
 
-            if (ad !== "" && tel !== "") {
+            if (ad !== "" && sifre !== "") {
                 document.getElementById('giris-pencere').style.display = 'none';
                 document.getElementById('market-pencere').style.display = 'block';
                 $crisp.push(["set", "user:nickname", [ad]]);
-                $crisp.push(["do", "chat:show"]);
             } else {
-                alert("Alanları doldur patron!");
+                alert("Bilgileri gir patron!");
             }
         }
 
-        function satinAl(urun) {
-            alert(urun + " için Papara: 2134567890 \nÖdediysen sohbete geçiyoruz!");
+        function satinAl(urun, fiyat) {
             document.getElementById('market-pencere').style.display = 'none';
-            document.getElementById('sohbet-ekrani').style.display = 'block';
+            document.getElementById('sohbet-pencere').style.display = 'block';
+            
+            // Crisp'i göster ve aç
+            $crisp.push(["do", "chat:show"]);
             $crisp.push(["do", "chat:open"]);
-            $crisp.push(["do", "message:send", ["text", urun + " ödemesini yaptım patron!"]]);
+            $crisp.push(["do", "message:send", ["text", urun + " paketi için ödeme yapacağım. Papara bekleniyor."]]);
+            
+            console.log(urun + " seçildi, sohbete aktarıldı.");
         }
     </script>
 </head>
@@ -65,17 +90,17 @@
 
     <div id="giris-pencere" class="kart">
         <h1>AHTECH GLOBAL</h1>
-        <input type="text" id="ad" placeholder="Kullanıcı Adı">
-        <input type="number" id="tel" placeholder="Telefon">
-        <button onclick="girisYap()" class="buton">SİSTEME GİRİŞ YAP</button>
+        <input type="text" id="ad" placeholder="Kullanıcı Adı / CEO Name">
+        <input type="password" id="sifre" placeholder="Şifre / CEO Tel">
+        <button onclick="girisYap()" class="buton">SİSTEME BAĞLAN</button>
     </div>
 
     <div id="market-pencere" class="kart">
-        <h1>MARKET</h1>
-        <div class="urun"><div><h3>GAMER PLUS</h3><p>50 TL</p></div><button onclick="satinAl('Gamer Plus')" class="buton" style="width:80px;">AL</button></div>
-        <div class="urun"><div><h3>FİBER İNTERNET</h3><p>399 TL</p></div><button onclick="satinAl('Fiber')" class="buton" style="width:80px;">AL</button></div>
-        <button onclick="location.reload()" style="background:none; border:none; color:#444; cursor:pointer; margin-top:10px;">Ç
-    </div>
-
-</body>
-</html>
+        <h1>AHTECH MARKET</h1>
+        <div class="urun-listesi">
+            <div class="urun"><div class="urun-bilgi"><h3>BRONZ PAKET</h3><p>50 TL</p></div><button class="al-btn" onclick="satinAl('Bronz', 50)">AL</button></div>
+            <div class="urun"><div class="urun-bilgi"><h3>GÜMÜŞ PAKET</h3><p>150 TL</p></div><button class="al-btn" onclick="satinAl('Gümüş', 150)">AL</button></div>
+            <div class="urun"><div class="urun-bilgi"><h3>ALTIN PAKET</h3><p>300 TL</p></div><button class="al-btn" onclick="satinAl('Altın', 300)">AL</button></div>
+            <div class="urun"><div class="urun-bilgi"><h3>VİP ÜYELİK</h3><p>500 TL</p></div><button class="al-btn" onclick="satinAl('VIP', 500)">AL</button></div>
+            <div class="urun"><div class="urun-bilgi"><h3>FİBER İNTERNET</h3><p>399 TL</p></div><button class="al-btn" onclick="satinAl('Fiber', 399)">AL</button></div>
+            <div class="urun"><div class="urun-bilgi"><h3>ÖZEL SCRİPT</h3><p>1000 TL</p></div><button class="al-btn" onclick
