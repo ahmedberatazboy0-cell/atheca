@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH GLOBAL | V14 BOSS</title>
+    <title>AHTECH GLOBAL | V15 FINAL</title>
 
     <script type="text/javascript">
       window.$crisp=[];
@@ -12,51 +12,30 @@
         d=document; s=d.createElement("script"); s.src="https://client.crisp.chat/l.js"; s.async=1;
         d.getElementsByTagName("head")[0].appendChild(s);
       })();
-      // Başlangıçta gizle, girişte açarız
       $crisp.push(["do", "chat:hide"]);
     </script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #05070a; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-        
-        .kart { background: #0d1117; border-radius: 20px; width: 100%; max-width: 600px; padding: 25px; border: 2px solid #30363d; position: relative; }
+        body { background: #05070a; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        .kart { background: #0d1117; border-radius: 20px; width: 100%; max-width: 550px; padding: 25px; border: 2px solid #30363d; position: relative; }
         h1 { font-family: 'Orbitron', sans-serif; text-align: center; margin-bottom: 20px; color: #00f2ff; text-shadow: 0 0 10px #00f2ff; }
-        
         input { width: 100%; padding: 15px; background: #05070a; border: 1px solid #1e232d; color: #fff; border-radius: 12px; margin-bottom: 15px; font-size: 16px; outline: none; transition: 0.3s; }
-        input:focus { border-color: #00f2ff; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
-        
         .buton { width: 100%; padding: 15px; background: linear-gradient(90deg, #00f2ff, #7000ff); color: #fff; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Orbitron'; font-size: 14px; }
-        .buton:hover { filter: brightness(1.2); transform: scale(1.02); }
-
-        /* SAYFA GEÇİŞLERİ */
+        
+        /* Sayfa Blokları */
         #market-pencere, #ceo-pencere, #sohbet-pencere { display: none; }
-
-        /* MARKET LİSTESİ */
-        .urun-listesi { display: grid; gap: 12px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; padding-right: 5px; }
-        .urun { background: #161b22; padding: 15px; border-radius: 15px; border: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
-        .urun:hover { border-color: #00f2ff; }
-        .urun-bilgi h3 { color: #fff; font-size: 18px; }
-        .urun-bilgi p { color: #00f2ff; font-weight: bold; font-size: 14px; }
-        .al-btn { background: #00f2ff; color: #000; padding: 8px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
-
-        /* CEO PANEL - MATRIX STYLE */
-        .ceo-border { border: 2px solid #ff00ff; box-shadow: 0 0 30px rgba(255, 0, 255, 0.2); }
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .stat-box { background: #05070a; border: 1px solid #ff00ff; padding: 15px; border-radius: 12px; text-align: center; }
-        .stat-box h2 { color: #ff00ff; font-size: 24px; }
-
-        /* SOHBET GEÇİŞ */
-        .sohbet-onay { text-align: center; padding: 40px 10px; }
-        .loader { width: 40px; height: 40px; border: 4px solid #7000ff; border-top-color: #00f2ff; border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 20px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .urun-listesi { display: grid; gap: 10px; margin-bottom: 15px; max-height: 450px; overflow-y: auto; }
+        .urun { background: #161b22; padding: 15px; border-radius: 15px; border: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; }
+        .al-btn { background: #00f2ff; color: #000; padding: 8px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        .ceo-border { border: 2px solid #ff00ff; box-shadow: 0 0 25px rgba(255, 0, 255, 0.2); }
     </style>
 
     <script>
         function girisYap() {
-            const ad = document.getElementById('ad').value.trim();
-            const sifre = document.getElementById('sifre').value.trim();
+            var ad = document.getElementById('ad').value.trim();
+            var sifre = document.getElementById('sifre').value.trim();
 
             if (ad.toLowerCase() === "ahmet" && sifre === "05303004513") {
                 document.getElementById('giris-pencere').style.display = 'none';
@@ -73,16 +52,12 @@
             }
         }
 
-        function satinAl(urun, fiyat) {
+        function satinAl(urun) {
             document.getElementById('market-pencere').style.display = 'none';
             document.getElementById('sohbet-pencere').style.display = 'block';
-            
-            // Crisp'i göster ve aç
             $crisp.push(["do", "chat:show"]);
             $crisp.push(["do", "chat:open"]);
-            $crisp.push(["do", "message:send", ["text", urun + " paketi için ödeme yapacağım. Papara bekleniyor."]]);
-            
-            console.log(urun + " seçildi, sohbete aktarıldı.");
+            $crisp.push(["do", "message:send", ["text", urun + " paketi ödemesi yapıldı. Dekont bekliyorum!"]]);
         }
     </script>
 </head>
@@ -90,17 +65,38 @@
 
     <div id="giris-pencere" class="kart">
         <h1>AHTECH GLOBAL</h1>
-        <input type="text" id="ad" placeholder="Kullanıcı Adı / CEO Name">
+        <input type="text" id="ad" placeholder="Adınız / CEO">
         <input type="password" id="sifre" placeholder="Şifre / CEO Tel">
-        <button onclick="girisYap()" class="buton">SİSTEME BAĞLAN</button>
+        <button onclick="girisYap()" class="buton">SİSTEME GİRİŞ YAP</button>
     </div>
 
     <div id="market-pencere" class="kart">
-        <h1>AHTECH MARKET</h1>
+        <h1>TÜM PAKETLER</h1>
         <div class="urun-listesi">
-            <div class="urun"><div class="urun-bilgi"><h3>BRONZ PAKET</h3><p>50 TL</p></div><button class="al-btn" onclick="satinAl('Bronz', 50)">AL</button></div>
-            <div class="urun"><div class="urun-bilgi"><h3>GÜMÜŞ PAKET</h3><p>150 TL</p></div><button class="al-btn" onclick="satinAl('Gümüş', 150)">AL</button></div>
-            <div class="urun"><div class="urun-bilgi"><h3>ALTIN PAKET</h3><p>300 TL</p></div><button class="al-btn" onclick="satinAl('Altın', 300)">AL</button></div>
-            <div class="urun"><div class="urun-bilgi"><h3>VİP ÜYELİK</h3><p>500 TL</p></div><button class="al-btn" onclick="satinAl('VIP', 500)">AL</button></div>
-            <div class="urun"><div class="urun-bilgi"><h3>FİBER İNTERNET</h3><p>399 TL</p></div><button class="al-btn" onclick="satinAl('Fiber', 399)">AL</button></div>
-            <div class="urun"><div class="urun-bilgi"><h3>ÖZEL SCRİPT</h3><p>1000 TL</p></div><button class="al-btn" onclick
+            <div class="urun"><div><h3>GAMER PLUS v2</h3><p>50 TL</p></div><button class="al-btn" onclick="satinAl('Gamer Plus')">AL</button></div>
+            <div class="urun"><div><h3>FİBER İNTERNET</h3><p>399 TL</p></div><button class="al-btn" onclick="satinAl('Fiber')">AL</button></div>
+            <div class="urun"><div><h3>FPS & SOĞUTMA</h3><p>40 TL</p></div><button class="al-btn" onclick="satinAl('FPS')">AL</button></div>
+            <div class="urun"><div><h3>LOGO TASARIM</h3><p>100 TL</p></div><button class="al-btn" onclick="satinAl('Logo')">AL</button></div>
+            <div class="urun"><div><h3>ROBLOX SCRIPT</h3><p>75 TL</p></div><button class="al-btn" onclick="satinAl('Roblox')">AL</button></div>
+        </div>
+        <button onclick="location.reload()" class="buton" style="background:#222;">GİRİŞE DÖN</button>
+    </div>
+
+    <div id="ceo-pencere" class="kart ceo-border">
+        <h1 style="color:#ff00ff;">CEO PANEL</h1>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div style="background:#05070a; border:1px solid #ff00ff; padding:15px; border-radius:10px; text-align:center;"><h2>4.850 TL</h2><p>Ciro</p></div>
+            <div style="background:#05070a; border:1px solid #ff00ff; padding:15px; border-radius:10px; text-align:center;"><h2>12</h2><p>Müşteri</p></div>
+        </div>
+        <p style="margin-top:20px; text-align:center; color:#ff00ff;">Mesajlar için Crisp panelini kullan patron!</p>
+        <button onclick="location.reload()" class="buton" style="margin-top:20px; background:#333;">OTURUMU KAPAT</button>
+    </div>
+
+    <div id="sohbet-pencere" class="kart">
+        <h1 style="font-size:20px;">BAĞLANIYOR...</h1>
+        <p style="text-align:center;">Sağ alttaki sohbet balonuna yönlendirildiniz. Papara: 2134567890</p>
+        <button onclick="location.reload()" class="buton" style="margin-top:20px;">MARKETE DÖN</button>
+    </div>
+
+</body>
+</html>
