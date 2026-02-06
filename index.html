@@ -3,165 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İtemSatış | AHTECH Pazaryeri</title>
+    <title>İtemSatış | AHTECH Pro Pazaryeri</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0f111a; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        body { background: #0b0d14; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
 
-        /* İTEMSATIŞ TASARIM ÇİZGİLERİ */
-        .kart { background: #1a1d29; border-radius: 8px; width: 100%; max-width: 900px; padding: 25px; border: 1px solid #2d3142; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .mavi-baslik { color: #3498db; font-size: 20px; font-weight: 700; border-bottom: 1px solid #2d3142; padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        /* İTEMSATIŞ ANA TEMA */
+        .market-container { background: #151824; border-radius: 12px; width: 100%; max-width: 950px; padding: 30px; border: 1px solid #232736; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        .header-bar { border-bottom: 2px solid #3498db; padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-size: 24px; font-weight: 800; color: #3498db; text-transform: uppercase; letter-spacing: -1px; }
         
-        /* İLANLAR / PAKETLER */
-        .ilan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .ilan { background: #232736; border-radius: 8px; padding: 15px; border: 1px solid transparent; transition: 0.2s; cursor: pointer; position: relative; }
-        .ilan:hover { border-color: #3498db; transform: translateY(-3px); }
-        .ilan h3 { font-size: 15px; margin-bottom: 8px; color: #fff; }
-        .ilan .fiyat { color: #2ecc71; font-weight: 700; font-size: 18px; }
-        .ilan .stok { color: #8b91a7; font-size: 12px; margin-top: 5px; }
+        /* İLAN KARTLARI */
+        .ilan-listesi { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .ilan-kart { background: #1e2230; border-radius: 10px; border: 1px solid #2d3142; padding: 18px; transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+        .ilan-kart:hover { border-color: #3498db; transform: translateY(-5px); background: #23283a; }
+        .ilan-kart h3 { font-size: 16px; margin-bottom: 10px; color: #f1f1f1; }
+        .ilan-kart .fiyat-etiket { color: #2ecc71; font-weight: 700; font-size: 20px; display: block; margin-top: 10px; }
+        .ilan-kart .badge { position: absolute; top: 10px; right: 10px; background: #3498db; font-size: 10px; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
 
-        /* SOHBET / DESTEK SİSTEMİ */
-        .destek-kutusu { background: #0f111a; border-radius: 8px; border: 1px solid #2d3142; height: 450px; display: flex; flex-direction: column; overflow: hidden; }
-        .destek-header { background: #232736; padding: 12px; font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; border-bottom: 2px solid #3498db; }
-        .mesajlar { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .balon { padding: 10px 14px; border-radius: 8px; font-size: 13px; line-height: 1.5; max-width: 85%; }
-        .alici { background: #2d3142; align-self: flex-start; color: #fff; }
-        .satici { background: #3498db; align-self: flex-end; color: #fff; }
+        /* DESTEK TALEBİ / CHAT */
+        .destek-merkezi { background: #0b0d14; border-radius: 10px; border: 1px solid #2d3142; display: flex; flex-direction: column; height: 500px; }
+        .destek-ust { background: #1e2230; padding: 15px; border-bottom: 1px solid #3498db; display: flex; align-items: center; justify-content: space-between; }
+        .status-light { display: inline-block; width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #2ecc71; }
+        
+        .mesaj-alani { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: #0b0d14; }
+        .balon { padding: 12px 16px; border-radius: 8px; font-size: 14px; max-width: 80%; line-height: 1.5; }
+        .alici-msg { background: #2d3142; align-self: flex-start; color: #fff; border-bottom-left-radius: 0; }
+        .satici-msg { background: #3498db; align-self: flex-end; color: #fff; border-bottom-right-radius: 0; }
 
-        .input-bar { background: #232736; padding: 10px; display: flex; gap: 10px; }
-        input { flex: 1; background: #0f111a; border: 1px solid #2d3142; color: #fff; padding: 10px; border-radius: 6px; outline: none; }
-        .btn-mavi { background: #3498db; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .input-grubu { padding: 15px; background: #1e2230; display: flex; gap: 10px; border-top: 1px solid #2d3142; }
+        input[type="text"], input[type="password"] { flex: 1; background: #0b0d14; border: 1px solid #2d3142; color: #fff; padding: 12px; border-radius: 6px; outline: none; transition: 0.2s; }
+        input:focus { border-color: #3498db; }
+        .action-btn { background: #3498db; color: #fff; border: none; padding: 10px 25px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .action-btn:hover { background: #2980b9; }
 
-        /* CEO / YÖNETİM */
-        .ceo-ozel { border: 1px solid #ff00ff !important; box-shadow: 0 0 15px rgba(255,0,255,0.2); }
-        .istatistik { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-item { background: #232736; padding: 15px; border-radius: 8px; text-align: center; border-bottom: 3px solid #ff00ff; }
+        /* CEO YÖNETİM */
+        .ceo-paneli { border: 2px solid #ff00ff !important; box-shadow: 0 0 25px rgba(255, 0, 255, 0.2) !important; }
+        .stat-kartlari { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-kutu { background: #1e2230; padding: 20px; border-radius: 10px; text-align: center; border-bottom: 4px solid #ff00ff; }
 
-        #panel-market, #panel-sohbet, #panel-ceo { display: none; }
+        #market-ekran, #sohbet-ekran, #ceo-ekran { display: none; }
     </style>
-</head>
-<body>
-
-    <div id="panel-giris" class="kart" style="max-width:400px;">
-        <div class="mavi-baslik"><span>AHTECH</span> MARKET</div>
-        <input type="text" id="kadi" placeholder="Kullanıcı Adı" style="width:100%; margin-bottom:10px;">
-        <input type="password" id="sifre" placeholder="Şifre / CEO Tel" style="width:100%; margin-bottom:15px;">
-        <button onclick="sistemeGir()" class="btn-mavi" style="width:100%;">GİRİŞ YAP</button>
-    </div>
-
-    <div id="panel-market" class="kart">
-        <div class="mavi-baslik">AKTİF İLANLAR</div>
-        <div class="ilan-grid">
-            <div class="ilan" onclick="talepAc('Gamer Plus v2', 50)"><h3>🚀 Gamer Plus v2</h3><div class="fiyat">50.00 TL</div><div class="stok">Stokta: 99+</div></div>
-            <div class="ilan" onclick="talepAc('Fiber İnternet', 399)"><h3>🌐 Fiber İnternet</h3><div class="fiyat">399.00 TL</div><div class="stok">Stokta: 12</div></div>
-            <div class="ilan" onclick="talepAc('Roblox Script', 75)"><h3>🤖 Roblox Script</h3><div class="fiyat">75.00 TL</div><div class="stok">Stokta: 5</div></div>
-            <div class="ilan" onclick="talepAc('FPS Ayarı', 40)"><h3>❄️ FPS & Soğutma</h3><div class="fiyat">40.00 TL</div><div class="stok">Stokta: 25</div></div>
-            <div class="ilan" onclick="talepAc('Özel Logo', 100)"><h3>🎨 Logo Tasarım</h3><div class="fiyat">100.00 TL</div><div class="stok">Stokta: 3</div></div>
-        </div>
-    </div>
-
-    <div id="panel-sohbet" class="kart">
-        <div class="destek-kutusu">
-            <div class="destek-header"><span id="talep-no">Destek Talebi #8421</span> <span style="color:#2ecc71;">● Çevrimiçi</span></div>
-            <div id="msg-box-user" class="mesajlar">
-                <div class="balon alici"><b>Sistem:</b> Ödemeyi yaptıysanız dekont bekliyoruz. CEO Ahmet onaylayacaktır.</div>
-            </div>
-            <div class="input-bar">
-                <input type="text" id="u-msg" placeholder="Mesajınızı yazınız...">
-                <button onclick="mesajGonder('user')" class="btn-mavi">GÖNDER</button>
-            </div>
-        </div>
-        <button onclick="location.reload()" style="margin-top:10px; background:none; border:none; color:#8b91a7; cursor:pointer;">← Geri Dön</button>
-    </div>
-
-    <div id="panel-ceo" class="kart ceo-ozel">
-        <div class="mavi-baslik" style="color:#ff00ff;">CEO YÖNETİM PANELİ</div>
-        <div class="istatistik">
-            <div class="stat-item"><h2 id="c-ciro">2.450 TL</h2><p style="font-size:10px;">TOPLAM CİRO</p></div>
-            <div class="stat-item"><h2 id="c-m">42</h2><p style="font-size:10px;">MÜŞTERİLER</p></div>
-            <div class="stat-item"><h2>AKTİF</h2><p style="font-size:10px;">SİSTEM</p></div>
-        </div>
-        <div class="destek-kutusu" style="border-color:#ff00ff; height:300px;">
-            <div id="msg-box-ceo" class="mesajlar"></div>
-            <div class="input-bar">
-                <input type="text" id="c-msg" placeholder="Müşteriye cevap yaz...">
-                <button onclick="mesajGonder('ceo')" class="btn-mavi" style="background:#ff00ff;">CEVAPLA</button>
-            </div>
-        </div>
-        <button onclick="location.reload()" class="btn-mavi" style="width:100%; margin-top:15px; background:#333;">PANELİ KAPAT</button>
-    </div>
 
     <script>
-        let k_adi = ""; 
-        const DB = 'ahtech_storage_v28';
+        let kullanici = "";
+        const DB_KEY = 'ahtech_marketplace_v29';
 
-        // SALİSELİK YENİLEME
-        setInterval(() => { if(k_adi || document.getElementById('panel-ceo').style.display === 'block') refreshChat(); }, 500);
+        // SALİSELİK REAL-TIME SİSTEMİ
+        setInterval(() => { if(kullanici || isCEOVisible()) syncContent(); }, 500);
 
-        function sistemeGir() {
-            const ad = document.getElementById('kadi').value.trim();
-            const sifre = document.getElementById('sifre').value.trim();
+        function isCEOVisible() { return document.getElementById('ceo-ekran').style.display === 'block'; }
 
-            if (ad.toLowerCase() === "ahmet" && sifre === "05303004513") {
-                alert("Yönetici girişi algılandı.");
-                document.getElementById('panel-giris').style.display = 'none';
-                document.getElementById('panel-ceo').style.display = 'block';
+        function giris() {
+            const ad = document.getElementById('ad-input').value.trim();
+            const tel = document.getElementById('tel-input').value.trim();
+
+            if (ad.toLowerCase() === "ahmet" && tel === "05303004513") {
+                alert("Hoş geldiniz CEO Ahmet.");
+                document.getElementById('giris-ekran').style.display = 'none';
+                document.getElementById('ceo-ekran').style.display = 'block';
                 return;
             }
-            if (ad && sifre) {
-                k_adi = ad;
-                document.getElementById('panel-giris').style.display = 'none';
-                document.getElementById('panel-market').style.display = 'block';
-                let m = parseInt(localStorage.getItem('m_sayi') || 0); localStorage.setItem('m_sayi', m + 1);
+            if (ad && tel) {
+                kullanici = ad;
+                document.getElementById('giris-ekran').style.display = 'none';
+                document.getElementById('market-ekran').style.display = 'block';
+                let m = parseInt(localStorage.getItem('m_total') || 0); localStorage.setItem('m_total', m + 1);
             }
         }
 
         function talepAc(urun, fiyat) {
-            let c = parseInt(localStorage.getItem('ciro_data') || 0); localStorage.setItem('ciro_data', c + fiyat);
-            document.getElementById('panel-market').style.display = 'none';
-            document.getElementById('panel-sohbet').style.display = 'block';
+            let c = parseInt(localStorage.getItem('c_total') || 0); localStorage.setItem('c_total', c + fiyat);
+            document.getElementById('market-ekran').style.display = 'none';
+            document.getElementById('sohbet-ekran').style.display = 'block';
         }
 
-        function mesajGonder(kim) {
-            const inp = document.getElementById(kim === 'user' ? 'u-msg' : 'c-msg');
-            if (!inp.value) return;
+        function gonder(tur) {
+            const input = document.getElementById(tur === 'u' ? 'u-text' : 'c-text');
+            if (!input.value) return;
 
-            let logs = JSON.parse(localStorage.getItem(DB) || '[]');
-            logs.push({
-                u: k_adi || "CEO",
-                s: kim === 'user' ? k_adi : "CEO AHMET",
-                t: inp.value,
-                c: kim === 'user' ? 'alici' : 'satici',
-                target: k_adi
+            let log = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+            log.push({
+                u: kullanici || "ADMIN",
+                s: tur === 'u' ? kullanici : "CEO AHMET",
+                t: input.value,
+                style: tur === 'u' ? 'alici-msg' : 'satici-msg',
+                target: kullanici
             });
-            localStorage.setItem(DB, JSON.stringify(logs));
-            inp.value = "";
+            localStorage.setItem(DB_KEY, JSON.stringify(log));
+            input.value = "";
         }
 
-        function refreshChat() {
-            let logs = JSON.parse(localStorage.getItem(DB) || '[]');
-            const uBox = document.getElementById('msg-box-user');
-            const cBox = document.getElementById('msg-box-ceo');
+        function syncContent() {
+            let log = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+            const uBox = document.getElementById('u-chat-box');
+            const cBox = document.getElementById('c-chat-box');
 
             if (uBox && uBox.offsetParent) {
-                uBox.innerHTML = '<div class="balon alici"><b>Sistem:</b> Ödemeyi yaptıysanız dekont bekliyoruz.</div>';
-                logs.filter(m => m.u === k_adi || m.target === k_adi).forEach(msg => {
-                    uBox.innerHTML += `<div class="balon ${msg.c}"><b>${msg.s}:</b> ${msg.t}</div>`;
+                uBox.innerHTML = '<div class="balon alici-msg"><b>Sistem:</b> Siparişiniz alındı. Dekont yüklediyseniz CEO onayına düşecektir.</div>';
+                log.filter(m => m.u === kullanici || m.target === kullanici).forEach(msg => {
+                    uBox.innerHTML += `<div class="balon ${msg.style}"><b>${msg.s}:</b> ${msg.t}</div>`;
                 });
                 uBox.scrollTop = uBox.scrollHeight;
             }
             if (cBox && cBox.offsetParent) {
                 cBox.innerHTML = "";
-                logs.forEach(msg => {
-                    cBox.innerHTML += `<div class="balon ${msg.c}"><b>[${msg.u}] ${msg.s}:</b> ${msg.t}</div>`;
+                log.forEach(msg => {
+                    cBox.innerHTML += `<div class="balon ${msg.style}"><b>[${msg.u}] ${msg.s}:</b> ${msg.t}</div>`;
                 });
                 cBox.scrollTop = cBox.scrollHeight;
-                document.getElementById('c-ciro').innerText = (localStorage.getItem('ciro_data') || 0) + " TL";
-                document.getElementById('c-m').innerText = localStorage.getItem('m_sayi') || 0;
+                document.getElementById('stat-ciro').innerText = (localStorage.getItem('c_total') || 0) + " TL";
+                document.getElementById('stat-m').innerText = localStorage.getItem('m_total') || 0;
             }
         }
     </script>
+</head>
+<body>
+
+    <div id="giris-ekran" class="market-container" style="max-width:400px;">
+        <div class="brand" style="text-align:center; margin-bottom:20px;">AHTECH <span style="color:#fff;">MARKET</span></div>
+        <input type="text" id="ad-input" placeholder="Kullanıcı Adı">
+        <input type="password" id="tel-input" placeholder="Şifre / CEO Telefon">
+        <button onclick="giris()" class="action-btn" style="width:100%; margin-top:10px;">GİRİŞ YAP</button>
+    </div>
+
+    <div id="market-ekran" class="market-container">
+        <div class="header-bar"><div class="brand">AKTİF İLANLAR</div></div>
+        <div class="ilan-listesi">
+            <div class="ilan-kart" onclick="talepAc('Gamer Plus v2', 50)"><h3>🚀 Gamer Plus v2</h3><span class="badge">HIZLI TESLİMAT</span><span class="fiyat-etiket">50.00 TL</span></div>
+            <div class="ilan-kart" onclick="talepAc('Fiber İnternet', 399)"><h3>🌐 Fiber İnternet</h3><span class="badge">YÜKSEK HIZ</span><span class="fiyat-etiket">399.00 TL</span></div>
+            <div class="ilan-kart" onclick="talepAc('Roblox Script', 75)"><h3>🤖 Roblox Script</h3><span class="badge">GÜNCEL</span><span class="fiyat-etiket">75.00 TL</span></div>
+            <div class="ilan-kart" onclick="talepAc('FPS Ayarı', 40)"><h3>❄️ FPS & Soğutma</h3><span class="badge">PERFORMANS</span><span class="fiyat-etiket">40.00 TL</span></div>
+            <div class="ilan-kart" onclick="talepAc('Logo Tasarım', 100)"><h3>🎨 Özel Logo</h3><span class="badge">PROFESYONEL</span><span class="fiyat-etiket">100.00 TL</span></div>
+        </div>
+    </div>
+
+    <div id="sohbet-ekran" class="market-container">
+        <div class="destek-merkezi">
+            <div class="destek-ust"><span>Destek Talebi #8421</span> <span><span class="status-light"></span> Aktif</span></div>
+            <div id="u-chat-box" class="mesaj-alani"></div>
+            <div class="input-grubu">
+                <input type="text" id="u-text" placeholder="Mesajınızı yazınız...">
+                <button onclick="gonder('u')" class="action-btn">GÖNDER</button>
+            </div>
+        </div>
+        <button onclick="location.reload()" style="background:none; border:none; color:#8b91a7; cursor:pointer; margin-top:15px;">← Alışverişe Devam Et</button>
+    </div>
+
+    <div id="ceo-ekran" class="market-container ceo-paneli">
+        <div class="header-bar" style="border-color:#ff00ff;"><div class="brand" style="color:#ff00ff;">CEO YÖNETİM MERKEZİ</div></div>
+        <div class="stat-kartlari">
+            <div class="stat-kutu"><h2 id="stat-ciro">2.450 TL</h2><p>TOPLAM CİRO</p></div>
+            <div class="stat-kutu"><h2 id="stat-m">42</h2><p>MÜŞTERİLER</p></div>
+            <div class="stat-kutu"><h2>AKTİF</h2><p>SİSTEM</p></div>
+        </div>
+        <div class="destek-merkezi" style="border-color:#ff00ff; height:350px;">
+            <div id="c-chat-box" class="mesaj-alani"></div>
+            <div class="input-grubu">
+                <input type="text" id="c-text" placeholder="Müşteriye cevap yaz...">
+                <button onclick="gonder('ceo')" class="action-btn" style="background:#ff00ff;">CEVAPLA</button>
+            </div>
+        </div>
+        <button onclick="location.reload()" class="action-btn" style="width:100%; margin-top:15px; background:#333;">PANELİ KAPAT</button>
+    </div>
+
 </body>
 </html>
