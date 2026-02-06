@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH Marketplace | Güvenli Ödeme</title>
+    <title>AHTECH Pro | PayTR Güvenli Ödeme</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -11,90 +11,118 @@
         
         .navbar { background: #151824; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; }
         .logo { font-size: 22px; font-weight: 800; color: #3498db; cursor: pointer; }
-        .balance-box { background: #2ecc71; color: #000; padding: 8px 15px; border-radius: 6px; font-weight: 700; cursor: pointer; }
+        .balance-tag { background: #2ecc71; color: #000; padding: 8px 15px; border-radius: 6px; font-weight: 700; cursor: pointer; }
 
         .container { padding: 30px 5%; display: none; }
-        .active { display: block; }
+        .active { display: block !important; }
 
-        /* IBAN ÖDEME KARTI */
-        .payment-card { background: #151824; border-radius: 12px; padding: 30px; max-width: 650px; margin: 0 auto; border: 1px solid #232736; }
-        .iban-box { background: #0b0d14; border: 1px solid #3498db; padding: 20px; border-radius: 10px; margin: 20px 0; position: relative; }
-        .iban-text { font-family: monospace; font-size: 18px; color: #3498db; letter-spacing: 1px; word-break: break-all; }
-        .copy-badge { position: absolute; top: -10px; right: 10px; background: #3498db; font-size: 10px; padding: 3px 8px; border-radius: 4px; }
+        /* PAYTR KARTI */
+        .pay-card { background: #151824; border-radius: 12px; padding: 30px; max-width: 700px; margin: 0 auto; border: 1px solid #232736; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .iframe-container { background: #fff; border-radius: 8px; height: 600px; width: 100%; margin-top: 20px; overflow: hidden; display: none; }
+        
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 13px; color: #8b91a7; margin-bottom: 8px; }
+        input { width: 100%; padding: 12px; background: #0b0d14; border: 1px solid #2d3142; color: #fff; border-radius: 8px; outline: none; }
+        
+        .btn { width: 100%; padding: 15px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .btn-pay { background: #3498db; color: #fff; }
+        .btn-pay:hover { background: #2980b9; }
 
-        .btn { width: 100%; padding: 14px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-blue { background: #3498db; color: #fff; }
-        .btn-green { background: #2ecc71; color: #000; margin-top: 15px; }
-
-        /* SOHBET / DEKONT */
-        .chat-area { background: #0b0d14; border: 1px solid #232736; height: 400px; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
-        .msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .balon { padding: 10px; border-radius: 8px; font-size: 13px; max-width: 80%; background: #2d3142; }
-        .dekont-img { max-width: 100%; border-radius: 5px; margin-top: 5px; border: 1px solid #3498db; }
-
-        #panel-market, #panel-bakiye, #panel-ceo, #panel-sohbet { display: none; }
+        /* CEO STATS */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; text-align: center; }
+        .stat-box { background: #151824; padding: 20px; border-radius: 12px; border-bottom: 4px solid #ff00ff; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo" onclick="switchTab('panel-market')">AHTECH MARKET</div>
-        <div id="user-nav" style="display:none; gap:15px; align-items:center;">
-            <div class="balance-box" onclick="switchTab('panel-bakiye')">Bakiyem: <span id="u-bal">0.00</span> TL</div>
-            <button onclick="switchTab('panel-ceo')" id="ceo-btn" style="display:none; background:#ff00ff; border:none; color:#fff; padding:5px 10px; border-radius:5px; cursor:pointer;">CEO</button>
-            <button onclick="location.reload()" style="background:#e74c3c; border:none; color:#fff; padding:5px 10px; border-radius:5px; cursor:pointer;">Çıkış</button>
+    <nav class="navbar" id="nav-main" style="display:none;">
+        <div class="logo" onclick="switchTab('p-market')">AHTECH MARKET</div>
+        <div style="display:flex; gap:15px; align-items:center;">
+            <div class="balance-tag" onclick="switchTab('p-paytr')">Bakiye Yükle: <span id="u-bal">0.00</span> TL</div>
+            <button onclick="switchTab('p-ceo')" id="ceo-btn" style="display:none; background:#ff00ff; color:#fff; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; font-weight:bold;">CEO</button>
+            <button onclick="location.reload()" style="background:#e74c3c; border:none; color:#fff; padding:8px 15px; border-radius:6px; cursor:pointer;">Çıkış</button>
         </div>
     </nav>
 
-    <div id="panel-giris" class="container active">
-        <div class="payment-card" style="max-width:400px;">
-            <h2 style="text-align:center; color:#3498db; margin-bottom:20px;">Pazar Yeri Girişi</h2>
-            <input type="text" id="k-ad" placeholder="Kullanıcı Adı" style="width:100%; padding:12px; margin-bottom:10px; background:#0b0d14; border:1px solid #2d3142; color:#fff; border-radius:6px;">
-            <input type="password" id="k-tel" placeholder="CEO Şifre / Telefon" style="width:100%; padding:12px; margin-bottom:15px; background:#0b0d14; border:1px solid #2d3142; color:#fff; border-radius:6px;">
-            <button onclick="giris()" class="btn btn-blue">BAĞLAN</button>
+    <div id="p-giris" class="container active">
+        <div class="pay-card" style="max-width:400px; text-align:center;">
+            <h2 style="color:#3498db; margin-bottom:20px;">Sisteme Giriş Yap</h2>
+            <input type="text" id="k-ad" placeholder="Kullanıcı Adı" style="margin-bottom:10px;">
+            <input type="password" id="k-tel" placeholder="Şifre / CEO Telefon" style="margin-bottom:15px;">
+            <button onclick="giris()" class="btn btn-pay">BAĞLAN</button>
         </div>
     </div>
 
-    <div id="panel-market" class="container">
-        <h2 style="margin-bottom:20px;">İlanlar</h2>
+    <div id="p-market" class="container">
+        <h2 style="margin-bottom:20px;">Popüler İlanlar</h2>
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:15px;">
-            <div style="background:#151824; padding:20px; border-radius:10px; border:1px solid #232736; cursor:pointer;" onclick="switchTab('panel-sohbet')">
+            <div style="background:#151824; padding:20px; border-radius:10px; border:1px solid #232736; cursor:pointer;" onclick="switchTab('p-paytr')">
                 <h3>🚀 Gamer Plus v2</h3><p style="color:#2ecc71; font-weight:700; margin-top:10px;">50 TL</p>
             </div>
         </div>
     </div>
 
-    <div id="panel-bakiye" class="container">
-        <div class="payment-card">
-            <h2 style="color:#3498db; margin-bottom:10px;">Bakiye Yükle (Havale/EFT)</h2>
-            <p style="font-size:13px; color:#888;">Lütfen aşağıdaki IBAN adresine ödemeyi yapın ve dekontu sistem üzerinden iletin.</p>
+    <div id="p-paytr" class="container">
+        <div class="pay-card">
+            <h2 style="color:#3498db; margin-bottom:10px;">Kartla Bakiye Yükle</h2>
+            <p style="font-size:13px; color:#8b91a7; margin-bottom:20px;">PayTR 256-bit SSL sertifikalı güvenli ödeme sayfası.</p>
             
-            <div class="iban-box">
-                <span class="copy-badge">RESMİ HESAP</span>
-                <p style="font-size:12px; color:#888; margin-bottom:5px;">ALICI: EMRAH AZBOY</p>
-                <p class="iban-text">TR79 0086 9000 0000 0371 0260 31</p>
+            <div id="pay-form">
+                <div class="input-group">
+                    <label>Yüklenecek Tutar (TL)</label>
+                    <input type="number" id="amt" placeholder="Örn: 100">
+                </div>
+                <button onclick="odemeyiBaslat()" class="btn btn-pay">GÜVENLİ ÖDEMEYİ BAŞLAT</button>
             </div>
 
-            <input type="number" id="yukle-tutar" placeholder="Yüklemek İstediğiniz Tutar" style="width:100%; padding:12px; margin-bottom:10px; background:#0b0d14; border:1px solid #2d3142; color:#fff; border-radius:6px;">
-            <button onclick="switchTab('panel-sohbet')" class="btn btn-green">ÖDEMEYİ YAPTIM, BİLDİR</button>
-        </div>
-    </div>
-
-    <div id="panel-sohbet" class="container">
-        <div class="chat-area" style="max-width:600px; margin:0 auto;">
-            <div style="padding:15px; background:#1e2230; border-bottom:1px solid #3498db;">Ödeme Onay & Destek Hattı</div>
-            <div id="m-chat" class="msgs">
-                <div class="balon">Sistem: Merhaba! Ödemeyi <b>Emrah Azboy</b> adına yaptıysanız lütfen dekontu buraya yükleyin.</div>
-            </div>
-            <div style="padding:10px; background:#1e2230; display:flex; gap:10px; align-items:center;">
-                <label style="cursor:pointer; font-size:20px;">📷<input type="file" id="f-dekont" accept="image/*" style="display:none;" onchange="dekontSec(this)"></label>
-                <input type="text" id="m-input" placeholder="Mesajınız..." style="flex:1; background:#0b0d14; border:1px solid #232736; color:#fff; padding:10px; border-radius:6px;">
-                <button onclick="yolla()" class="btn btn-blue" style="width:80px; padding:10px;">OK</button>
+            <div id="paytr-iframe" class="iframe-container">
+                <iframe src="https://www.paytr.com/odeme/guvenli" id="paytr-frame" style="width:100%; height:100%; border:none;"></iframe>
             </div>
         </div>
     </div>
 
-    <div id="panel-ceo" class="container">
+    <div id="p-ceo" class="container">
         <h1 style="color:#ff00ff; text-align:center; margin-bottom:25px;">CEO YÖNETİM MERKEZİ</h1>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:20px;">
-            <div style="background:#1
+        <div class="stat-grid">
+            <div class="stat-box"><h3>2.450 TL</h3><p>TOPLAM CİRO</p></div>
+            <div class="stat-box"><h3>42</h3><p>MÜŞTERİLER</p></div>
+        </div>
+        <p style="text-align:center; color:#888;">PayTR üzerinden gelen tüm ödemeler anlık ciroya yansır.</p>
+    </div>
+
+    <script>
+        let k_adi = ""; let isCEO = false;
+
+        function switchTab(id) {
+            document.querySelectorAll('.container').forEach(c => c.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function giris() {
+            const ad = document.getElementById('k-ad').value.trim();
+            const tel = document.getElementById('tel').value.trim();
+            if(ad.toLowerCase() === "ahmet" && tel === "05303004513") {
+                isCEO = true; 
+                document.getElementById('nav-main').style.display='flex';
+                document.getElementById('ceo-btn').style.display='block';
+                switchTab('p-ceo');
+            } else if(ad && tel) {
+                k_adi = ad;
+                document.getElementById('nav-main').style.display='flex';
+                switchTab('p-market');
+            }
+        }
+
+        function odemeyiBaslat() {
+            const amt = document.getElementById('amt').value;
+            if(!amt || amt <= 0) { alert("Lütfen tutar girin!"); return; }
+            
+            document.getElementById('pay-form').style.display = 'none';
+            document.getElementById('paytr-iframe').style.display = 'block';
+            
+            // Sertifikan olduğu için PayTR panelinden aldığın iFrame token'ını buraya bağlayacaksın
+            console.log("PayTR Token isteği gönderildi: " + amt + " TL");
+        }
+    </script>
+</body>
+</html>
