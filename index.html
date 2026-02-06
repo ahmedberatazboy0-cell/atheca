@@ -3,42 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH Pro | Chat Legacy v61</title>
+    <title>AHTECH Pro | Professional Hub v62</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         :root { --p: #3498db; --s: #2ecc71; --bg: #0b0d14; --c: #151824; --b: #232736; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: #fff; overflow: hidden; display: flex; }
 
-        /* SIDEBAR */
-        .side { width: 240px; height: 100vh; background: var(--c); border-right: 1px solid var(--b); padding: 25px; display: flex; flex-direction: column; z-index: 1000; }
+        /* SIDEBAR & NAV */
+        .side { width: 260px; height: 100vh; background: var(--c); border-right: 1px solid var(--b); padding: 25px; display: flex; flex-direction: column; z-index: 1000; }
         .logo { font-size: 24px; font-weight: 800; color: var(--p); margin-bottom: 40px; text-align: center; }
         .n-item { padding: 12px 15px; border-radius: 10px; color: #8b91a7; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: 0.3s; font-weight: 600; }
         .n-item.on { background: rgba(52, 152, 219, 0.1); color: var(--p); }
 
-        /* MAIN AREA */
+        /* MAIN CONTENT */
         .main { flex: 1; padding: 40px; height: 100vh; overflow-y: auto; position: relative; }
-        .sec { display: none; }
+        .sec { display: none; animation: slideIn 0.3s ease; }
         .show { display: block !important; }
 
-        /* CHAT PANEL (LEGACY) */
+        /* PROFİL POPUP (RESİMDEKİ SİSTEM) */
+        .p-popup { position: absolute; top: 65px; right: 320px; background: #1c202e; width: 240px; border-radius: 15px; border: 1px solid var(--b); display: none; flex-direction: column; padding: 10px; z-index: 3000; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .p-link { padding: 10px 15px; font-size: 13px; color: #8b91a7; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 10px; }
+        .p-link:hover { background: rgba(255,255,255,0.03); color: #fff; }
+
+        /* CHAT PANEL */
         .chat-panel { width: 300px; height: 100vh; background: var(--c); border-left: 1px solid var(--b); display: flex; flex-direction: column; }
-        .chat-head { padding: 20px; border-bottom: 1px solid var(--b); font-weight: 800; color: var(--p); text-align: center; }
         .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
         .msg { background: #0b0d14; padding: 10px; border-radius: 8px; border: 1px solid var(--b); }
-        .chat-in { padding: 15px; display: flex; gap: 5px; }
 
-        /* AUTH */
+        /* TABLO SİSTEMİ */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--c); border-radius: 15px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--b); font-size: 13px; }
+        th { background: rgba(255,255,255,0.02); color: var(--p); }
+
+        /* AUTH (RESİMDEKİ GİRİŞ) */
         .auth { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: flex; align-items: center; justify-content: center; }
-        .auth-box { background: var(--c); padding: 40px; border-radius: 25px; border: 1px solid var(--b); width: 380px; text-align: center; }
-        input { width: 100%; padding: 14px; background: #0b0d14; border: 1px solid #333; color: #fff; border-radius: 12px; margin-bottom: 10px; outline: none; }
+        .auth-box { background: var(--c); padding: 40px; border-radius: 25px; border: 1px solid var(--b); width: 400px; text-align: center; }
+        input { width: 100%; padding: 14px; background: #0b0d14; border: 1px solid var(--b); color: #fff; border-radius: 12px; margin-bottom: 15px; outline: none; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
     <div id="auth-wall" class="auth">
         <div class="auth-box">
-            <h1 style="color:var(--p); margin-bottom:10px;">AHTECH GİRİŞ</h1>
-            <input type="text" id="u-name" placeholder="Kullanıcı Adı">
+            <h1 style="color:var(--p); margin-bottom:10px; font-size: 28px;">AHTECH GİRİŞ</h1>
+            <p style="color:#8b91a7; margin-bottom:25px; font-size:14px;">Market kontrol paneline mermi gibi bağlanın.</p>
+            <button onclick="login('Discord')" style="width:100%; padding:12px; background:#5865f2; color:#fff; border:none; border-radius:12px; font-weight:800; margin-bottom:10px; cursor:pointer;">Discord ile Bağlan</button>
+            <div style="margin: 15px 0; font-size:12px; color:#333;">veya</div>
+            <input type="text" id="u-name" placeholder="Kullanıcı Adı / Mail">
             <input type="password" id="u-pass" placeholder="Parola">
-            <button onclick="girisMermisi()" style="
+            <button onclick="login()" style="width:100%; padding:15px; background:var(--p); border:none; color:#fff; border-radius:12px; font-weight:800; cursor:pointer;">BAĞLAN</button>
+        </div>
+    </div>
+
+    <div class="side">
+        <div class="logo">AHTECH</div>
+        <div class="n-item on" onclick="tab('p-market', this)">🛒 Market</div>
+        <div class="n-item" onclick="tab('p-pay', this)">💰 Bakiye Yükle</div>
+        <div class="n-item" onclick="tab('p-ceo', this)">💎 CEO Panel</div>
+        <div class="n-item" style="margin-top:auto; color:#e74c3c;" onclick="location.reload()">🚪 Çıkış</div>
+    </div>
+
+    <div class="main">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2 id="t-name">Pazar Yeri</h2>
+            <div style="display:flex; gap:15px; align-items:center;">
+                <div style="background:var(--s); color:#000; padding:8px 15px; border-radius:10px; font-weight:800; font-size:13px;">7.20 ₺</div>
+                <div onclick="togglePop()" style="cursor:pointer; background:var(--c); padding:5px; border-radius:50%; border:1px solid var(--b);">
+                    <img src="https://avatarfiles.alphacoders.com/371/371985.png" width="30" style="border-radius:50%;">
+                </div>
+            </div>
+        </div>
+
+        <div id="p-pop" class="p-popup">
+            <div style="padding:10px; border-bottom:1px solid var(--b); text-align:center;"><b id="user-display">Ahmet</b></div>
+            <div class="p-link" onclick="tab('p-profile')">👤 Profilim</div>
+            <div class="p-link" onclick="tab('p-orders')">📦 Siparişlerim</div>
+            <div class="p-link" onclick="tab('p-sales')">💰 Sattığım İlanlar</div>
+            <div class="p-link" style="color:var(--p);" onclick="tab('p-pay')">💳 Bakiye Yükle</div>
+            <div class="p-link" style="color:#e74c3c;" onclick="location.reload()">🚪 Çıkış</div>
+        </div>
+
+        <div id="p-market" class="sec show">
+            <div class="card" style="background:var(--c); padding:20px; border-radius:15px; border:1px solid var(--b);">
+                <h3>🚀 Gamer Plus v2</h3>
+                <p style="color:var(--s); font-weight:800; font-size:22px; margin:10px 0;">50 TL</p>
+                <button onclick="tab('p-pay')" style="width:100%; padding:10px; border-radius:8px; border:none; background:var(--p); color:#fff; font-weight:700; cursor:pointer;">SATIN AL</button>
+            </div>
+        </div>
+
+        <div id="p-orders" class="sec">
+            <h3>📦 Siparişlerim (Satın Alınanlar)</h3>
+            <table>
+                <thead><tr><th>Ürün</th><th>Tutar</th><th>Durum</th><th>Tarih</th></tr></thead>
+                <tbody>
+                    <tr><td>Roblox Script Pro</td><td>75 ₺</td><td style="color:var(--s);">Teslim Edildi</td><td>07.02.2026</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="p-sales" class="sec">
+            <h3>💰 Sattığım İlanlar</h3>
+            <table>
+                <thead><tr><th>İlan Adı</th><th>Fiyat</th><th>Stok</th><th>İşlem</th></tr></thead>
+                <tbody>
+                    <tr><td>Gamer Plus v2</td><td>50 ₺</td><td>8</td><td style="color:var(--p); cursor:pointer;">Düzenle</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="p-pay" class="sec">
+            <h3>Ziraat IBAN: TR79 0086 9000 0000 0371 0260 31</h3>
+            <p>Alıcı: EMRAH AZBOY</p>
+            <button onclick="bildirim()" style="margin-top:20px; width:100%; padding:15px; background:var(--s); color:#000; font-weight:800; border:none; border-radius:12px; cursor:pointer;">ÖDEMEYİ YAPTIM</button>
+        </div>
+    </div>
+
+    <div class="chat-panel">
+        <div style="padding:20px; border-bottom:1px solid var(--b); font-weight:800; color:var(--p); text-align:center;">CANLI DESTEK</div>
+        <div id="chat-msgs" class="chat-msgs">
+            <div class="msg"><b>Sistem:</b> AHTECH dükkanına hoş geldin patron! Chat aktif.</div>
+        </div>
+        <div style="padding:15px; display:flex; gap:5px;">
+            <input type="text" id="m-text" placeholder="Mesaj..." style="flex:1; padding:10px; background:#0b0d14; border:1px solid #333; color:#fff; border-radius:8px; font-size:12px; margin:0;">
+            <button onclick="msgAt()" style="background:var(--p); border:none; color:#fff; padding:10px; border-radius:8px; cursor:pointer;">GÖNDER</button>
+        </div>
+    </div>
+
+    <script>
+        let u = "Misafir";
+        const kaching = new Audio('https://www.soundjay.com/misc/sounds/cash-register-purchase-1.mp3');
+
+        function login(plat) {
+            const name = document.getElementById('u-name').value || plat || "Ahmet";
+            u = name;
+            document.getElementById('user-display').innerText = u;
+            document.getElementById('auth-wall').style.display = 'none';
+        }
+
+        function tab(id, el) {
+            document.querySelectorAll('.sec').forEach(s => s.classList.remove('show'));
+            document.getElementById(id).classList.add('show');
+            document.getElementById('p-pop').style.display = 'none';
+            if(el) {
+                document.querySelectorAll('.n-item').forEach(n => n.classList.remove('on'));
+                el.classList.add('on');
+            }
+        }
+
+        function togglePop() {
+            const p = document.getElementById('p-pop');
+            p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function msgAt() {
+            const t = document.getElementById('m-text');
+            if(!t.value) return;
+            document.getElementById('chat-msgs').innerHTML += `<div class="msg"><b>${u}:</b> ${t.value}</div>`;
+            t.value = "";
+        }
+
+        function bildirim() {
+            kaching.play();
+            alert("Patron! Ödeme bildirimi mermi gibi CEO paneline düştü.");
+        }
+    </script>
+</body>
+</html>
