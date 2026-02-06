@@ -3,139 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH | Global Gaming Marketplace</title>
+    <title>AHTECH | İlan Yayınlama Merkezi</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        :root { --bg: #0b0d14; --nav: #151824; --primary: #3498db; --success: #2ecc71; --danger: #e74c3c; --border: #232736; }
+        :root { --bg: #0b0d14; --nav: #151824; --primary: #3498db; --success: #2ecc71; --border: #232736; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: #fff; overflow-x: hidden; }
 
-        /* HEADER & UI */
-        header { background: var(--nav); padding: 12px 8%; display: flex; align-items: center; gap: 20px; border-bottom: 1px solid var(--border); sticky; top: 0; z-index: 2000; }
-        .logo { font-size: 28px; font-weight: 800; color: #fff; cursor: pointer; text-transform: lowercase; }
-        .search { flex: 1; position: relative; }
-        .search input { width: 100%; padding: 10px 20px; background: #0b0d14; border: 1px solid var(--border); border-radius: 10px; color: #fff; outline: none; }
-        .nav-icons { display: flex; align-items: center; gap: 15px; }
-        .icon-btn { position: relative; cursor: pointer; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 10px; }
-        .dot { position: absolute; top: -2px; right: -2px; background: var(--primary); width: 14px; height: 14px; border-radius: 50%; font-size: 9px; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+        /* HEADER */
+        header { background: var(--nav); padding: 12px 8%; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 2000; }
+        .logo { font-size: 24px; font-weight: 800; color: #fff; cursor: pointer; }
+        .nav-btns { display: flex; gap: 15px; }
+        .btn-ilan { background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; }
 
-        /* KATEGORİ ÇUBUĞU */
-        .cat-bar { background: var(--nav); padding: 10px 8%; display: flex; gap: 20px; border-bottom: 1px solid var(--border); overflow-x: auto; }
-        .cat-link { font-size: 13px; font-weight: 700; color: #8b91a7; cursor: pointer; white-space: nowrap; transition: 0.3s; }
-        .cat-link:hover { color: #fff; }
-
-        /* ANA İÇERİK MOTORU */
-        .container { padding: 30px 8%; display: none; }
+        /* MULTI-STEP İLAN SİSTEMİ */
+        .ilan-container { padding: 40px 8%; display: none; animation: fadeIn 0.4s; }
         .active { display: block !important; }
+        .step-bar { display: flex; justify-content: space-between; margin-bottom: 40px; position: relative; }
+        .step-bar::after { content: ''; position: absolute; top: 20px; left: 0; width: 100%; height: 2px; background: var(--border); z-index: -1; }
+        .step { background: var(--nav); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--border); }
+        .step.done { background: var(--primary); border-color: var(--primary); }
 
-        /* İLAN EKLEME (MULTI-STEP) */
-        .steps { display: flex; gap: 10px; margin-bottom: 30px; }
-        .s-item { flex: 1; padding: 15px; background: var(--nav); border-radius: 12px; border: 1px solid var(--border); text-align: center; font-size: 12px; font-weight: 700; color: #444; }
-        .s-item.on { border-color: var(--primary); color: var(--primary); background: rgba(52, 152, 219, 0.05); }
+        /* FORM ALANLARI */
+        .form-card { background: var(--nav); border-radius: 20px; border: 1px solid var(--border); padding: 40px; max-width: 800px; margin: 0 auto; }
+        input, textarea, select { width: 100%; padding: 15px; background: #0b0d14; border: 1px solid var(--border); border-radius: 12px; color: #fff; margin-top: 10px; outline: none; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .cat-card { background: #1c202e; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 1px solid var(--border); transition: 0.3s; }
+        .cat-card:hover { border-color: var(--primary); transform: translateY(-5px); }
 
-        /* KARTLAR & ÜRÜNLER */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .card { background: var(--nav); border-radius: 18px; border: 1px solid var(--border); padding: 20px; transition: 0.3s; position: relative; }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .badge { background: var(--success); color: #000; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 5px; position: absolute; top: 15px; right: 15px; }
-
-        /* PROFİL MODAL */
-        .profile-menu { position: absolute; top: 65px; right: 8%; background: #1c202e; width: 240px; border-radius: 15px; border: 1px solid var(--border); display: none; flex-direction: column; padding: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 3000; }
-        .m-item { padding: 12px 15px; font-size: 13px; color: #8b91a7; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 10px; }
-        .m-item:hover { background: rgba(255,255,255,0.03); color: #fff; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo" onclick="sekme('home')">ahtech</div>
-        <div class="search"><input type="text" placeholder="Ürün, ilan veya kategori ara..."></div>
-        <div class="nav-icons">
-            <div class="icon-btn" onclick="sekme('home')">🏠</div>
-            <div class="icon-btn">💬 <div class="dot">2</div></div>
-            <div class="icon-btn" onclick="toggleMenu()">
-                <img src="https://avatarfiles.alphacoders.com/371/371985.png" width="28" style="border-radius:50%;">
-            </div>
-            <button style="background:var(--primary); color:#fff; padding:10px 20px; border-radius:10px; border:none; font-weight:800; cursor:pointer;" onclick="sekme('ilan-ekle')">+ İlan Ekle</button>
-        </div>
-
-        <div id="p-menu" class="profile-menu">
-            <div style="padding:15px; border-bottom:1px solid var(--border); text-align:center;">
-                <b id="user-name">Ahmet</b><br><small style="color:var(--success);">Bakiye: 7.20 ₺</small>
-            </div>
-            <div class="m-item" style="color:var(--primary); font-weight:700;">💰 Bakiye Yükle</div>
-            <div class="m-item">👤 Profilim</div>
-            <div class="m-item">🛠️ Kontrol Merkezi</div>
-            <div class="m-item">📦 Siparişlerim</div>
-            <div class="m-item">💳 Para Çek</div>
-            <div class="m-item" style="color:var(--danger);" onclick="location.reload()">🚪 Çıkış</div>
+        <div class="logo" onclick="sekme('market')">ahtech</div>
+        <div class="nav-btns">
+            <button class="btn-ilan" onclick="sekme('market')">Market</button>
+            <button class="btn-ilan" style="background:#2ecc71; color:#000;" onclick="sekme('ilan-ac')">+ İlan Ekle</button>
+            <button class="btn-ilan" style="background:#1c202e;" onclick="sekme('profil')">Profilim</button>
         </div>
     </header>
 
-    <div class="cat-bar">
-        <div class="cat-link" onclick="sekme('home')">Tüm Kategoriler</div>
-        <div class="cat-link">Roblox</div>
-        <div class="cat-link">Valorant</div>
-        <div class="cat-link">PUBG Mobile</div>
-        <div class="cat-link">Steam</div>
-        <div class="cat-link">Discord</div>
-        <div class="cat-link">Mağazalar</div>
-    </div>
-
-    <div id="home" class="container active">
-        <h2 style="margin-bottom:25px;">Öne Çıkan İlanlar</h2>
+    <div id="market" class="ilan-container active">
+        <h2>Pazar Yeri İlanları</h2>
         <div class="grid">
-            <div class="card">
-                <div class="badge">HEMEN TESLİM</div>
-                <h4 style="color:var(--primary);">VALORANT</h4>
-                <h3 style="margin:10px 0;">5000 VP + Skinli Hesap</h3>
-                <div style="font-size:24px; font-weight:800; color:var(--success);">320.00 ₺</div>
-                <button style="width:100%; padding:12px; background:rgba(52, 152, 219, 0.1); color:var(--primary); border:none; border-radius:10px; font-weight:800; margin-top:15px; cursor:pointer;">Satın Al</button>
-            </div>
-            <div class="card">
-                <div class="badge" style="background:var(--primary); color:#fff;">RESMİ MAĞAZA</div>
-                <h4 style="color:var(--primary);">ROBLOX</h4>
-                <h3 style="margin:10px 0;">10.000 Robux Paketi</h3>
-                <div style="font-size:24px; font-weight:800; color:var(--success);">450.00 ₺</div>
-                <button style="width:100%; padding:12px; background:rgba(52, 152, 219, 0.1); color:var(--primary); border:none; border-radius:10px; font-weight:800; margin-top:15px; cursor:pointer;">Satın Al</button>
-            </div>
+            <div class="cat-card"><h3>Roblox</h3><p>542 İlan</p></div>
+            <div class="cat-card"><h3>Valorant</h3><p>210 İlan</p></div>
         </div>
     </div>
 
-    <div id="ilan-ekle" class="container">
-        <h2 style="margin-bottom:30px;">İlan Oluştur</h2>
-        <div class="steps">
-            <div class="s-item on">1. Kategori</div>
-            <div class="s-item">2. İlan Detayları</div>
-            <div class="s-item">3. Doping</div>
-            <div class="s-item">4. Sözleşme</div>
+    <div id="ilan-ac" class="ilan-container">
+        <h2 style="text-align:center; margin-bottom:30px;">Yeni İlan Oluştur</h2>
+        <div class="step-bar">
+            <div class="step done" id="s1">1</div>
+            <div class="step" id="s2">2</div>
+            <div class="step" id="s3">3</div>
+            <div class="step" id="s4">4</div>
         </div>
-        <div style="background:var(--nav); padding:40px; border-radius:24px; border:1px solid var(--border); text-align:center;">
-            <p style="color:#8b91a7; margin-bottom:25px;">Lütfen satmak istediğiniz ürünün kategorisini seçin:</p>
-            <div class="grid">
-                <div class="card" onclick="alert('Roblox Seçildi!')"><h3>Roblox</h3></div>
-                <div class="card" onclick="alert('Valorant Seçildi!')"><h3>Valorant</h3></div>
-                <div class="card" onclick="alert('PUBG Seçildi!')"><h3>PUBG Mobile</h3></div>
+
+        <div class="form-card">
+            <div id="step-1">
+                <h3>1. Kategori Seçimi</h3>
+                <div class="grid">
+                    <div class="cat-card" onclick="nextStep(2)"><h4>Roblox</h4></div>
+                    <div class="cat-card" onclick="nextStep(2)"><h4>Valorant</h4></div>
+                    <div class="cat-card" onclick="nextStep(2)"><h4>Discord</h4></div>
+                </div>
+            </div>
+
+            <div id="step-2" style="display:none;">
+                <h3>2. İlan Detayları</h3>
+                <label>İlan Başlığı</label>
+                <input type="text" placeholder="Örn: 10.000 Robux En Ucuz!">
+                <label>Açıklama</label>
+                <textarea rows="5" placeholder="Ürün detaylarını buraya mermi gibi yaz patron..."></textarea>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:15px;">
+                    <div><label>Fiyat (TL)</label><input type="number" placeholder="0.00"></div>
+                    <div><label>Stok</label><input type="number" placeholder="1"></div>
+                </div>
+                <button class="btn-ilan" style="width:100%; margin-top:20px;" onclick="nextStep(3)">Doping Aşamasına Geç</button>
+            </div>
+
+            <div id="step-3" style="display:none;">
+                <h3>3. Doping (Öne Çıkar)</h3>
+                <p style="color:#8b91a7; margin-bottom:20px;">İlanınızı en başa taşımak ister misiniz?</p>
+                <div class="cat-card" style="border-color:#f1c40f; margin-bottom:15px;"><h4>Vitrin Dopingi (+5 ₺)</h4></div>
+                <button class="btn-ilan" style="width:100%;" onclick="nextStep(4)">Son Onaya Git</button>
+            </div>
+
+            <div id="step-4" style="display:none;">
+                <h3>4. İlanı Onayla</h3>
+                <p style="font-size:14px; margin-bottom:20px;">İlanınız kurallarımıza uygunsa "Yayınla" butonuna basın.</p>
+                <button class="btn-ilan" style="width:100%; background:#2ecc71; color:#000;" onclick="ilanYayinla()">İLANIMI YAYINLA</button>
             </div>
         </div>
     </div>
 
     <script>
-        function toggleMenu() {
-            const m = document.getElementById('p-menu');
-            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
-        }
-
         function sekme(id) {
-            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.ilan-container').forEach(c => c.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // Tıklanan yer dışındaysa menüyü kapat
-        window.onclick = function(e) {
-            if (!e.target.closest('.icon-btn')) {
-                document.getElementById('p-menu').style.display = 'none';
+        function nextStep(n) {
+            for(let i=1; i<=4; i++) {
+                document.getElementById('step-'+i).style.display = 'none';
+                document.getElementById('s'+i).classList.remove('done');
             }
+            document.getElementById('step-'+n).style.display = 'block';
+            for(let i=1; i<=n; i++) document.getElementById('s'+i).classList.add('done');
+        }
+
+        function ilanYayinla() {
+            alert("Patron! İlanın mermi gibi sisteme düştü. CEO onayından sonra yayına girecek.");
+            sekme('market');
+            nextStep(1);
         }
     </script>
 </body>
