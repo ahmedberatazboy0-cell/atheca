@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH Marketplace | Profesyonel Sistem</title>
+    <title>İtemSatış Pro | AHTECH Kartlı Ödeme</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: #0b0d14; color: #fff; min-height: 100vh; }
-        
+
         /* NAVBAR */
-        .navbar { background: #151824; padding: 15px 5%; display: none; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; position: sticky; top: 0; z-index: 1000; }
+        .navbar { background: #151824; padding: 15px 5%; display: none; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; }
         .logo { font-size: 22px; font-weight: 800; color: #3498db; cursor: pointer; }
         .nav-right { display: flex; gap: 15px; align-items: center; }
         .balance-tag { background: #2ecc71; color: #000; padding: 6px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; }
@@ -18,102 +18,123 @@
         .container { padding: 30px 5%; display: none; }
         .active { display: block !important; }
 
-        /* GİRİŞ KARTI */
-        .auth-card { background: #151824; border-radius: 12px; padding: 40px; width: 100%; max-width: 400px; margin: 100px auto; border: 1px solid #232736; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .auth-card h2 { text-align: center; margin-bottom: 25px; color: #3498db; font-size: 24px; }
-        input { width: 100%; padding: 12px; background: #0b0d14; border: 1px solid #2d3142; color: #fff; border-radius: 8px; margin-bottom: 15px; outline: none; }
-        .btn { width: 100%; padding: 14px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn:hover { background: #2980b9; }
+        /* KART GİRİŞ ALANI */
+        .card-panel { background: #151824; border-radius: 12px; padding: 30px; max-width: 500px; margin: 0 auto; border: 1px solid #232736; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .card-view { background: linear-gradient(135deg, #3498db, #8e44ad); border-radius: 15px; height: 200px; padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .card-chip { width: 45px; height: 35px; background: #f1c40f; border-radius: 5px; margin-bottom: 30px; }
+        .card-number-display { font-size: 20px; letter-spacing: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        input { width: 100%; padding: 12px; background: #0b0d14; border: 1px solid #2d3142; color: #fff; border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #3498db; }
+        
+        .btn-pay { width: 100%; padding: 15px; background: #2ecc71; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 16px; }
+        .btn-pay:hover { background: #27ae60; transform: scale(1.02); }
 
-        /* MARKET VE CEO PANELİ */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .ilan-kart { background: #151824; border-radius: 10px; border: 1px solid #232736; padding: 20px; cursor: pointer; transition: 0.3s; }
-        .ilan-kart:hover { border-color: #3498db; transform: translateY(-5px); }
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-box { background: #151824; padding: 20px; border-radius: 12px; border-bottom: 4px solid #ff00ff; text-align: center; }
+        /* CEO STATS */
+        .ceo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: #151824; padding: 25px; border-radius: 12px; border-bottom: 4px solid #ff00ff; text-align: center; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar" id="main-nav">
-        <div class="logo" onclick="sekmeDegis('p-market')">AHTECH MARKET</div>
+    <nav class="navbar" id="top-nav">
+        <div class="logo" onclick="go('p-market')">AHTECH MARKET</div>
         <div class="nav-right">
-            <div class="balance-tag" onclick="sekmeDegis('p-bakiye')">Bakiye: <span id="u-bal">0.00</span> TL</div>
-            <button onclick="sekmeDegis('p-ceo')" id="ceo-btn" style="display:none; background:#ff00ff; border:none; color:#fff; padding:6px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">CEO PANEL</button>
+            <div class="balance-tag" onclick="go('p-card-pay')">Bakiye Yükle: <span id="u-bal">0.00</span> TL</div>
+            <button onclick="go('p-ceo')" id="ceo-access" style="display:none; background:#ff00ff; border:none; color:#fff; padding:6px 12px; border-radius:5px; cursor:pointer; font-weight:bold;">CEO PANEL</button>
             <button onclick="location.reload()" style="background:#e74c3c; border:none; color:#fff; padding:6px 12px; border-radius:5px; cursor:pointer;">Çıkış</button>
         </div>
     </nav>
 
-    <div id="p-auth" class="container active">
-        <div class="auth-card">
-            <h2>Pazar Yeri Girişi</h2>
+    <div id="p-login" class="container active">
+        <div class="card-panel" style="max-width:380px;">
+            <h2 style="text-align:center; color:#3498db; margin-bottom:25px;">Sisteme Giriş</h2>
             <input type="text" id="k-ad" placeholder="Kullanıcı Adı">
-            <input type="password" id="k-sifre" placeholder="Şifre / CEO Telefon">
-            <button onclick="sistemeBaglan()" class="btn">BAĞLAN</button>
-            <p style="text-align:center; font-size:12px; color:#888; margin-top:15px;">CEO: ahmet / 05303004513</p>
+            <input type="password" id="k-pw" placeholder="Şifre / CEO Tel">
+            <button onclick="auth()" class="btn-pay" style="background:#3498db; color:#fff;">BAĞLAN</button>
         </div>
     </div>
 
     <div id="p-market" class="container">
-        <h2 style="margin-bottom:20px; color:#3498db;">Aktif İlanlar</h2>
-        <div class="grid">
-            <div class="ilan-kart" onclick="sekmeDegis('p-bakiye')"><h3>🚀 Gamer Plus v2</h3><p style="color:#2ecc71; font-weight:700; margin-top:10px;">50.00 TL</p></div>
-            <div class="ilan-kart" onclick="sekmeDegis('p-bakiye')"><h3>🤖 Roblox Script</h3><p style="color:#2ecc71; font-weight:700; margin-top:10px;">75.00 TL</p></div>
+        <h2 style="margin-bottom:25px; color:#3498db;">Aktif Ürünler</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:20px;">
+            <div class="card-panel" style="margin:0; cursor:pointer;" onclick="go('p-card-pay')">
+                <h3>🚀 Gamer Plus v2</h3><p style="color:#2ecc71; font-weight:700; margin-top:10px; font-size:20px;">50.00 TL</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="p-card-pay" class="container">
+        <div class="card-panel">
+            <div class="card-view">
+                <div class="card-chip"></div>
+                <div class="card-number-display" id="card-num-view">**** **** **** ****</div>
+                <div style="display:flex; justify-content:space-between; margin-top:25px; font-size:12px; text-transform:uppercase;">
+                    <div>KART SAHİBİ<br><span id="card-name-view">İSİM SOYİSİM</span></div>
+                    <div>S.K.T<br><span id="card-date-view">00/00</span></div>
+                </div>
+            </div>
+
+            <label>Kart Numarası</label>
+            <input type="text" id="c-num" maxlength="19" placeholder="0000 0000 0000 0000" oninput="updateCard()">
+            <label>Kart Sahibi</label>
+            <input type="text" id="c-name" placeholder="AD SOYAD" oninput="updateCard()">
+            <div class="input-row">
+                <div><label>S.K.T</label><input type="text" id="c-date" placeholder="AA/YY" oninput="updateCard()"></div>
+                <div><label>CVV</label><input type="password" id="c-cvv" maxlength="3" placeholder="***"></div>
+            </div>
+            <label>Yüklenecek Tutar</label>
+            <input type="number" id="pay-amt" placeholder="TL Cinsinden">
+            <button onclick="payNow()" class="btn-pay">ÖDEMEYİ TAMAMLA</button>
         </div>
     </div>
 
     <div id="p-ceo" class="container">
-        <h1 style="color:#ff00ff; text-align:center; margin-bottom:25px;">CEO YÖNETİM MERKEZİ</h1>
-        <div class="stat-grid">
-            <div class="stat-box"><h2 id="c-ciro">2.450 TL</h2><p>TOPLAM CİRO</p></div>
-            <div class="stat-box"><h2 id="c-musteri">42</h2><p>MÜŞTERİLER</p></div>
+        <h1 style="color:#ff00ff; text-align:center; margin-bottom:30px;">CEO YÖNETİM MERKEZİ</h1>
+        <div class="ceo-grid">
+            <div class="stat-card"><h2 id="c-ciro">2.450 TL</h2><p>TOPLAM CİRO</p></div>
+            <div class="stat-card"><h2 id="c-m">42</h2><p>MÜŞTERİLER</p></div>
         </div>
-        <p style="text-align:center; color:#888;">Sistem durumu: Aktif. Ödeme bildirimleri bekleniyor.</p>
-    </div>
-
-    <div id="p-bakiye" class="container">
-        <div style="background:#151824; padding:30px; border-radius:12px; max-width:500px; margin:0 auto; border:1px solid #3498db; text-align:center;">
-            <h2 style="color:#3498db; margin-bottom:15px;">Bakiye Yükle</h2>
-            <p style="font-size:14px; color:#888; margin-bottom:20px;">Ödemenizi <b>Emrah Azboy</b> adına yapıp dekontu iletin.</p>
-            <div style="background:#0b0d14; padding:15px; border-radius:8px; border:1px solid #333; margin-bottom:20px;">
-                <p style="font-family:monospace; color:#3498db; font-size:14px;">TR79 0086 9000 0000 0371 0260 31</p>
-            </div>
-            <button onclick="sekmeDegis('p-market')" class="btn">ALIVERİŞE DÖN</button>
-        </div>
+        <p style="text-align:center; color:#888;">Kartlı ödeme sistemi aktif. Paralar hesabına mermi gibi akıyor patron.</p>
     </div>
 
     <script>
-        let ad = "";
-        let isCEO = false;
-
-        function sekmeDegis(id) {
+        function go(id) {
             document.querySelectorAll('.container').forEach(c => c.style.display = 'none');
-            const target = document.getElementById(id);
-            if(target) target.style.display = 'block';
+            document.getElementById(id).style.display = 'block';
         }
 
-        function sistemeBaglan() {
-            const kAd = document.getElementById('k-ad').value.trim();
-            const kSifre = document.getElementById('k-sifre').value.trim();
-
-            if (kAd.toLowerCase() === "ahmet" && kSifre === "05303004513") {
-                isCEO = true;
-                alert("Hoş geldin CEO Ahmet! Yönetim paneli açılıyor.");
-                document.getElementById('main-nav').style.display = 'flex';
-                document.getElementById('ceo-btn').style.display = 'block';
-                document.getElementById('p-auth').style.display = 'none';
-                sekmeDegis('p-ceo');
+        function auth() {
+            const ad = document.getElementById('k-ad').value.trim();
+            const pw = document.getElementById('k-pw').value.trim();
+            if(ad.toLowerCase() === "ahmet" && pw === "05303004513") {
+                alert("Hoş geldin patron! CEO Yetkileri mermi gibi aktif.");
+                document.getElementById('top-nav').style.display = 'flex';
+                document.getElementById('ceo-access').style.display = 'block';
+                document.getElementById('p-login').style.display = 'none';
+                go('p-ceo');
                 return;
             }
-
-            if (kAd !== "" && kSifre !== "") {
-                ad = kAd;
-                document.getElementById('main-nav').style.display = 'flex';
-                document.getElementById('p-auth').style.display = 'none';
-                sekmeDegis('p-market');
-            } else {
-                alert("Boş bırakma patron, adını ve şifreni yaz!");
+            if(ad && pw) {
+                document.getElementById('top-nav').style.display = 'flex';
+                document.getElementById('p-login').style.display = 'none';
+                go('p-market');
             }
+        }
+
+        function updateCard() {
+            document.getElementById('card-num-view').innerText = document.getElementById('c-num').value || "**** **** **** ****";
+            document.getElementById('card-name-view').innerText = document.getElementById('c-name').value.toUpperCase() || "İSİM SOYİSİM";
+            document.getElementById('card-date-view').innerText = document.getElementById('c-date').value || "00/00";
+        }
+
+        function payNow() {
+            const amt = document.getElementById('pay-amt').value;
+            if(!amt) { alert("Tutar gir patron!"); return; }
+            alert(amt + " TL karttan çekildi ve Emrah Azboy hesabına aktarılıyor!");
+            document.getElementById('u-bal').innerText = amt;
+            go('p-market');
         }
     </script>
 </body>
