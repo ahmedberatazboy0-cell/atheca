@@ -3,130 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İtemSatış | AHTECH Pro v55</title>
+    <title>AHTECH | Profesyonel Oyun Pazarı</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        
-        :root {
-            --bg: #0b0d14; --nav: #151824; --primary: #3498db; --border: #232736;
-        }
-
+        :root { --bg: #0b0d14; --nav: #151824; --primary: #3498db; --success: #2ecc71; --border: #232736; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); color: #fff; overflow-x: hidden; }
 
-        /* ÜST SİYAH BAR */
-        .top-bar { background: #07080c; padding: 10px 10%; display: flex; justify-content: space-between; font-size: 12px; color: #8b91a7; border-bottom: 1px solid var(--border); }
-        .top-bar span { cursor: pointer; margin-right: 15px; transition: 0.3s; }
-        .top-bar span:hover { color: #fff; }
+        /* HEADER & SEARCH */
+        header { background: var(--nav); padding: 15px 8%; display: flex; align-items: center; gap: 25px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 28px; font-weight: 800; color: #fff; cursor: pointer; letter-spacing: -1px; }
+        .search-bar { flex: 1; position: relative; }
+        .search-bar input { width: 100%; padding: 12px 20px; background: #0b0d14; border: 1px solid var(--border); border-radius: 10px; color: #fff; outline: none; }
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        .action-icon { position: relative; cursor: pointer; }
+        .badge { position: absolute; -5px; right: -5px; background: var(--primary); font-size: 10px; padding: 2px 6px; border-radius: 50%; }
 
-        /* ANA NAVBAR */
-        nav { background: var(--nav); padding: 15px 10%; display: flex; align-items: center; gap: 30px; border-bottom: 1px solid var(--border); }
-        .logo { font-size: 26px; font-weight: 800; color: #fff; cursor: pointer; }
-        .search-container { flex: 1; position: relative; }
-        .search-input { width: 100%; padding: 12px 20px; background: #0b0d14; border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none; }
-        .user-actions { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
+        /* KATEGORİ NAVİGASYON */
+        .sub-nav { background: var(--nav); padding: 12px 8%; display: flex; gap: 25px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        .sub-item { font-size: 13px; font-weight: 700; color: #8b91a7; cursor: pointer; white-space: nowrap; transition: 0.3s; }
+        .sub-item:hover, .sub-item.active { color: #fff; }
+        .btn-add { background: var(--primary); color: #fff; padding: 8px 18px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
 
-        /* KATEGORİLER */
-        .cat-bar { background: var(--nav); padding: 12px 10%; display: flex; gap: 20px; overflow-x: auto; border-bottom: 1px solid var(--border); }
-        .cat-item { white-space: nowrap; font-size: 13px; font-weight: 600; color: #8b91a7; cursor: pointer; transition: 0.3s; }
-        .cat-item:hover { color: var(--primary); }
+        /* PROFİL POPUP (RESİMDEKİNİN AYNISI) */
+        .profile-popup { position: absolute; top: 70px; right: 8%; background: #1c202e; width: 220px; border-radius: 15px; border: 1px solid var(--border); display: none; flex-direction: column; padding: 10px; z-index: 2000; }
+        .p-info { padding: 15px; border-bottom: 1px solid var(--border); text-align: center; }
+        .p-item { padding: 10px 15px; font-size: 13px; color: #8b91a7; cursor: pointer; border-radius: 8px; transition: 0.2s; }
+        .p-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .p-item.high { background: rgba(52, 152, 219, 0.1); color: var(--primary); }
 
-        /* GİRİŞ POPUP (BİREBİR KOPYA) */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .auth-box { background: #1c202e; width: 420px; padding: 40px; border-radius: 20px; position: relative; border: 1px solid var(--border); }
-        .close-btn { position: absolute; top: 20px; right: 20px; cursor: pointer; color: #8b91a7; font-size: 20px; }
-        .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 25px 0; }
-        .social-icon { background: #232736; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border); transition: 0.3s; }
-        .social-icon:hover { transform: translateY(-3px); border-color: var(--primary); }
-        
-        .form-label { display: block; font-size: 12px; color: #8b91a7; margin-bottom: 8px; margin-top: 15px; }
-        input[type="text"], input[type="password"] { width: 100%; padding: 14px; background: #0b0d14; border: 1px solid var(--border); border-radius: 10px; color: #fff; margin-bottom: 5px; }
-        .login-btn { width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; margin-top: 20px; font-size: 16px; }
+        /* İLAN EKLEME SÜRECİ */
+        .process-container { padding: 40px 8%; display: none; animation: fadeIn 0.4s; }
+        .steps { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; position: relative; }
+        .steps::before { content: ''; position: absolute; top: 15px; left: 0; width: 100%; height: 2px; background: var(--border); z-index: -1; }
+        .step { background: var(--nav); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--border); }
+        .step.active { background: var(--primary); border-color: var(--primary); }
 
         /* ANA İÇERİK */
-        .hero { padding: 40px 10%; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .banner { background: var(--nav); border-radius: 15px; height: 250px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; transition: 0.3s; }
-        .banner:hover { transform: scale(1.02); }
+        .main { padding: 40px 8%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: var(--nav); border-radius: 20px; border: 1px solid var(--border); padding: 25px; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div><span>Discord</span> <span>Instagram</span> <span>YouTube</span> <span>Twitter</span></div>
-        <div><span>Günün Fırsatları</span> <span style="color:var(--primary);">Blog</span> <span>Destek Merkezi</span></div>
-    </div>
-
-    <nav>
-        <div class="logo">itemsatış</div>
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="Oyun, ürün veya ilan ara...">
+    <header>
+        <div class="logo" onclick="location.reload()">ahtech</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Oyun, ürün veya ilan ara...">
         </div>
-        <div class="user-actions" onclick="toggleAuth()">
-            <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="30" style="filter: invert(1);">
-            <div>Giriş Yap<br><span style="font-size:10px; color:#8b91a7;">veya üye ol</span></div>
-        </div>
-    </nav>
-
-    <div class="cat-bar">
-        <div class="cat-item">Kategoriler</div>
-        <div class="cat-item">İlan Pazarı</div>
-        <div class="cat-item">Çekilişler</div>
-        <div class="cat-item">Mağazalar</div>
-        <div class="cat-item">Top Up</div>
-        <div class="cat-item">Topluluk</div>
-    </div>
-
-    <div class="hero">
-        <div class="banner" style="background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://wallpapercave.com/wp/wp11816503.jpg') center/cover;">
-            <h2 style="text-align:center;">ROBLOX İLAN PAZARI</h2>
-        </div>
-        <div class="banner" style="background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.wallpapersden.com/image/download/valorant-2021-4k_bWdnZ2mUmZqaraWkpJRmbmdlrWZlbWU.jpg') center/cover;">
-            <h2 style="text-align:center;">VALORANT MAĞAZA</h2>
-        </div>
-    </div>
-
-    <div id="auth-modal" class="modal-overlay">
-        <div class="auth-box">
-            <span class="close-btn" onclick="toggleAuth()">✕</span>
-            <h2 style="text-align:center; font-size:20px;">Giriş Yap</h2>
-            <p style="text-align:center; font-size:12px; color:#8b91a7; margin-top:15px;">Aşağıdaki seçeneklerden hızlıca giriş yapabilirsiniz.</p>
-            
-            <div class="social-grid">
-                <div class="social-icon" style="background:#ea4335;"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20"></div>
-                <div class="social-icon" style="background:#1877f2;"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="20"></div>
-                <div class="social-icon" style="background:#5865f2;"><img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Discord_Color_Logo.svg" width="20"></div>
-                <div class="social-icon" style="background:#171a21;"><img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" width="20"></div>
+        <div class="nav-actions">
+            <div class="action-icon"><span>Cüzdan: <b>7.20 ₺</b></span></div>
+            <div class="action-icon" onclick="toggleProfile()">
+                <img src="https://avatarfiles.alphacoders.com/371/371985.png" width="35" style="border-radius:50%;">
+                <div class="badge">2</div>
             </div>
+            <button class="btn-add" onclick="showProcess()">+ İlan Ekle</button>
+        </div>
 
-            <div style="display:flex; align-items:center; gap:10px; margin:20px 0;"><hr style="flex:1; border:0; border-top:1px solid #232736;"> <span style="font-size:12px; color:#444;">veya</span> <hr style="flex:1; border:0; border-top:1px solid #232736;"></div>
+        <div id="p-menu" class="profile-popup">
+            <div class="p-info"><b>Ahmet</b><br><small style="color:var(--success);">7.20 ₺</small></div>
+            <div class="p-item high" onclick="alert('Ziraat IBAN: TR79...')">Bakiye Yükle</div>
+            <div class="p-item" onclick="alert('Manisa onaylı kimlik doğrula!')">Kimlik Doğrula</div>
+            <div class="p-item">Profilim</div>
+            <div class="p-item">Kontrol Merkezi</div>
+            <div class="p-item">Siparişlerim</div>
+            <div class="p-item">Para Çek</div>
+            <div class="p-item" style="color:var(--danger);" onclick="location.reload()">Çıkış</div>
+        </div>
+    </header>
 
-            <label class="form-label">Kullanıcı Adı / Mail / Telefon</label>
-            <input type="text" id="log-user" placeholder="Kullanıcı adını girin">
-            <label class="form-label">Parola</label>
-            <input type="password" id="log-pass" placeholder="Parolanızı girin">
-            
-            <button class="login-btn" onclick="checkAuth()">Giriş Yap</button>
-            <p style="text-align:center; font-size:12px; color:#8b91a7; margin-top:20px;">Hala bir üyeliğiniz yok mu? <span style="color:var(--primary); cursor:pointer;">Hemen ücretsiz üye ol</span></p>
+    <div class="sub-nav">
+        <div class="sub-item active">Kategoriler</div>
+        <div class="sub-item">İlan Pazarı</div>
+        <div class="sub-item">Roblox</div>
+        <div class="sub-item">Valorant</div>
+        <div class="sub-item">PUBG Mobile</div>
+        <div class="sub-item">Mağazalar</div>
+        <div class="sub-item">Blog</div>
+    </div>
+
+    <div id="ilan-ekle" class="process-container">
+        <h2 style="margin-bottom:30px;">Yeni İlan Oluştur</h2>
+        <div class="steps">
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+            <div class="step">4</div>
+        </div>
+        <div style="background:var(--nav); padding:40px; border-radius:20px; border:1px solid var(--border);">
+            <p style="color:#8b91a7; margin-bottom:20px;">Lütfen ilanınızın kategorisini seçin:</p>
+            <div class="grid">
+                <div class="card" onclick="alert('Kategori Seçildi!')" style="text-align:center; cursor:pointer;"><h3>Roblox</h3></div>
+                <div class="card" style="text-align:center; cursor:pointer;"><h3>Valorant</h3></div>
+                <div class="card" style="text-align:center; cursor:pointer;"><h3>Steam</h3></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-market" class="main">
+        <h2 style="margin-bottom:30px;">Günün Fırsatları</h2>
+        <div class="grid">
+            <div class="card">
+                <h4 style="color:var(--primary);">ROBLOX</h4>
+                <h3 style="margin:10px 0;">10.000 Robux Paketi</h3>
+                <div style="font-size:24px; font-weight:800; color:var(--success);">450.00 ₺</div>
+                <button class="btn-add" style="width:100%; margin-top:20px;">Hemen Al</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function toggleAuth() {
-            const modal = document.getElementById('auth-modal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        function toggleProfile() {
+            const menu = document.getElementById('p-menu');
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
         }
 
-        function checkAuth() {
-            const u = document.getElementById('log-user').value;
-            const p = document.getElementById('log-pass').value;
-            if(u.toLowerCase() === 'ahmet' && p === '05303004513') {
-                alert("Hoş geldin CEO Ahmet! Sistem mermi gibi çalışıyor.");
-                toggleAuth();
-            } else if(u && p) {
-                alert("Giriş yapıldı! Pazar yeri aktif.");
-                toggleAuth();
-            } else {
-                alert("Lütfen tüm alanları doldur patron!");
+        function showProcess() {
+            document.getElementById('main-market').style.display = 'none';
+            document.getElementById('ilan-ekle').style.display = 'block';
+        }
+
+        function backToMarket() {
+            document.getElementById('main-market').style.display = 'block';
+            document.getElementById('ilan-ekle').style.display = 'none';
+        }
+
+        // Dışarı tıklayınca menüyü kapat
+        window.onclick = function(event) {
+            if (!event.target.closest('.action-icon')) {
+                document.getElementById('p-menu').style.display = 'none';
             }
         }
     </script>
