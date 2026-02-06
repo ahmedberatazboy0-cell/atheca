@@ -3,135 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH Marketplace | Final v50</title>
+    <title>AHTECH Galaxy | v51 Final</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         
         :root {
             --primary: #3498db;
             --success: #2ecc71;
-            --danger: #e74c3c;
             --bg: #0b0d14;
             --card: #151824;
             --border: #232736;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: #fff; overflow: hidden; }
+        body { background: var(--bg); color: #fff; overflow: hidden; display: flex; }
 
-        /* YAN MENÜ */
-        .sidebar { width: 260px; height: 100vh; background: var(--card); border-right: 1px solid var(--border); position: fixed; left: 0; top: 0; padding: 25px; z-index: 1000; }
-        .logo { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 40px; letter-spacing: -1px; }
-        .nav-item { padding: 12px 15px; border-radius: 10px; color: #8b91a7; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; transition: 0.3s; font-weight: 600; }
-        .nav-item:hover, .nav-item.active { background: rgba(52, 152, 219, 0.1); color: var(--primary); }
+        /* SIDEBAR */
+        .sidebar { width: 240px; height: 100vh; background: var(--card); border-right: 1px solid var(--border); padding: 25px; display: flex; flex-direction: column; }
+        .nav-item { padding: 12px 15px; border-radius: 10px; color: #8b91a7; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: 0.3s; font-weight: 600; }
+        .nav-item.active { background: rgba(52, 152, 219, 0.1); color: var(--primary); }
 
-        /* ANA İÇERİK */
-        .header { height: 70px; background: rgba(11, 13, 20, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: fixed; right: 0; left: 260px; top: 0; display: flex; align-items: center; padding: 0 40px; z-index: 999; }
-        .main { margin-left: 260px; padding: 100px 40px 40px; height: 100vh; overflow-y: auto; }
-        .section { display: none; animation: fadeIn 0.3s ease; }
+        /* ANA ALAN */
+        .main { flex: 1; padding: 40px; height: 100vh; overflow-y: auto; position: relative; }
+        .section { display: none; animation: slideIn 0.3s ease; }
         .show { display: block !important; }
 
+        /* CHAT SİSTEMİ (SAĞ PANEL) */
+        .chat-panel { width: 300px; height: 100vh; background: var(--card); border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+        .chat-header { padding: 20px; border-bottom: 1px solid var(--border); font-weight: 800; color: var(--primary); }
+        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+        .msg-box { background: #0b0d14; padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
+        .chat-input { padding: 15px; display: flex; gap: 5px; }
+
         /* KARTLAR */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; transition: 0.3s; }
-        .btn { width: 100%; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .btn-blue { background: var(--primary); color: #fff; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; transition: 0.3s; position: relative; }
+        .p-card:hover { transform: scale(1.02); border-color: var(--primary); }
+        .badge { position: absolute; top: 10px; right: 10px; background: var(--primary); font-size: 10px; padding: 2px 8px; border-radius: 5px; }
 
-        /* GİRİŞ EKRANI */
-        .auth-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 2000; }
-        .auth-box { background: var(--card); width: 400px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); text-align: center; }
-        input { width: 100%; padding: 14px; background: #0b0d14; border: 1px solid var(--border); color: #fff; border-radius: 12px; margin-bottom: 15px; outline: none; }
+        /* GİRİŞ */
+        .auth { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: flex; align-items: center; justify-content: center; }
+        .auth-box { background: var(--card); padding: 40px; border-radius: 25px; border: 1px solid var(--border); width: 380px; text-align: center; }
 
-        /* LOG LİSTESİ */
-        .log-item { background: #0b0d14; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; border-left: 3px solid var(--primary); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
-    <div id="auth-panel" class="auth-screen">
+    <div id="auth-screen" class="auth">
         <div class="auth-box">
-            <h2 style="margin-bottom: 10px; color: var(--primary);">AHTECH GİRİŞ</h2>
-            <p style="color: #8b91a7; margin-bottom: 25px; font-size: 14px;">Bilgileri eksiksiz doldur patron!</p>
-            <input type="text" id="login-user" placeholder="Kullanıcı Adı">
-            <input type="password" id="login-pass" placeholder="Şifre / CEO Tel">
-            <button class="btn btn-blue" onclick="girisYap()">BAĞLAN</button>
-            <p id="auth-err" style="color: var(--danger); font-size: 12px; margin-top: 10px; display: none;">Hata: Tüm alanları doldurmalısın!</p>
+            <h1 style="color: var(--primary); margin-bottom: 10px;">AHTECH GALAXY</h1>
+            <input type="text" id="u-name" placeholder="Kullanıcı Adı" style="width:100%; padding:14px; background:#0b0d14; border:1px solid #333; color:#fff; border-radius:12px; margin-bottom:10px;">
+            <input type="password" id="u-pass" placeholder="Parola" style="width:100%; padding:14px; background:#0b0d14; border:1px solid #333; color:#fff; border-radius:12px; margin-bottom:15px;">
+            <button onclick="login()" style="width:100%; padding:15px; background:var(--primary); border:none; color:#fff; border-radius:12px; font-weight:800; cursor:pointer;">SİSTEME BAĞLAN</button>
         </div>
     </div>
 
     <div class="sidebar">
-        <div class="logo">AHTECH PRO</div>
-        <div class="nav-item active" onclick="tab('p-market', this)"><span>🛒</span> Mağaza</div>
-        <div class="nav-item" onclick="tab('p-bakiye', this)"><span>💰</span> Bakiye Yükle</div>
-        <div class="nav-item" onclick="tab('p-ceo', this)"><span>💎</span> CEO Paneli</div>
-        <div class="nav-item" style="margin-top: auto; color: var(--danger);" onclick="location.reload()"><span>🚪</span> Çıkış Yap</div>
-    </div>
-
-    <div class="header">
-        <div style="font-weight: 600;">Oturum: <span id="user-tag" style="color: var(--primary);">Misafir</span></div>
+        <div style="font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 30px;">AHTECH</div>
+        <div class="nav-item active" onclick="tab('p-market', this)">🛒 Market</div>
+        <div class="nav-item" onclick="tab('p-bakiye', this)">💰 Bakiye Yükle</div>
+        <div class="nav-item" onclick="tab('p-ceo', this)">💎 CEO Panel</div>
+        <div class="nav-item" onclick="tab('p-hakkinda', this)">ℹ️ Bilgi</div>
+        <div class="nav-item" style="margin-top:auto; color:#e74c3c;" onclick="location.reload()">🚪 Çıkış</div>
     </div>
 
     <div class="main">
         <div id="p-market" class="section show">
-            <h2 style="margin-bottom: 25px;">Ürünler</h2>
+            <input type="text" placeholder="Ürün ara..." style="width:100%; padding:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:25px; color:#fff;">
             <div class="grid">
                 <div class="p-card">
+                    <span class="badge">POPÜLER</span>
                     <h3>🚀 Gamer Plus v2</h3>
-                    <div style="color: var(--success); font-size: 24px; font-weight: 800; margin: 15px 0;">50.00 TL</div>
-                    <button class="btn btn-blue" onclick="tab('p-bakiye')">SATIN AL</button>
+                    <p style="color: var(--success); font-weight: 800; font-size: 22px; margin: 10px 0;">50 TL</p>
+                    <button onclick="tab('p-bakiye')" style="width:100%; padding:10px; border-radius:8px; border:none; background:var(--primary); color:#fff; font-weight:700; cursor:pointer;">SATIN AL</button>
                 </div>
                 <div class="p-card">
                     <h3>🤖 Roblox Script</h3>
-                    <div style="color: var(--success); font-size: 24px; font-weight: 800; margin: 15px 0;">75.00 TL</div>
-                    <button class="btn btn-blue" onclick="tab('p-bakiye')">SATIN AL</button>
+                    <p style="color: var(--success); font-weight: 800; font-size: 22px; margin: 10px 0;">75 TL</p>
+                    <button onclick="tab('p-bakiye')" style="width:100%; padding:10px; border-radius:8px; border:none; background:var(--primary); color:#fff; font-weight:700; cursor:pointer;">SATIN AL</button>
                 </div>
-            </div>
-        </div>
-
-        <div id="p-bakiye" class="section">
-            <h2 style="margin-bottom: 25px;">Ödeme Bildirimi</h2>
-            <div style="background: var(--card); padding: 30px; border-radius: 20px; max-width: 500px;">
-                <p style="color: #8b91a7; margin-bottom: 15px;">Aşağıdaki IBAN'a ödeme yaptıysanız "ÖDEME BİLDİR" butonuna basın.</p>
-                <div style="background: #0b0d14; padding: 15px; border-radius: 12px; border: 1px dashed var(--primary); margin-bottom: 20px;">
-                    <p style="font-size: 11px; color: var(--primary);">ZİRAAT - EMRAH AZBOY</p>
-                    <p style="font-size: 16px; font-family: monospace;">TR79 0086 9000 0000 0371 0260 31</p>
-                </div>
-                <button class="btn" style="background: var(--success); color: #000;" onclick="bildirimGonder()">ÖDEME BİLDİR (CEO'YA LOG GİTSİN)</button>
             </div>
         </div>
 
         <div id="p-ceo" class="section">
-            <h2 style="margin-bottom: 20px; color: #ff00ff;">Canlı Satış Logları</h2>
-            <div id="log-container" style="background: var(--card); padding: 20px; border-radius: 15px; min-height: 200px;">
-                <p style="color: #555;">Loglar bekleniyor...</p>
+            <h2 style="color: #ff00ff; margin-bottom: 20px;">Dükkan İstatistikleri</h2>
+            <div id="ceo-logs" style="background:var(--card); padding:20px; border-radius:15px; border:1px solid #ff00ff; min-height: 300px; font-size:12px;">
+                Cihazlar taranıyor...
+            </div>
+        </div>
+
+        <div id="p-bakiye" class="section">
+            <h2>Hızlı Bakiye Yükle</h2>
+            <div style="background:var(--card); padding:30px; border-radius:20px; margin-top:20px; border:1px solid var(--border);">
+                <p>IBAN: TR79 0086 9000 0000 0371 0260 31</p>
+                <p>Alıcı: EMRAH AZBOY</p>
+                <button onclick="sendBildirim()" style="margin-top:20px; width:100%; padding:15px; background:var(--success); color:#000; font-weight:800; border:none; border-radius:12px; cursor:pointer;">ÖDEMEYİ YAPTIM (BİLDİR)</button>
             </div>
         </div>
     </div>
 
+    <div class="chat-panel">
+        <div class="chat-header">CANLI DESTEK</div>
+        <div id="chat-msgs" class="chat-msgs">
+            <div class="msg-box"><b>Sistem:</b> AHTECH dükkanına hoş geldin patron! Chat aktif.</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="m-text" placeholder="Mesaj..." style="flex:1; padding:10px; background:#0b0d14; border:1px solid #333; color:#fff; border-radius:8px; font-size:12px;">
+            <button onclick="sendMsg()" style="background:var(--primary); border:none; color:#fff; padding:10px; border-radius:8px; cursor:pointer;">GÖNDER</button>
+        </div>
+    </div>
+
     <script>
-        // GİRİŞ KONTROLÜ
-        function girisYap() {
-            const u = document.getElementById('login-user').value.trim();
-            const p = document.getElementById('login-pass').value.trim();
-            const err = document.getElementById('auth-err');
+        let user = "Misafir";
+        const kaching = new Audio('https://www.soundjay.com/misc/sounds/cash-register-purchase-1.mp3');
 
-            if(!u || !p) {
-                err.style.display = 'block';
-                return;
-            }
-
-            if(u.toLowerCase() === 'ahmet' && p === '05303004513') {
-                alert("Hoş geldin CEO Ahmet!");
-            }
-
-            localStorage.setItem('ahtech_user', u);
-            document.getElementById('user-tag').innerText = u.toUpperCase();
-            document.getElementById('auth-panel').style.display = 'none';
-        }
-
-        // SAYFA GEÇİŞLERİ
         function tab(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('show'));
             document.getElementById(id).classList.add('show');
@@ -141,30 +127,35 @@
             }
         }
 
-        // OTOMATİK LOG SİSTEMİ
-        function bildirimGonder() {
-            const user = localStorage.getItem('ahtech_user') || 'Bilinmeyen';
-            const logBox = document.getElementById('log-container');
+        function login() {
+            const u = document.getElementById('u-name').value;
+            const p = document.getElementById('u-pass').value;
+            if(!u || !p) { alert("Boş geçme patron!"); return; }
+            user = u;
+            document.getElementById('auth-screen').style.display = 'none';
+            addLog(`SİSTEM: ${user} giriş yaptı.`);
+        }
+
+        function sendMsg() {
+            const t = document.getElementById('m-text');
+            if(!t.value) return;
+            const c = document.getElementById('chat-msgs');
+            c.innerHTML += `<div class="msg-box"><b>${user}:</b> ${t.value}</div>`;
+            c.scrollTop = c.scrollHeight;
+            t.value = "";
+        }
+
+        function sendBildirim() {
+            kaching.play();
+            alert("Patron! Ödeme bildirimi mermi gibi CEO paneline düştü.");
+            addLog(`KRİTİK: ${user} ÖDEME BİLDİRDİ! (Ziraat/IBAN)`);
+        }
+
+        function addLog(txt) {
+            const log = document.getElementById('ceo-logs');
             const time = new Date().toLocaleTimeString();
-            
-            let logs = JSON.parse(localStorage.getItem('ahtech_v50_logs') || '[]');
-            logs.push(`[${time}] ${user} ÖDEME BİLDİRDİ!`);
-            localStorage.setItem('ahtech_v50_logs', JSON.stringify(logs));
-            
-            updateLogs();
-            alert("Patron! Log sisteme mermi gibi düştü.");
+            log.innerHTML = `<div>[${time}] ${txt}</div>` + log.innerHTML;
         }
-
-        function updateLogs() {
-            const logBox = document.getElementById('log-container');
-            let logs = JSON.parse(localStorage.getItem('ahtech_v50_logs') || '[]');
-            if(logs.length > 0) {
-                logBox.innerHTML = logs.reverse().map(l => `<div class="log-item">${l}</div>`).join('');
-            }
-        }
-
-        // Sayfa açıldığında logları yükle
-        window.onload = updateLogs;
     </script>
 </body>
 </html>
