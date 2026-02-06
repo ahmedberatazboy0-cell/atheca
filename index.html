@@ -2,167 +2,105 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH Marketplace | Professional v48</title>
+    <title>AHTECH Pro | Log & Access v49</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        
-        :root {
-            --primary: #3498db;
-            --success: #2ecc71;
-            --bg: #0b0d14;
-            --card-bg: #151824;
-            --border: #232736;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: #fff; overflow: hidden; }
+        body { background: #0b0d14; color: #fff; overflow: hidden; }
 
-        /* YAN MENÜ */
-        .sidebar { width: 260px; height: 100vh; background: var(--card-bg); border-right: 1px solid var(--border); position: fixed; left: 0; top: 0; padding: 25px; display: flex; flex-direction: column; z-index: 1000; }
-        .logo { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 40px; letter-spacing: -1px; }
-        .nav-item { padding: 12px 15px; border-radius: 10px; color: #8b91a7; text-decoration: none; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; transition: 0.3s; font-weight: 600; cursor: pointer; }
-        .nav-item:hover, .nav-item.active { background: rgba(52, 152, 219, 0.1); color: var(--primary); }
-
-        /* ANA İÇERİK */
-        .header { height: 70px; background: rgba(11, 13, 20, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: fixed; right: 0; left: 260px; top: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 999; }
-        .main-content { margin-left: 260px; padding: 100px 40px 40px; height: 100vh; overflow-y: auto; }
-        .section { display: none; }
-        .section.show { display: block; }
-
-        /* KARTLAR */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        .p-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 25px; transition: 0.3s; }
-        .p-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .buy-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; }
-
-        /* GİRİŞ EKRANI */
-        .auth-overlay { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 2000; }
-        .auth-box { background: var(--card-bg); width: 400px; padding: 40px; border-radius: 24px; border: 1px solid var(--border); text-align: center; }
+        /* AUTH SCREEN */
+        .auth-overlay { position: fixed; inset: 0; background: #0b0d14; display: flex; align-items: center; justify-content: center; z-index: 2000; }
+        .auth-box { background: #151824; width: 400px; padding: 40px; border-radius: 20px; border: 1px solid #232736; text-align: center; }
         input { width: 100%; padding: 14px; background: #0b0d14; border: 1px solid #2d3142; color: #fff; border-radius: 12px; margin-bottom: 15px; outline: none; }
-        .social-btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .btn-main { width: 100%; padding: 14px; background: #3498db; color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
+
+        /* DASHBOARD */
+        .sidebar { width: 260px; height: 100vh; background: #151824; border-right: 1px solid #232736; position: fixed; padding: 25px; }
+        .main { margin-left: 260px; padding: 40px; }
+        .section { display: none; }
+        .active { display: block !important; }
+        .nav-link { padding: 12px; color: #8b91a7; cursor: pointer; display: block; margin-bottom: 10px; border-radius: 8px; }
+        .nav-link.on { background: rgba(52, 152, 219, 0.1); color: #3498db; }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen" class="auth-overlay">
+    <div id="auth-panel" class="auth-overlay">
         <div class="auth-box">
-            <h2 style="margin-bottom: 10px;">AHTECH GİRİŞ</h2>
-            <p style="color: #8b91a7; margin-bottom: 25px; font-size: 14px;">Lütfen bilgilerinizi girin patron!</p>
-            
-            <button class="social-btn" style="background: #fff; color: #000;" onclick="socialLogin('Google')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="16"> Google
-            </button>
-            <button class="social-btn" style="background: #5865F2; color: #fff;" onclick="socialLogin('Discord')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Discord_Color_Logo.svg" width="16"> Discord
-            </button>
-
-            <div style="margin: 15px 0; font-size: 12px; color: #333;">VEYA</div>
-
-            <input type="text" id="user-in" placeholder="Kullanıcı Adı">
-            <input type="password" id="pass-in" placeholder="Şifre">
-            <button class="buy-btn" onclick="manualLogin()">GİRİŞ YAP</button>
+            <h2 style="margin-bottom: 20px; color: #3498db;">AHTECH GİRİŞ</h2>
+            <input type="text" id="user" placeholder="Kullanıcı Adı">
+            <input type="password" id="pass" placeholder="Şifre">
+            <button class="btn-main" onclick="girisMermisi()">BAĞLAN</button>
+            <p id="err" style="color: #e74c3c; font-size: 12px; margin-top: 10px; display: none;">Bilgileri eksiksiz doldur patron!</p>
         </div>
     </div>
 
     <div class="sidebar">
-        <div class="logo">AHTECH PRO</div>
-        <div class="nav-item active" onclick="nav('p-market', this)"><span>🛒</span> Mağaza</div>
-        <div class="nav-item" onclick="nav('p-bakiye', this)"><span>💰</span> Bakiye Yükle</div>
-        <div class="nav-item" onclick="nav('p-ceo', this)"><span>💎</span> CEO Panel</div>
-        <div class="nav-item" style="margin-top: auto; color: #e74c3c;" onclick="location.reload()"><span>🚪</span> Çıkış</div>
+        <h2 style="color:#3498db; margin-bottom:30px;">AHTECH</h2>
+        <div class="nav-link on" onclick="tab('p-market', this)">🛒 Mağaza</div>
+        <div class="nav-link" onclick="tab('p-pay', this)">💰 Ödeme Bildir</div>
+        <div class="nav-link" onclick="tab('p-ceo', this)">💎 CEO Log</div>
     </div>
 
-    <div class="header">
-        <div style="color: #8b91a7; font-weight: 600;">Oturum: <span id="display-name" style="color: #fff;">-</span></div>
-        <div style="background: var(--success); color:#000; padding: 5px 15px; border-radius: 8px; font-weight: 800; font-size: 12px;">AKTİF</div>
-    </div>
-
-    <div class="main-content">
-        
-        <div id="p-market" class="section show">
-            <h2 style="margin-bottom: 25px;">Ürünler</h2>
-            <div class="grid">
-                <div class="p-card">
-                    <h3>🚀 Gamer Plus v2</h3>
-                    <div style="color: var(--success); font-size: 24px; font-weight: 800; margin: 15px 0;">50.00 TL</div>
-                    <button class="buy-btn" onclick="nav('p-bakiye')">SATIN AL</button>
-                </div>
-                <div class="p-card">
-                    <h3>🤖 Roblox Script</h3>
-                    <div style="color: var(--success); font-size: 24px; font-weight: 800; margin: 15px 0;">75.00 TL</div>
-                    <button class="buy-btn" onclick="nav('p-bakiye')">SATIN AL</button>
-                </div>
+    <div class="main">
+        <div id="p-market" class="section active">
+            <h2>Aktif Ürünler</h2>
+            <div style="background:#151824; padding:20px; border-radius:15px; margin-top:20px; border:1px solid #232736;">
+                <h3>🚀 Gamer Plus v2</h3>
+                <p style="color:#2ecc71; font-size:22px; font-weight:800;">50 TL</p>
+                <button class="btn-main" style="width:120px; padding:8px; margin-top:10px;" onclick="tab('p-pay')">AL</button>
             </div>
         </div>
 
-        <div id="p-bakiye" class="section">
-            <h2 style="margin-bottom: 25px;">Ödeme Bildirimi</h2>
-            <div style="background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--border); max-width: 500px;">
-                <p style="color: #8b91a7; margin-bottom: 15px;">Aşağıdaki IBAN'a ödeme yaptıktan sonra butona basarak CEO'ya WhatsApp üzerinden dekont bildirin.</p>
-                <div style="background: #0b0d14; padding: 15px; border-radius: 12px; border: 1px dashed var(--primary); margin-bottom: 20px;">
-                    <p style="font-size: 11px; color: var(--primary);">ZİRAAT - EMRAH AZBOY</p>
-                    <p style="font-size: 16px; font-family: monospace;">TR79 0086 9000 0000 0371 0260 31</p>
-                </div>
-                <button class="buy-btn" style="background: #25D366; color: #fff;" onclick="sendWhatsApp()">ÖDEMEYİ YAPTIM (WHATSAPP BİLDİR)</button>
+        <div id="p-pay" class="section">
+            <h2>Ödeme Bildirimi</h2>
+            <div style="background:#151824; padding:30px; border-radius:20px; margin-top:20px;">
+                <p>Ziraat: TR79 0086 9000 0000 0371 0260 31</p>
+                <p>Alıcı: Emrah Azboy</p>
+                <hr style="margin:20px 0; border:0; border-top:1px solid #232736;">
+                <button class="btn-main" style="background:#2ecc71; color:#000;" onclick="otoLog()">ÖDEMEYİ YAPTIM (LOG DÜŞÜR)</button>
             </div>
         </div>
 
         <div id="p-ceo" class="section">
-            <h2 style="margin-bottom: 25px; color: #ff00ff;">CEO Dashboard</h2>
-            <div class="grid">
-                <div class="p-card" style="border-bottom: 4px solid #ff00ff; text-align: center;">
-                    <h1 id="ciro-val">0.00 TL</h1><p>TOPLAM CİRO</p>
-                </div>
+            <h2 style="color:#ff00ff;">Müşteri Logları</h2>
+            <div id="log-list" style="margin-top:20px; background:#0b0d14; padding:15px; border-radius:10px; font-size:13px; color:#8b91a7;">
+                Loglar bekleniyor...
             </div>
         </div>
-
     </div>
 
     <script>
-        let currentUser = "";
-
-        // NAVİGASYON TAMİRİ
-        function nav(id, el) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('show'));
-            document.getElementById(id).classList.add('show');
+        function tab(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
             if(el) {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                el.classList.add('active');
+                document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('on'));
+                el.classList.add('on');
             }
         }
 
-        // WHATSAPP BİLDİRİM SİSTEMİ
-        function sendWhatsApp() {
-            const tel = "905303004513"; // Senin numaran
-            const msg = encodeURIComponent("Selam Ahmet patron! AHTECH dükkanından ödememi yaptım, dekontu iletiyorum. Lütfen bakiyemi yükle!");
-            window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
-        }
-
-        // GİRİŞ KONTROLÜ (2FA GEREKSİNİMİ)
-        function manualLogin() {
-            const u = document.getElementById('user-in').value.trim();
-            const p = document.getElementById('pass-in').value.trim();
-
+        function girisMermisi() {
+            const u = document.getElementById('user').value.trim();
+            const p = document.getElementById('pass').value.trim();
             if(!u || !p) {
-                alert("Hata: Kullanıcı adı ve şifre boş bırakılamaz!");
+                document.getElementById('err').style.display = 'block';
                 return;
             }
-
-            currentUser = u;
-            document.getElementById('display-name').innerText = u.toUpperCase();
-            document.getElementById('auth-screen').style.display = 'none';
+            localStorage.setItem('aktif_user', u);
+            document.getElementById('auth-panel').style.display = 'none';
         }
 
-        function socialLogin(plat) {
-            const u = prompt(plat + " kullanıcı adınızı girin:");
-            if(u) {
-                currentUser = u;
-                document.getElementById('display-name').innerText = u.toUpperCase();
-                document.getElementById('auth-screen').style.display = 'none';
-            } else {
-                alert("Giriş iptal edildi.");
-            }
+        function otoLog() {
+            const user = localStorage.getItem('aktif_user') || "Bilinmeyen";
+            let logs = JSON.parse(localStorage.getItem('ahtech_logs') || '[]');
+            logs.push(`${new Date().toLocaleTimeString()} - ${user} ÖDEME BİLDİRDİ!`);
+            localStorage.setItem('ahtech_logs', JSON.stringify(logs));
+            
+            // CEO PANELİNE YAZDIR
+            document.getElementById('log-list').innerHTML = logs.map(l => `<div>${l}</div>`).join('');
+            
+            alert("Patron! Log sisteme mermi gibi düştü.");
         }
     </script>
 </body>
