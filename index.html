@@ -3,164 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İtemSatış | AHTECH Pazaryeri</title>
+    <title>İtemSatış Pro | AHTECH Marketplace</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #0b0d14; color: #fff; min-height: 100vh; overflow-x: hidden; }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0b0d14; color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-
-        .container { width: 100%; max-width: 1000px; background: #151824; border-radius: 12px; padding: 30px; border: 1px solid #232736; box-shadow: 0 15px 50px rgba(0,0,0,0.6); }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #3498db; padding-bottom: 15px; margin-bottom: 25px; }
-        .logo { font-size: 24px; font-weight: 800; color: #3498db; text-transform: uppercase; letter-spacing: -1px; }
-
-        /* İLAN KARTLARI */
-        .ilan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 30px; }
-        .ilan-kart { background: #1e2230; border-radius: 10px; border: 1px solid #2d3142; padding: 20px; cursor: pointer; transition: 0.3s; position: relative; }
-        .ilan-kart:hover { border-color: #3498db; transform: translateY(-5px); }
-        .ilan-kart h3 { font-size: 16px; margin-bottom: 10px; }
-        .ilan-kart .fiyat { color: #2ecc71; font-weight: 700; font-size: 20px; }
-        .badge { position: absolute; top: 10px; right: 10px; background: #3498db; font-size: 10px; padding: 3px 8px; border-radius: 4px; }
-
-        /* CHAT SİSTEMİ */
-        .chat-area { background: #0b0d14; border-radius: 10px; border: 1px solid #2d3142; height: 500px; display: flex; flex-direction: column; overflow: hidden; }
-        .chat-header { background: #1e2230; padding: 15px; border-bottom: 1px solid #3498db; display: flex; justify-content: space-between; align-items: center; }
-        .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-        .msg { padding: 10px 15px; border-radius: 8px; font-size: 14px; max-width: 80%; line-height: 1.5; }
-        .m-alici { background: #2d3142; align-self: flex-start; }
-        .m-satici { background: #3498db; align-self: flex-end; }
+        /* NAVBAR */
+        .navbar { background: #151824; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #232736; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 22px; font-weight: 800; color: #3498db; cursor: pointer; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .balance-tag { background: #2ecc71; color: #000; padding: 5px 12px; border-radius: 20px; font-weight: 700; font-size: 14px; }
         
-        .chat-input { padding: 15px; background: #1e2230; display: flex; gap: 10px; border-top: 1px solid #2d3142; }
-        input { flex: 1; background: #0b0d14; border: 1px solid #2d3142; color: #fff; padding: 12px; border-radius: 6px; outline: none; font-family: 'Inter'; }
-        .btn { background: #3498db; color: #fff; border: none; padding: 10px 25px; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        /* GENEL PANEL YAPI */
+        .main-container { padding: 30px 5%; display: none; }
+        .active { display: block; }
+        
+        /* GİRİŞ & KAYIT */
+        .auth-card { background: #151824; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; margin: 100px auto; border: 1px solid #232736; }
+        .auth-card h2 { text-align: center; margin-bottom: 25px; color: #3498db; }
+        input { width: 100%; padding: 12px; background: #0b0d14; border: 1px solid #2d3142; color: #fff; border-radius: 6px; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #3498db; }
+        .btn { width: 100%; padding: 12px; background: #3498db; color: #fff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
         .btn:hover { background: #2980b9; }
 
-        /* CEO PANEL */
-        .ceo-paneli { border: 2px solid #ff00ff !important; box-shadow: 0 0 30px rgba(255, 0, 255, 0.2) !important; }
-        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
-        .stat-box { background: #1e2230; padding: 20px; border-radius: 10px; text-align: center; border-bottom: 4px solid #ff00ff; }
+        /* İLANLAR */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .ilan-kart { background: #151824; border-radius: 10px; border: 1px solid #232736; padding: 20px; transition: 0.3s; cursor: pointer; position: relative; }
+        .ilan-kart:hover { border-color: #3498db; transform: translateY(-5px); }
+        .price { color: #2ecc71; font-size: 20px; font-weight: 700; margin-top: 10px; display: block; }
 
-        #panel-market, #panel-sohbet, #panel-ceo { display: none; }
+        /* SOHBET / DESTEK SİSTEMİ */
+        .chat-box { background: #151824; height: 500px; border-radius: 10px; display: flex; flex-direction: column; border: 1px solid #232736; }
+        .chat-msgs { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .balon { padding: 10px 15px; border-radius: 8px; font-size: 14px; max-width: 80%; }
+        .b-user { background: #2d3142; align-self: flex-start; }
+        .b-admin { background: #3498db; align-self: flex-end; }
+
+        /* CEO ÖZEL */
+        .ceo-stat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-item { background: #151824; padding: 20px; border-radius: 10px; text-align: center; border-bottom: 4px solid #ff00ff; }
     </style>
 </head>
 <body>
 
-    <div id="panel-giris" class="container" style="max-width:400px;">
-        <div class="logo" style="text-align:center; margin-bottom:20px;">AHTECH <span style="color:#fff;">MARKET</span></div>
-        <input type="text" id="k-ad" placeholder="Kullanıcı Adı">
-        <input type="password" id="k-tel" placeholder="Şifre / CEO Telefon">
-        <button onclick="girisYap()" class="btn" style="width:100%; margin-top:10px;">GİRİŞ YAP</button>
-    </div>
+    <nav class="navbar">
+        <div class="logo" onclick="switchTab('panel-market')">AHTECH MARKET</div>
+        <div class="nav-links" id="nav-user" style="display:none;">
+            <span class="balance-tag" id="user-bal">0.00 TL</span>
+            <span id="user-name">Kullanıcı</span>
+            <button onclick="switchTab('panel-ilan-ekle')" style="background:none; border:1px solid #3498db; color:#3498db; padding:5px 10px; border-radius:5px; cursor:pointer;">İlan Ekle</button>
+            <button onclick="location.reload()" style="background:#e74c3c; border:none; color:#fff; padding:5px 10px; border-radius:5px; cursor:pointer;">Çıkış</button>
+        </div>
+    </nav>
 
-    <div id="panel-market" class="container">
-        <div class="header"><div class="logo">AKTİF İLANLAR</div></div>
-        <div class="ilan-grid">
-            <div class="ilan-kart" onclick="islemBaslat('Gamer Plus v2', 50)"><h3>🚀 Gamer Plus v2</h3><span class="badge">HIZLI</span><div class="fiyat">50.00 TL</div></div>
-            <div class="ilan-kart" onclick="islemBaslat('Fiber İnternet', 399)"><h3>🌐 Fiber İnternet</h3><span class="badge">YÜKSEK</span><div class="fiyat">399.00 TL</div></div>
-            <div class="ilan-kart" onclick="islemBaslat('Roblox Script', 75)"><h3>🤖 Roblox Script</h3><span class="badge">GÜNCEL</span><div class="fiyat">75.00 TL</div></div>
-            <div class="ilan-kart" onclick="islemBaslat('FPS & Soğutma', 40)"><h3>❄️ FPS Ayarı</h3><span class="badge">EFSANE</span><div class="fiyat">40.00 TL</div></div>
-            <div class="ilan-kart" onclick="islemBaslat('Logo Tasarım', 100)"><h3>🎨 Özel Logo</h3><span class="badge">PRO</span><div class="fiyat">100.00 TL</div></div>
+    <div id="panel-auth" class="main-container active">
+        <div class="auth-card">
+            <h2 id="auth-title">Kayıt Ol / Giriş Yap</h2>
+            <input type="text" id="auth-name" placeholder="Kullanıcı Adı">
+            <input type="password" id="auth-pass" placeholder="Şifre / CEO Telefon">
+            <button onclick="handleAuth()" class="btn">Sisteme Bağlan</button>
+            <p style="font-size:12px; color:#888; margin-top:15px; text-align:center;">CEO Girişi: ahmet / 05303004513</p>
         </div>
     </div>
 
-    <div id="panel-sohbet" class="container">
-        <div class="chat-area">
-            <div class="chat-header"><span>Destek Talebi #8421</span> <span style="color:#2ecc71;">● Çevrimiçi</span></div>
-            <div id="m-chat-box" class="chat-msgs"></div>
-            <div class="chat-input">
-                <input type="text" id="m-msg-input" placeholder="Mesajınızı buraya yazınız...">
-                <button onclick="mesajGonder('m')" class="btn">GÖNDER</button>
+    <div id="panel-market" class="main-container">
+        <h2 style="margin-bottom:20px; color:#3498db;">Aktif İlanlar</h2>
+        <div id="market-grid" class="grid">
+            </div>
+    </div>
+
+    <div id="panel-ilan-ekle" class="main-container">
+        <div class="auth-card" style="margin: 0 auto; max-width: 500px;">
+            <h2>Yeni İlan Oluştur</h2>
+            <input type="text" id="item-name" placeholder="İlan Başlığı">
+            <input type="number" id="item-price" placeholder="Fiyat (TL)">
+            <button onclick="addIlan()" class="btn">İlanı Yayınla</button>
+        </div>
+    </div>
+
+    <div id="panel-chat" class="main-container">
+        <div class="chat-box" style="max-width:800px; margin:0 auto;">
+            <div style="padding:15px; background:#1e2230; border-bottom:1px solid #3498db;">Destek Talebi #<span id="chat-id"></span></div>
+            <div id="chat-content" class="chat-msgs"></div>
+            <div style="padding:15px; display:flex; gap:10px; background:#1e2230;">
+                <input type="text" id="chat-input" placeholder="Mesajınızı yazın..." style="margin:0;">
+                <button onclick="sendMsg()" class="btn" style="width:100px;">Gönder</button>
             </div>
         </div>
-        <button onclick="location.reload()" style="background:none; border:none; color:#8b91a7; cursor:pointer; margin-top:15px;">← Alışverişe Dön</button>
     </div>
 
-    <div id="panel-ceo" class="container ceo-paneli">
-        <div class="header" style="border-color:#ff00ff;"><div class="logo" style="color:#ff00ff;">CEO YÖNETİM MERKEZİ</div></div>
-        <div class="stats">
-            <div class="stat-box"><h2 id="live-ciro">2.450 TL</h2><p style="font-size:10px;">TOPLAM CİRO</p></div>
-            <div class="stat-box"><h2 id="live-musteri">42</h2><p style="font-size:10px;">MÜŞTERİLER</p></div>
-            <div class="stat-box"><h2>AKTİF</h2><p style="font-size:10px;">SİSTEM</p></div>
+    <div id="panel-ceo" class="main-container">
+        <h1 style="color:#ff00ff; text-align:center; margin-bottom:30px;">CEO YÖNETİM MERKEZİ</h1>
+        <div class="ceo-stat">
+            <div class="stat-item"><h2 id="ceo-ciro">0 TL</h2><p>TOPLAM CİRO</p></div>
+            <div class="stat-item"><h2 id="ceo-m">0</h2><p>MÜŞTERİLER</p></div>
+            <div class="stat-item"><h2>AKTİF</h2><p>DÜKKAN DURUMU</p></div>
         </div>
-        <div class="chat-area" style="border-color:#ff00ff; height:350px;">
-            <div id="ceo-chat-box" class="chat-msgs"></div>
-            <div class="chat-input">
-                <input type="text" id="ceo-msg-input" placeholder="Müşteriye cevap yaz...">
-                <button onclick="mesajGonder('ceo')" class="btn" style="background:#ff00ff;">CEVAPLA</button>
+        <div id="ceo-chat-monitor" class="chat-box" style="border-color:#ff00ff;">
+            <div style="padding:15px; background:#1e2230; color:#ff00ff;">TÜM SOHBETLERİ İZLE</div>
+            <div id="ceo-all-chats" class="chat-msgs"></div>
+            <div style="padding:15px; display:flex; gap:10px;">
+                <input type="text" id="ceo-reply" placeholder="Müşteriye cevap..." style="margin:0;">
+                <button onclick="ceoGonder()" class="btn" style="width:100px; background:#ff00ff;">Cevapla</button>
             </div>
         </div>
-        <button onclick="location.reload()" class="btn" style="width:100%; margin-top:15px; background:#333;">SİSTEMİ KAPAT</button>
     </div>
 
     <script>
-        let curr_user = "";
-        const STORAGE_KEY = 'ahtech_v30_db';
+        let currentUser = null;
+        const DB = 'AHTECH_MASTER_V31';
 
-        // SALİSELİK YENİLEME MOTORU
-        setInterval(() => { if(curr_user || isCEO()) sync(); }, 500);
+        // SALİSELİK SENKRONİZE
+        setInterval(() => { if(currentUser) sync(); }, 500);
 
-        function isCEO() { return document.getElementById('panel-ceo').style.display === 'block'; }
+        function switchTab(id) {
+            document.querySelectorAll('.main-container').forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
 
-        function girisYap() {
-            const ad = document.getElementById('k-ad').value.trim();
-            const tel = document.getElementById('k-tel').value.trim();
-
-            if (ad.toLowerCase() === "ahmet" && tel === "05303004513") {
-                alert("Yönetici girişi algılandı.");
-                document.getElementById('panel-giris').style.display = 'none';
-                document.getElementById('panel-ceo').style.display = 'block';
+        function handleAuth() {
+            const name = document.getElementById('auth-name').value.trim();
+            const pass = document.getElementById('auth-pass').value.trim();
+            
+            if(name.toLowerCase() === 'ahmet' && pass === '05303004513') {
+                alert("Hoş geldin patron! CEO Yetkileri aktif.");
+                currentUser = "CEO";
+                switchTab('panel-ceo');
+                document.getElementById('nav-user').style.display = 'flex';
+                document.getElementById('user-name').innerText = "CEO AHMET";
                 return;
             }
-            if (ad && tel) {
-                curr_user = ad;
-                document.getElementById('panel-giris').style.display = 'none';
-                document.getElementById('panel-market').style.display = 'block';
-                let m = parseInt(localStorage.getItem('v30_m') || 0); localStorage.setItem('v30_m', m + 1);
+
+            if(name && pass) {
+                currentUser = name;
+                document.getElementById('panel-auth').style.display = 'none';
+                document.getElementById('nav-user').style.display = 'flex';
+                document.getElementById('user-name').innerText = name.toUpperCase();
+                switchTab('panel-market');
+                initUser();
             }
         }
 
-        function islemBaslat(u, f) {
-            let c = parseInt(localStorage.getItem('v30_c') || 0); localStorage.setItem('v30_c', c + f);
-            document.getElementById('panel-market').style.display = 'none';
-            document.getElementById('panel-sohbet').style.display = 'block';
+        function initUser() {
+            let mCount = parseInt(localStorage.getItem('m_v31') || 0);
+            localStorage.setItem('m_v31', mCount + 1);
         }
 
-        function mesajGonder(kim) {
-            const inp = document.getElementById(kim === 'm' ? 'm-msg-input' : 'ceo-msg-input');
-            if (!inp.value) return;
+        function addIlan() {
+            const n = document.getElementById('item-name').value;
+            const p = document.getElementById('item-price').value;
+            if(!n || !p) return;
 
-            let db = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            db.push({
-                u: curr_user || "CEO_PANEL",
-                s: kim === 'm' ? curr_user : "CEO AHMET",
-                t: inp.value,
-                cl: kim === 'm' ? 'm-alici' : 'm-satici',
-                target: curr_user
-            });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+            let ilanlar = JSON.parse(localStorage.getItem('ilanlar_v31') || '[]');
+            ilanlar.push({ id: Date.now(), title: n, price: p, owner: currentUser });
+            localStorage.setItem('ilanlar_v31', JSON.stringify(ilanlar));
+            alert("İlan yayına alındı!");
+            switchTab('panel-market');
+        }
+
+        function openChat(id) {
+            localStorage.setItem('active_chat_id', id);
+            document.getElementById('chat-id').innerText = id;
+            switchTab('panel-chat');
+        }
+
+        function sendMsg() {
+            const inp = document.getElementById('chat-input');
+            if(!inp.value) return;
+            saveMsg(currentUser, inp.value, 'b-user');
             inp.value = "";
         }
 
-        function sync() {
-            let db = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            const mB = document.getElementById('m-chat-box');
-            const cB = document.getElementById('ceo-chat-box');
+        function ceoGonder() {
+            const inp = document.getElementById('ceo-reply');
+            if(!inp.value) return;
+            saveMsg("CEO AHMET", inp.value, 'b-admin');
+            inp.value = "";
+        }
 
-            if (mB && mB.offsetParent) {
-                mB.innerHTML = '<div class="msg m-alici"><b>Sistem:</b> Ödemeyi yaptıysanız dekont bekliyoruz. CEO Ahmet onaylayacaktır.</div>';
-                db.filter(m => m.u === curr_user || m.target === curr_user).forEach(msg => {
-                    mB.innerHTML += `<div class="msg ${msg.cl}"><b>${msg.s}:</b> ${msg.t}</div>`;
+        function saveMsg(sender, text, cls) {
+            let logs = JSON.parse(localStorage.getItem(DB) || '[]');
+            logs.push({
+                u: currentUser,
+                s: sender,
+                t: text,
+                c: cls,
+                time: Date.now()
+            });
+            localStorage.setItem(DB, JSON.stringify(logs));
+        }
+
+        function sync() {
+            // İLANLARI YÜKLE
+            let ilanlar = JSON.parse(localStorage.getItem('ilanlar_v31') || '[]');
+            const grid = document.getElementById('market-grid');
+            grid.innerHTML = "";
+            ilanlar.forEach(i => {
+                grid.innerHTML += `<div class="ilan-kart" onclick="openChat(${i.id})"><h3>${i.title}</h3><span class="price">${i.price} TL</span></div>`;
+            });
+
+            // MESAJLARI YÜKLE
+            let logs = JSON.parse(localStorage.getItem(DB) || '[]');
+            const cBox = document.getElementById('chat-content');
+            const ceoBox = document.getElementById('ceo-all-chats');
+
+            if(cBox && cBox.offsetParent) {
+                cBox.innerHTML = '<div class="balon b-user"><b>Sistem:</b> Satın alma talebi oluşturuldu. Dekont bekliyoruz.</div>';
+                logs.filter(l => l.u === currentUser || currentUser === "CEO").forEach(m => {
+                    cBox.innerHTML += `<div class="balon ${m.c}"><b>${m.s}:</b> ${m.t}</div>`;
                 });
-                mB.scrollTop = mB.scrollHeight;
+                cBox.scrollTop = cBox.scrollHeight;
             }
-            if (cB && cB.offsetParent) {
-                cB.innerHTML = "";
-                db.forEach(msg => {
-                    cB.innerHTML += `<div class="balon ${msg.cl}"><b>[${msg.u}] ${msg.s}:</b> ${msg.t}</div>`;
+
+            if(ceoBox && ceoBox.offsetParent) {
+                ceoBox.innerHTML = "";
+                logs.forEach(m => {
+                    ceoBox.innerHTML += `<div class="balon ${m.c}"><b>[${m.u}] ${m.s}:</b> ${m.t}</div>`;
                 });
-                cB.scrollTop = cB.scrollHeight;
-                document.getElementById('live-ciro').innerText = (localStorage.getItem('v30_c') || 0) + " TL";
-                document.getElementById('live-musteri').innerText = localStorage.getItem('v30_m') || 0;
+                ceoBox.scrollTop = ceoBox.scrollHeight;
+                document.getElementById('ceo-ciro').innerText = (localStorage.getItem('c_v31') || 0) + " TL";
+                document.getElementById('ceo-m').innerText = localStorage.getItem('m_v31') || 0;
             }
         }
     </script>
