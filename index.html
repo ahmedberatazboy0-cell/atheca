@@ -2,96 +2,76 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>AHTECH PRO | KESİNTİSİZ ERİŞİM</title>
+    <title>AHTECH Pro | Anında Ödeme Sistemi</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: #0b0d14; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        
-        .kart { background: #151824; padding: 40px; border-radius: 15px; border: 1px solid #232736; width: 380px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        h1 { color: #3498db; text-align: center; margin-bottom: 25px; font-size: 24px; }
-        input { width: 100%; padding: 14px; background: #0b0d14; border: 1px solid #2d3142; color: #fff; border-radius: 8px; margin-bottom: 15px; outline: none; }
-        .btn { width: 100%; padding: 15px; background: #3498db; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        
-        .panel { display: none; width: 100%; max-width: 900px; background: #151824; padding: 30px; border-radius: 15px; border: 1px solid #232736; }
+        body { background: #0b0d14; color: #fff; min-height: 100vh; }
+        .navbar { background: #151824; padding: 15px 5%; display: flex; justify-content: space-between; border-bottom: 2px solid #3498db; }
+        .container { padding: 30px 5%; display: none; }
         .active { display: block !important; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .ilan { background: #1e2230; padding: 20px; border-radius: 10px; border: 1px solid #333; text-align: center; cursor: pointer; }
-        .fiyat { color: #2ecc71; font-weight: bold; font-size: 20px; margin-top: 10px; }
-        
-        /* 3D SECURE MODAL */
-        #banka-onay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
-        .banka-kart { background: #fff; color: #000; padding: 30px; border-radius: 12px; width: 350px; text-align: center; border-top: 6px solid #c0392b; }
+        .odeme-kart { background: #151824; padding: 25px; border-radius: 12px; border: 1px solid #232736; max-width: 500px; margin: 0 auto; }
+        .iban-alan { background: #0b0d14; padding: 15px; border-radius: 8px; border: 1px dashed #3498db; margin: 15px 0; font-family: monospace; }
+        .btn { width: 100%; padding: 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        .btn-mavi { background: #3498db; color: #fff; }
+        .btn-yesil { background: #2ecc71; color: #000; }
+        input[type="file"] { background: #1e2230; padding: 10px; width: 100%; border-radius: 8px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="ekran-giris" class="kart">
-        <h1>AHTECH GİRİŞ</h1>
-        <input type="text" id="user" placeholder="Kullanıcı Adı">
-        <input type="password" id="pass" placeholder="Şifre / CEO Tel">
-        <button onclick="sistemeDal()" class="btn">BAĞLAN</button>
-    </div>
+    <nav class="navbar">
+        <div style="font-size: 22px; font-weight: 800; color: #3498db;">AHTECH MARKET</div>
+        <button onclick="location.reload()" style="background:#e74c3c; color:#fff; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Çıkış</button>
+    </nav>
 
-    <div id="ekran-market" class="panel">
-        <h1 style="text-align:left;">Aktif İlanlar</h1>
-        <div class="grid">
-            <div class="ilan" onclick="odemeAc()"><h3>🚀 Gamer Plus v2</h3><div class="fiyat">50.00 TL</div></div>
-            <div class="ilan" onclick="odemeAc()"><h3>🌐 Fiber İnternet</h3><div class="fiyat">399.00 TL</div></div>
-            <div class="ilan" onclick="odemeAc()"><h3>🤖 Roblox Script</h3><div class="fiyat">75.00 TL</div></div>
+    <div id="p-market" class="container active">
+        <h2>Popüler Ürünler</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:20px;">
+            <div style="background:#151824; padding:20px; border-radius:10px; border:1px solid #333; cursor:pointer;" onclick="sekme('p-odeme')">
+                <h3>🚀 Gamer Plus v2</h3>
+                <p style="color:#2ecc71; font-weight:bold; font-size:20px; margin-top:10px;">50.00 TL</p>
+                <button class="btn btn-mavi" style="padding:8px; font-size:12px;">SATIN AL</button>
+            </div>
         </div>
-        <button onclick="location.reload()" class="btn" style="margin-top:20px; background:#333;">ÇIKIŞ YAP</button>
     </div>
 
-    <div id="ekran-ceo" class="panel" style="border-color:#ff00ff;">
-        <h1 style="color:#ff00ff; text-align:left;">CEO YÖNETİM PANELİ</h1>
-        <div class="grid">
-            <div class="ilan" style="border-color:#ff00ff;"><h2>2.450 TL</h2><p>TOPLAM CİRO</p></div>
-            <div class="ilan" style="border-color:#ff00ff;"><h2>42</h2><p>MÜŞTERİ</p></div>
-        </div>
-        <button onclick="location.reload()" class="btn" style="margin-top:20px; background:#333;">PANELİ KAPAT</button>
-    </div>
+    <div id="p-odeme" class="container">
+        <div class="odeme-kart">
+            <h2 style="color:#3498db; text-align:center;">Anında Bakiye Yükle</h2>
+            <p style="font-size:13px; color:#888; margin-top:10px; text-align:center;">Parayı gönderin ve dekontu yükleyin, bakiyeniz 1 dakikada hesabınızda!</p>
+            
+            <div class="iban-alan">
+                <p style="font-size:11px; color:#3498db;">ZİRAAT BANKASI / IBAN</p>
+                <p style="font-size:16px;">TR79 0086 9000 0000 0371 0260 31</p>
+                <p style="font-size:12px; margin-top:5px; color:#fff;">ALICI: <b>EMRAH AZBOY</b></p>
+            </div>
 
-    <div id="banka-onay">
-        <div class="banka-kart">
-            <h2 style="color:#c0392b; margin-bottom:15px;">Verified by VISA</h2>
-            <p style="font-size:14px; margin-bottom:15px;">Telefonunuza gelen <b>6 haneli</b> kodu giriniz.</p>
-            <input type="text" id="sms-kod" placeholder="SMS Kodu" style="color:#000; border:1px solid #ccc; text-align:center; font-size:20px;">
-            <button onclick="paraCekildi()" class="btn" style="background:#c0392b;">ONAYLA VE ÇEK</button>
-            <p style="font-size:11px; margin-top:10px; color:#999;">Alıcı: EMRAH AZBOY</p>
+            <div class="iban-alan" style="border-color: #f1c40f;">
+                <p style="font-size:11px; color:#f1c40f;">PAPARA NUMARASI</p>
+                <p style="font-size:16px;">1234567890 (Buraya kendi numaranı yaz patron)</p>
+            </div>
+
+            <label style="font-size:12px; color:#888;">Ödeme Dekontunu Yükle (Ekran Görüntüsü):</label>
+            <input type="file" id="dekont-file" accept="image/*">
+            
+            <button onclick="bildir()" class="btn btn-yesil">ÖDEME BİLDİRİMİ YAP</button>
+            <button onclick="sekme('p-market')" class="btn" style="background:#333; color:#fff;">VAZGEÇ</button>
         </div>
     </div>
 
     <script>
-        function sistemeDal() {
-            const u = document.getElementById('user').value.trim();
-            const p = document.getElementById('pass').value.trim();
-
-            if (u.toLowerCase() === "ahmet" && p === "05303004513") {
-                alert("Hoş geldin CEO Ahmet! Sistem mermi gibi açılıyor.");
-                document.getElementById('ekran-giris').style.display = 'none';
-                document.getElementById('ekran-ceo').classList.add('active');
-                document.body.style.alignItems = 'flex-start';
-                document.body.style.paddingTop = '50px';
-            } else if (u !== "" && p !== "") {
-                document.getElementById('ekran-giris').style.display = 'none';
-                document.getElementById('ekran-market').classList.add('active');
-                document.body.style.alignItems = 'flex-start';
-                document.body.style.paddingTop = '50px';
-            } else {
-                alert("Boş bırakma patron!");
-            }
+        function sekme(id) {
+            document.querySelectorAll('.container').forEach(c => c.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
         }
 
-        function odemeAc() {
-            document.getElementById('banka-onay').style.display = 'flex';
-        }
-
-        function paraCekildi() {
-            const kod = document.getElementById('sms-kod').value;
-            if(kod.length < 4) { alert("Kod hatalı!"); return; }
-            alert("Onaylandı! Para Emrah Azboy hesabına aktarılıyor.");
-            document.getElementById('banka-onay').style.display = 'none';
+        function bildir() {
+            const file = document.getElementById('dekont-file').files[0];
+            if(!file) { alert("Lütfen dekont resmini seç patron!"); return; }
+            
+            alert("Ödeme bildirimi CEO Ahmet'e mermi gibi iletildi! Onaylanınca bakiyen yüklenecek.");
+            sekme('p-market');
         }
     </script>
 </body>
