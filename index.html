@@ -2,73 +2,134 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON | CEO Yönetim Merkezi</title>
+    <title>NETRON | Global Network & ISP Operations</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00ffcc; --bg: #0d0d0d; --card: #161616; --text: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-        .container { max-width: 1100px; margin: auto; }
-        .header { text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; }
-        .header h1 { color: var(--primary); letter-spacing: 4px; margin: 0; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .card { background: var(--card); border: 1px solid #222; border-radius: 12px; padding: 20px; box-shadow: 0 8px 16px rgba(0,255,204,0.1); }
-        .card h2 { color: var(--primary); font-size: 1.2em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
-        .info { display: flex; justify-content: space-between; margin: 12px 0; border-bottom: 1px dashed #222; padding-bottom: 5px; }
-        .status { padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; }
-        .online { background: #003300; color: #00ff00; border: 1px solid #00ff00; }
-        .btn { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-main { background: var(--primary); color: #000; }
-        .btn-main:hover { background: #00ccaa; }
-        .btn-danger { background: #660000; color: #ff4444; border: 1px solid #ff4444; }
-        .log-box { background: #000; color: #00ffcc; font-family: 'Courier New', monospace; padding: 10px; height: 120px; overflow-y: auto; border-radius: 6px; font-size: 0.85em; }
+        :root { --neon: #00ffcc; --dark: #050505; --card-bg: #121212; --danger: #ff0055; --success: #00ff66; }
+        body { background: var(--dark); color: #fff; font-family: 'Roboto Mono', monospace; margin: 0; overflow-x: hidden; }
+        .sidebar { width: 220px; height: 100vh; background: #0a0a0a; position: fixed; border-right: 1px solid #222; padding: 20px; }
+        .main-content { margin-left: 260px; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--neon); padding-bottom: 10px; margin-bottom: 20px; }
+        .header h1 { font-family: 'Orbitron', sans-serif; color: var(--neon); margin: 0; text-shadow: 0 0 10px var(--neon); }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: var(--card-bg); padding: 15px; border-radius: 10px; border: 1px solid #333; text-align: center; }
+        .stat-card h3 { font-size: 0.8em; color: #888; margin: 0; }
+        .stat-card p { font-size: 1.5em; font-weight: bold; margin: 5px 0; color: var(--neon); }
+        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .panel { background: var(--card-bg); border-radius: 12px; border: 1px solid #222; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .panel h2 { color: var(--neon); font-size: 1.1em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
+        .customer-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; font-size: 0.9em; }
+        .status-pill { padding: 3px 8px; border-radius: 10px; font-size: 0.75em; }
+        .online { background: rgba(0, 255, 102, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .btn { background: var(--neon); color: #000; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        .log-area { background: #000; color: var(--neon); font-size: 0.8em; height: 150px; overflow-y: scroll; padding: 10px; border: 1px solid #333; margin-top: 10px; }
+        canvas { max-height: 200px; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="sidebar">
+    <h2 style="color: var(--neon); font-family: 'Orbitron';">NETRON</h2>
+    <p style="font-size: 0.7em; color: #666;">v1.2 ENTERPRISE</p>
+    <div style="margin-top: 50px;">
+        <p>🟢 Dashboard</p>
+        <p>👤 Customers</p>
+        <p>📊 Analytics</p>
+        <p>⚙️ Network Config</p>
+        <p>📄 Legal Logs</p>
+    </div>
+</div>
+
+<div class="main-content">
     <div class="header">
-        <h1>NETRON NETWORK SYSTEMS</h1>
-        <p>Geleceğin İnternet Altyapısı - CEO Operasyon Paneli</p>
+        <h1>OPERATIONS CENTER</h1>
+        <div>
+            <span>SYSTEM STATUS: <strong style="color: var(--success);">OPTIMAL</strong></span>
+        </div>
     </div>
 
-    <div class="grid">
-        <div class="card">
-            <h2>Abone Teknik Bilgileri</h2>
-            <div class="info"><span>Müşteri No:</span> <strong>#20260001</strong></div>
-            <div class="info"><span>Abone:</span> <strong>Berat Kral</strong></div>
-            <div class="info"><span>Adres:</span> <strong>Akgedik A27 Daire 6</strong></div>
-            <div class="info"><span>Paket:</span> <strong>100 Mbps Ultra Gamer</strong></div>
-            <div class="info"><span>Durum:</span> <span class="status online">● SİSTEMDE AKTİF</span></div>
-            <button class="btn btn-main" onclick="logEkle('Hız profili 200 Mbps olarak güncellendi.')">Hız Profilini Yükselt</button>
-            <button class="btn btn-danger" onclick="logEkle('UYARI: Akgedik hattı erişime kapatıldı!')">Erişimi Kısıtla</button>
-        </div>
+    <div class="stats-grid">
+        <div class="stat-card"><h3>TOTAL ABONE</h3><p>1,248</p></div>
+        <div class="stat-card"><h3>ANLIK TRAFİK</h3><p>4.8 Gbps</p></div>
+        <div class="stat-card"><h3>AYLIK CİRO</h3><p>₺142,500</p></div>
+        <div class="stat-card"><h3>UPTIME</h3><p>%99.99</p></div>
+    </div>
 
-        <div class="card">
-            <h2>Finans & Faturalandırma</h2>
-            <div class="info"><span>Fatura Dönemi:</span> <strong>Şubat 2026</strong></div>
-            <div class="info"><span>Ödeme Durumu:</span> <strong style="color: #00ff00;">ÖDENDİ</strong></div>
-            <div class="info"><span>Kalan Borç:</span> <strong>0.00 TL</strong></div>
-            <div class="info"><span>Sistem Kaydı:</span> <strong>Uyumlu (5651)</strong></div>
-            <button class="btn btn-main" onclick="logEkle('E-Fatura müşteriye iletildi.')">Dijital Fatura Gönder</button>
-            <button class="btn btn-main" style="background:#444; color:white;" onclick="logEkle('Ödeme geçmişi raporu alındı.')">Ödeme Raporu Al</button>
-        </div>
-
-        <div class="card" style="grid-column: 1 / -1;">
-            <h2>Sistem Logları (Yasal Takip Merkezi)</h2>
-            <div class="log-box" id="logArea">
-                [21:50:04] Netron Core Server v1.0 Başlatıldı...<br>
-                [21:50:10] Akgedik A27 Daire 6: Bağlantı stabil, ping 5ms.<br>
-                [21:51:45] Sistem güvenliği kontrol edildi: Tehdit yok.<br>
+    <div class="dashboard-grid">
+        <div class="panel">
+            <h2>NETWORK TRAFFIC (LIVE)</h2>
+            <canvas id="trafficChart"></canvas>
+            
+            <h2 style="margin-top: 20px;">ABONE YÖNETİMİ</h2>
+            <div class="customer-row">
+                <span>Berat Kral</span>
+                <span>Akgedik A27 Daire 6</span>
+                <span class="status-pill online">AKTİF</span>
+                <span style="color: var(--neon);">100 Mbps</span>
             </div>
+            <div class="customer-row">
+                <span>Rıfat Depo</span>
+                <span>Manisa Merkez Sk. 12</span>
+                <span class="status-pill online">AKTİF</span>
+                <span style="color: var(--neon);">50 Mbps</span>
+            </div>
+            <button class="btn" onclick="addMusteri()">YENİ ABONE TANIMLA (AKGEDİK)</button>
+        </div>
+
+        <div class="panel">
+            <h2>GELİR/GİDER ANALİZİ</h2>
+            <div style="height: 150px;"><canvas id="revenueChart"></canvas></div>
+            
+            <h2 style="margin-top: 20px;">5651 YASAL LOGLAR</h2>
+            <div class="log-area" id="logBox">
+                [21:55:01] BGP Peer Connected: Turk Telekom<br>
+                [21:55:12] Akgedik Node-A27 Online.<br>
+                [21:56:45] Backup System: Active.<br>
+            </div>
+            <button class="btn" style="background: #333; color: #fff;" onclick="logTemizle()">LOGLARI MÜHÜRLE (E-İMZA)</button>
         </div>
     </div>
 </div>
 
 <script>
-    function logEkle(mesaj) {
-        const box = document.getElementById('logArea');
-        const simdi = new Date().toLocaleTimeString();
-        box.innerHTML = `[${simdi}] ${mesaj}<br>` + box.innerHTML;
-        alert("Netron Sistemi: İşlem başarıyla kaydedildi.");
+    // Grafik: Trafik
+    const ctx = document.getElementById('trafficChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['1s', '2s', '3s', '4s', '5s', '6s'],
+            datasets: [{
+                label: 'Download (Gbps)',
+                data: [3.2, 4.5, 3.8, 5.2, 4.8, 6.1],
+                borderColor: '#00ffcc',
+                tension: 0.4
+            }]
+        },
+        options: { responsive: true, scales: { y: { display: false } } }
+    });
+
+    // Grafik: Gelir
+    const ctx2 = document.getElementById('revenueChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Net Kar', 'Maliyet', 'Vergi'],
+            datasets: [{
+                data: [60, 25, 15],
+                backgroundColor: ['#00ffcc', '#333', '#ff0055']
+            }]
+        }
+    });
+
+    function logEkle(msg) {
+        const box = document.getElementById('logBox');
+        box.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>` + box.innerHTML;
+    }
+
+    function addMusteri() {
+        alert("Akgedik Bölgesi için yeni port açılıyor...");
+        logEkle("Yeni Abone Talebi Alındı: Akgedik A27 D7");
     }
 </script>
 
