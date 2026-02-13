@@ -3,172 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHTECH Pro | Professional Hub v62</title>
+    <title>Netron CEO Yönetim Paneli</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        :root { --p: #3498db; --s: #2ecc71; --bg: #0b0d14; --c: #151824; --b: #232736; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: #fff; overflow: hidden; display: flex; }
+        :root {
+            --netron-primary: #00ffcc; /* Parlak yeşil */
+            --netron-secondary: #0088cc; /* Mavi tonu */
+            --netron-bg-dark: #1a1a1a;
+            --netron-bg-medium: #2a2a2a;
+            --netron-text-light: #e0e0e0;
+            --netron-danger: #ff4444;
+            --netron-success: #00cc66;
+        }
+        body {
+            font-family: 'Share Tech Mono', monospace; /* Fütüristik font */
+            background-color: var(--netron-bg-dark);
+            color: var(--netron-text-light);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: var(--netron-bg-medium);
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.3); /* Neon gölge */
+            padding: 25px;
+            border: 1px solid var(--netron-primary);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--netron-primary);
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-family: 'Orbitron', sans-serif; /* Başlık fontu */
+            color: var(--netron-primary);
+            font-size: 3em;
+            text-shadow: 0 0 10px var(--netron-primary);
+            letter-spacing: 2px;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: var(--netron-bg-dark);
+            border: 1px solid var(--netron-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 136, 204, 0.2);
+        }
+        .card h2 {
+            color: var(--netron-primary);
+            border-bottom: 1px solid var(--netron-secondary);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .info-item span:first-child {
+            color: var(--netron-text-light);
+        }
+        .info-item span:last-child {
+            color: var(--netron-primary);
+            font-weight: bold;
+        }
+        .status-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite alternate;
+        }
+        .status-active { background-color: var(--netron-success); }
+        .status-inactive { background-color: var(--netron-danger); }
+        .status-pending { background-color: var(--netron-secondary); }
 
-        /* SIDEBAR & NAV */
-        .side { width: 260px; height: 100vh; background: var(--c); border-right: 1px solid var(--b); padding: 25px; display: flex; flex-direction: column; z-index: 1000; }
-        .logo { font-size: 24px; font-weight: 800; color: var(--p); margin-bottom: 40px; text-align: center; }
-        .n-item { padding: 12px 15px; border-radius: 10px; color: #8b91a7; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: 0.3s; font-weight: 600; }
-        .n-item.on { background: rgba(52, 152, 219, 0.1); color: var(--p); }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 204, 102, 0.7); }
+            100% { box-shadow: 0 0 0 10px rgba(0, 204, 102, 0); }
+        }
 
-        /* MAIN CONTENT */
-        .main { flex: 1; padding: 40px; height: 100vh; overflow-y: auto; position: relative; }
-        .sec { display: none; animation: slideIn 0.3s ease; }
-        .show { display: block !important; }
+        .controls button {
+            background-color: var(--netron-secondary);
+            color: var(--netron-text-light);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .controls button:hover {
+            background-color: var(--netron-primary);
+            color: var(--netron-bg-dark);
+        }
+        .controls button.danger {
+            background-color: var(--netron-danger);
+        }
+        .controls button.danger:hover {
+            background-color: #ff0000;
+        }
+        .log-area {
+            background-color: #0d0d0d;
+            border: 1px solid var(--netron-secondary);
+            border-radius: 5px;
+            padding: 10px;
+            height: 150px;
+            overflow-y: scroll;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        .log-area span.timestamp { color: var(--netron-primary); margin-right: 5px; }
+        .log-area span.message { color: var(--netron-text-light); }
 
-        /* PROFİL POPUP (RESİMDEKİ SİSTEM) */
-        .p-popup { position: absolute; top: 65px; right: 320px; background: #1c202e; width: 240px; border-radius: 15px; border: 1px solid var(--b); display: none; flex-direction: column; padding: 10px; z-index: 3000; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .p-link { padding: 10px 15px; font-size: 13px; color: #8b91a7; cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 10px; }
-        .p-link:hover { background: rgba(255,255,255,0.03); color: #fff; }
-
-        /* CHAT PANEL */
-        .chat-panel { width: 300px; height: 100vh; background: var(--c); border-left: 1px solid var(--b); display: flex; flex-direction: column; }
-        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
-        .msg { background: #0b0d14; padding: 10px; border-radius: 8px; border: 1px solid var(--b); }
-
-        /* TABLO SİSTEMİ */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--c); border-radius: 15px; overflow: hidden; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--b); font-size: 13px; }
-        th { background: rgba(255,255,255,0.02); color: var(--p); }
-
-        /* AUTH (RESİMDEKİ GİRİŞ) */
-        .auth { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: flex; align-items: center; justify-content: center; }
-        .auth-box { background: var(--c); padding: 40px; border-radius: 25px; border: 1px solid var(--b); width: 400px; text-align: center; }
-        input { width: 100%; padding: 14px; background: #0b0d14; border: 1px solid var(--b); color: #fff; border-radius: 12px; margin-bottom: 15px; outline: none; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        footer {
+            margin-top: 30px;
+            padding: 15px;
+            color: #888;
+            font-size: 0.8em;
+            border-top: 1px dashed var(--netron-secondary);
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>NETRON</h1>
+            <p>CEO Yönetim Paneli</p>
+        </header>
 
-    <div id="auth-wall" class="auth">
-        <div class="auth-box">
-            <h1 style="color:var(--p); margin-bottom:10px; font-size: 28px;">AHTECH GİRİŞ</h1>
-            <p style="color:#8b91a7; margin-bottom:25px; font-size:14px;">Market kontrol paneline mermi gibi bağlanın.</p>
-            <button onclick="login('Discord')" style="width:100%; padding:12px; background:#5865f2; color:#fff; border:none; border-radius:12px; font-weight:800; margin-bottom:10px; cursor:pointer;">Discord ile Bağlan</button>
-            <div style="margin: 15px 0; font-size:12px; color:#333;">veya</div>
-            <input type="text" id="u-name" placeholder="Kullanıcı Adı / Mail">
-            <input type="password" id="u-pass" placeholder="Parola">
-            <button onclick="login()" style="width:100%; padding:15px; background:var(--p); border:none; color:#fff; border-radius:12px; font-weight:800; cursor:pointer;">BAĞLAN</button>
-        </div>
-    </div>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Müşteri Detayları</h2>
+                <div class="info-item">
+                    <span>Müşteri Adı:</span> <span id="musteriAdi">Berat Kral</span>
+                </div>
+                <div class="info-item">
+                    <span>Adres:</span> <span id="musteriAdres">Akgedik A27 Daire 6</span>
+                </div>
+                <div class="info-item">
+                    <span>Paket:</span> <span id="musteriPaket">100 Mbps Gamer</span>
+                </div>
+                <div class="info-item">
+                    <span>IP Adresi:</span> <span id="musteriIP">95.170.1.6</span>
+                </div>
+                <div class="info-item">
+                    <span>Durum:</span> <span id="musteriDurum"><span class="status-light status-active" id="statusLight"></span>AKTİF</span>
+                </div>
+                <div class="controls" style="margin-top: 20px;">
+                    <button onclick="internetAc()">İnterneti Aç</button>
+                    <button onclick="internetKapat()" class="danger">İnterneti Kapat</button>
+                    <button onclick="hizDegistir()">Hız Değiştir</button>
+                </div>
+            </div>
 
-    <div class="side">
-        <div class="logo">AHTECH</div>
-        <div class="n-item on" onclick="tab('p-market', this)">🛒 Market</div>
-        <div class="n-item" onclick="tab('p-pay', this)">💰 Bakiye Yükle</div>
-        <div class="n-item" onclick="tab('p-ceo', this)">💎 CEO Panel</div>
-        <div class="n-item" style="margin-top:auto; color:#e74c3c;" onclick="location.reload()">🚪 Çıkış</div>
-    </div>
+            <div class="card">
+                <h2>Fatura Durumu</h2>
+                <div class="info-item">
+                    <span>Son Ödeme:</span> <span id="sonOdemeTarihi">14.03.2026</span>
+                </div>
+                <div class="info-item">
+                    <span>Kalan Borç:</span> <span id="kalanBorc">0.00 TL</span>
+                </div>
+                <div class="info-item">
+                    <span>Durum:</span> <span id="faturaDurum"><span class="status-light status-active"></span>ÖDENDİ</span>
+                </div>
+                <div class="controls" style="margin-top: 20px;">
+                    <button onclick="faturaYolla()">Fatura Yolla</button>
+                    <button onclick="odemeAl()">Ödeme Al</button>
+                </div>
+            </div>
 
-    <div class="main">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 id="t-name">Pazar Yeri</h2>
-            <div style="display:flex; gap:15px; align-items:center;">
-                <div style="background:var(--s); color:#000; padding:8px 15px; border-radius:10px; font-weight:800; font-size:13px;">7.20 ₺</div>
-                <div onclick="togglePop()" style="cursor:pointer; background:var(--c); padding:5px; border-radius:50%; border:1px solid var(--b);">
-                    <img src="https://avatarfiles.alphacoders.com/371/371985.png" width="30" style="border-radius:50%;">
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>Ağ Trafiği ve Sistem Logları</h2>
+                <div class="log-area" id="logArea">
+                    <span class="timestamp">[2026-02-14 10:30:00]</span> <span class="message">Sistem başlatıldı.</span><br>
+                    <span class="timestamp">[2026-02-14 10:30:05]</span> <span class="message">Müşteri 20260001 (Akgedik A27 D6) için bağlantı kontrolü yapıldı.</span><br>
+                    <span class="timestamp">[2026-02-14 10:30:10]</span> <span class="message">Hız profili 'Netron Gamer 100 Mbps' aktif edildi.</span><br>
                 </div>
             </div>
         </div>
-
-        <div id="p-pop" class="p-popup">
-            <div style="padding:10px; border-bottom:1px solid var(--b); text-align:center;"><b id="user-display">Ahmet</b></div>
-            <div class="p-link" onclick="tab('p-profile')">👤 Profilim</div>
-            <div class="p-link" onclick="tab('p-orders')">📦 Siparişlerim</div>
-            <div class="p-link" onclick="tab('p-sales')">💰 Sattığım İlanlar</div>
-            <div class="p-link" style="color:var(--p);" onclick="tab('p-pay')">💳 Bakiye Yükle</div>
-            <div class="p-link" style="color:#e74c3c;" onclick="location.reload()">🚪 Çıkış</div>
-        </div>
-
-        <div id="p-market" class="sec show">
-            <div class="card" style="background:var(--c); padding:20px; border-radius:15px; border:1px solid var(--b);">
-                <h3>🚀 Gamer Plus v2</h3>
-                <p style="color:var(--s); font-weight:800; font-size:22px; margin:10px 0;">50 TL</p>
-                <button onclick="tab('p-pay')" style="width:100%; padding:10px; border-radius:8px; border:none; background:var(--p); color:#fff; font-weight:700; cursor:pointer;">SATIN AL</button>
-            </div>
-        </div>
-
-        <div id="p-orders" class="sec">
-            <h3>📦 Siparişlerim (Satın Alınanlar)</h3>
-            <table>
-                <thead><tr><th>Ürün</th><th>Tutar</th><th>Durum</th><th>Tarih</th></tr></thead>
-                <tbody>
-                    <tr><td>Roblox Script Pro</td><td>75 ₺</td><td style="color:var(--s);">Teslim Edildi</td><td>07.02.2026</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="p-sales" class="sec">
-            <h3>💰 Sattığım İlanlar</h3>
-            <table>
-                <thead><tr><th>İlan Adı</th><th>Fiyat</th><th>Stok</th><th>İşlem</th></tr></thead>
-                <tbody>
-                    <tr><td>Gamer Plus v2</td><td>50 ₺</td><td>8</td><td style="color:var(--p); cursor:pointer;">Düzenle</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="p-pay" class="sec">
-            <h3>Ziraat IBAN: TR79 0086 9000 0000 0371 0260 31</h3>
-            <p>Alıcı: EMRAH AZBOY</p>
-            <button onclick="bildirim()" style="margin-top:20px; width:100%; padding:15px; background:var(--s); color:#000; font-weight:800; border:none; border-radius:12px; cursor:pointer;">ÖDEMEYİ YAPTIM</button>
-        </div>
     </div>
 
-    <div class="chat-panel">
-        <div style="padding:20px; border-bottom:1px solid var(--b); font-weight:800; color:var(--p); text-align:center;">CANLI DESTEK</div>
-        <div id="chat-msgs" class="chat-msgs">
-            <div class="msg"><b>Sistem:</b> AHTECH dükkanına hoş geldin patron! Chat aktif.</div>
-        </div>
-        <div style="padding:15px; display:flex; gap:5px;">
-            <input type="text" id="m-text" placeholder="Mesaj..." style="flex:1; padding:10px; background:#0b0d14; border:1px solid #333; color:#fff; border-radius:8px; font-size:12px; margin:0;">
-            <button onclick="msgAt()" style="background:var(--p); border:none; color:#fff; padding:10px; border-radius:8px; cursor:pointer;">GÖNDER</button>
-        </div>
-    </div>
+    <footer>
+        NETRON © 2026 - Tüm Hakları Berat Kral'a aittir.
+    </footer>
 
     <script>
-        let u = "Misafir";
-        const kaching = new Audio('https://www.soundjay.com/misc/sounds/cash-register-purchase-1.mp3');
+        // Müşteri verileri (şu anlık sabit, sonra veritabanından gelecek)
+        const musteriVerisi = {
+            adi: "Berat Kral",
+            adres: "Akgedik A27 Daire 6",
+            paket: "100 Mbps Gamer",
+            ip: "95.170.1.6",
+            aktif: true,
+            odeme: "ÖDENDİ",
+            borc: "0.00 TL",
+            sonOdeme: "14.03.2026"
+        };
 
-        function login(plat) {
-            const name = document.getElementById('u-name').value || plat || "Ahmet";
-            u = name;
-            document.getElementById('user-display').innerText = u;
-            document.getElementById('auth-wall').style.display = 'none';
+        // Paneldeki bilgileri güncelleme fonksiyonu
+        function guncellePanel() {
+            document.getElementById('musteriAdi').innerText = musteriVerisi.adi;
+            document.getElementById('musteriAdres').innerText = musteriVerisi.adres;
+            document.getElementById('musteriPaket').innerText = musteriVerisi.paket;
+            document.getElementById('musteriIP').innerText = musteriVerisi.ip;
+            
+            const durumTextElement = document.getElementById('musteriDurum');
+            const statusLightElement = document.getElementById('statusLight');
+
+            if (musteriVerisi.aktif) {
+                durumTextElement.innerHTML = `<span class="status-light status-active"></span>AKTİF`;
+                statusLightElement.classList.remove('status-inactive');
+                statusLightElement.classList.add('status-active');
+            } else {
+                durumTextElement.innerHTML = `<span class="status-light status-inactive"></span>PASİF`;
+                statusLightElement.classList.remove('status-active');
+                statusLightElement.classList.add('status-inactive');
+            }
+
+            document.getElementById('sonOdemeTarihi').innerText = musteriVerisi.sonOdeme;
+            document.getElementById('kalanBorc').innerText = musteriVerisi.borc;
+            document.getElementById('faturaDurum').innerHTML = `<span class="status-light ${musteriVerisi.odeme === 'ÖDENDİ' ? 'status-active' : 'status-danger'}"></span>${musteriVerisi.odeme}`;
         }
 
-        function tab(id, el) {
-            document.querySelectorAll('.sec').forEach(s => s.classList.remove('show'));
-            document.getElementById(id).classList.add('show');
-            document.getElementById('p-pop').style.display = 'none';
-            if(el) {
-                document.querySelectorAll('.n-item').forEach(n => n.classList.remove('on'));
-                el.classList.add('on');
+        // Log ekleme fonksiyonu
+        function addLog(message, type = 'info') {
+            const logArea = document.getElementById('logArea');
+            const timestamp = new Date().toLocaleString('tr-TR');
+            const logEntry = document.createElement('span');
+            logEntry.innerHTML = `<span class="timestamp">[${timestamp}]</span> <span class="message">${message}</span><br>`;
+            logArea.prepend(logEntry); // En yeni log en üste gelsin
+            // logArea.scrollTop = logArea.scrollHeight; // Eskisini alta at
+        }
+
+        // Buton fonksiyonları (Şu an sadece uyarı veriyor, sonra gerçek komut gönderecek)
+        function internetAc() {
+            musteriVerisi.aktif = true;
+            guncellePanel();
+            addLog("Müşteri bağlantısı AKTİF edildi.", 'success');
+            alert("NETRON CEO: " + musteriVerisi.adi + " için internet açıldı!");
+            // Buraya gerçek routera internet açma komutu gelecek
+        }
+
+        function internetKapat() {
+            musteriVerisi.aktif = false;
+            guncellePanel();
+            addLog("Müşteri bağlantısı PASİF edildi.", 'danger');
+            alert("NETRON CEO: " + musteriVerisi.adi + " için internet kapatıldı!");
+            // Buraya gerçek routera internet kapatma komutu gelecek
+        }
+
+        function hizDegistir() {
+            const yeniHiz = prompt("Yeni hızı girin (örn: 200 Mbps):");
+            if (yeniHiz) {
+                musteriVerisi.paket = yeniHiz;
+                guncellePanel();
+                addLog(`Müşteri hızı '${yeniHiz}' olarak değiştirildi.`, 'info');
+                alert("NETRON CEO: " + musteriVerisi.adi + " için hız " + yeniHiz + " olarak ayarlandı!");
+                // Buraya gerçek routera hız değiştirme komutu gelecek
             }
         }
 
-        function togglePop() {
-            const p = document.getElementById('p-pop');
-            p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
+        function faturaYolla() {
+            alert("NETRON CEO: Fatura oluşturuldu ve " + musteriVerisi.adi + " adresine gönderildi!");
+            addLog("Müşteriye yeni fatura gönderildi.", 'info');
+            // Buraya fatura gönderme API entegrasyonu gelecek
         }
 
-        function msgAt() {
-            const t = document.getElementById('m-text');
-            if(!t.value) return;
-            document.getElementById('chat-msgs').innerHTML += `<div class="msg"><b>${u}:</b> ${t.value}</div>`;
-            t.value = "";
+        function odemeAl() {
+            musteriVerisi.borc = "0.00 TL";
+            musteriVerisi.odeme = "ÖDENDİ";
+            guncellePanel();
+            alert("NETRON CEO: " + musteriVerisi.adi + " için ödeme alındı!");
+            addLog("Müşteriden ödeme alındı, borcu kapatıldı.", 'success');
+            // Buraya ödeme sistemine entegrasyon gelecek
         }
 
-        function bildirim() {
-            kaching.play();
-            alert("Patron! Ödeme bildirimi mermi gibi CEO paneline düştü.");
-        }
+        // Sayfa yüklendiğinde paneli ilk verilerle doldur
+        window.onload = guncellePanel;
+
     </script>
 </body>
 </html>
