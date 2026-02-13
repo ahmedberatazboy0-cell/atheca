@@ -2,307 +2,75 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netron CEO Yönetim Paneli</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>NETRON | CEO Yönetim Merkezi</title>
     <style>
-        :root {
-            --netron-primary: #00ffcc; /* Parlak yeşil */
-            --netron-secondary: #0088cc; /* Mavi tonu */
-            --netron-bg-dark: #1a1a1a;
-            --netron-bg-medium: #2a2a2a;
-            --netron-text-light: #e0e0e0;
-            --netron-danger: #ff4444;
-            --netron-success: #00cc66;
-        }
-        body {
-            font-family: 'Share Tech Mono', monospace; /* Fütüristik font */
-            background-color: var(--netron-bg-dark);
-            color: var(--netron-text-light);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: var(--netron-bg-medium);
-            border-radius: 15px;
-            box-shadow: 0 0 25px rgba(0, 255, 204, 0.3); /* Neon gölge */
-            padding: 25px;
-            border: 1px solid var(--netron-primary);
-        }
-        header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--netron-primary);
-            margin-bottom: 20px;
-        }
-        header h1 {
-            font-family: 'Orbitron', sans-serif; /* Başlık fontu */
-            color: var(--netron-primary);
-            font-size: 3em;
-            text-shadow: 0 0 10px var(--netron-primary);
-            letter-spacing: 2px;
-        }
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background-color: var(--netron-bg-dark);
-            border: 1px solid var(--netron-secondary);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 136, 204, 0.2);
-        }
-        .card h2 {
-            color: var(--netron-primary);
-            border-bottom: 1px solid var(--netron-secondary);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-        }
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        .info-item span:first-child {
-            color: var(--netron-text-light);
-        }
-        .info-item span:last-child {
-            color: var(--netron-primary);
-            font-weight: bold;
-        }
-        .status-light {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            animation: pulse 1.5s infinite alternate;
-        }
-        .status-active { background-color: var(--netron-success); }
-        .status-inactive { background-color: var(--netron-danger); }
-        .status-pending { background-color: var(--netron-secondary); }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 204, 102, 0.7); }
-            100% { box-shadow: 0 0 0 10px rgba(0, 204, 102, 0); }
-        }
-
-        .controls button {
-            background-color: var(--netron-secondary);
-            color: var(--netron-text-light);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1em;
-            margin-right: 10px;
-            transition: background-color 0.3s ease;
-        }
-        .controls button:hover {
-            background-color: var(--netron-primary);
-            color: var(--netron-bg-dark);
-        }
-        .controls button.danger {
-            background-color: var(--netron-danger);
-        }
-        .controls button.danger:hover {
-            background-color: #ff0000;
-        }
-        .log-area {
-            background-color: #0d0d0d;
-            border: 1px solid var(--netron-secondary);
-            border-radius: 5px;
-            padding: 10px;
-            height: 150px;
-            overflow-y: scroll;
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #ccc;
-        }
-        .log-area span.timestamp { color: var(--netron-primary); margin-right: 5px; }
-        .log-area span.message { color: var(--netron-text-light); }
-
-        footer {
-            margin-top: 30px;
-            padding: 15px;
-            color: #888;
-            font-size: 0.8em;
-            border-top: 1px dashed var(--netron-secondary);
-            width: 90%;
-            max-width: 1200px;
-            text-align: center;
-        }
+        :root { --primary: #00ffcc; --bg: #0d0d0d; --card: #161616; --text: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 1100px; margin: auto; }
+        .header { text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 30px; }
+        .header h1 { color: var(--primary); letter-spacing: 4px; margin: 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: var(--card); border: 1px solid #222; border-radius: 12px; padding: 20px; box-shadow: 0 8px 16px rgba(0,255,204,0.1); }
+        .card h2 { color: var(--primary); font-size: 1.2em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
+        .info { display: flex; justify-content: space-between; margin: 12px 0; border-bottom: 1px dashed #222; padding-bottom: 5px; }
+        .status { padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; }
+        .online { background: #003300; color: #00ff00; border: 1px solid #00ff00; }
+        .btn { width: 100%; padding: 12px; margin: 8px 0; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-main { background: var(--primary); color: #000; }
+        .btn-main:hover { background: #00ccaa; }
+        .btn-danger { background: #660000; color: #ff4444; border: 1px solid #ff4444; }
+        .log-box { background: #000; color: #00ffcc; font-family: 'Courier New', monospace; padding: 10px; height: 120px; overflow-y: auto; border-radius: 6px; font-size: 0.85em; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>NETRON</h1>
-            <p>CEO Yönetim Paneli</p>
-        </header>
 
-        <div class="dashboard-grid">
-            <div class="card">
-                <h2>Müşteri Detayları</h2>
-                <div class="info-item">
-                    <span>Müşteri Adı:</span> <span id="musteriAdi">Berat Kral</span>
-                </div>
-                <div class="info-item">
-                    <span>Adres:</span> <span id="musteriAdres">Akgedik A27 Daire 6</span>
-                </div>
-                <div class="info-item">
-                    <span>Paket:</span> <span id="musteriPaket">100 Mbps Gamer</span>
-                </div>
-                <div class="info-item">
-                    <span>IP Adresi:</span> <span id="musteriIP">95.170.1.6</span>
-                </div>
-                <div class="info-item">
-                    <span>Durum:</span> <span id="musteriDurum"><span class="status-light status-active" id="statusLight"></span>AKTİF</span>
-                </div>
-                <div class="controls" style="margin-top: 20px;">
-                    <button onclick="internetAc()">İnterneti Aç</button>
-                    <button onclick="internetKapat()" class="danger">İnterneti Kapat</button>
-                    <button onclick="hizDegistir()">Hız Değiştir</button>
-                </div>
-            </div>
+<div class="container">
+    <div class="header">
+        <h1>NETRON NETWORK SYSTEMS</h1>
+        <p>Geleceğin İnternet Altyapısı - CEO Operasyon Paneli</p>
+    </div>
 
-            <div class="card">
-                <h2>Fatura Durumu</h2>
-                <div class="info-item">
-                    <span>Son Ödeme:</span> <span id="sonOdemeTarihi">14.03.2026</span>
-                </div>
-                <div class="info-item">
-                    <span>Kalan Borç:</span> <span id="kalanBorc">0.00 TL</span>
-                </div>
-                <div class="info-item">
-                    <span>Durum:</span> <span id="faturaDurum"><span class="status-light status-active"></span>ÖDENDİ</span>
-                </div>
-                <div class="controls" style="margin-top: 20px;">
-                    <button onclick="faturaYolla()">Fatura Yolla</button>
-                    <button onclick="odemeAl()">Ödeme Al</button>
-                </div>
-            </div>
+    <div class="grid">
+        <div class="card">
+            <h2>Abone Teknik Bilgileri</h2>
+            <div class="info"><span>Müşteri No:</span> <strong>#20260001</strong></div>
+            <div class="info"><span>Abone:</span> <strong>Berat Kral</strong></div>
+            <div class="info"><span>Adres:</span> <strong>Akgedik A27 Daire 6</strong></div>
+            <div class="info"><span>Paket:</span> <strong>100 Mbps Ultra Gamer</strong></div>
+            <div class="info"><span>Durum:</span> <span class="status online">● SİSTEMDE AKTİF</span></div>
+            <button class="btn btn-main" onclick="logEkle('Hız profili 200 Mbps olarak güncellendi.')">Hız Profilini Yükselt</button>
+            <button class="btn btn-danger" onclick="logEkle('UYARI: Akgedik hattı erişime kapatıldı!')">Erişimi Kısıtla</button>
+        </div>
 
-            <div class="card" style="grid-column: 1 / -1;">
-                <h2>Ağ Trafiği ve Sistem Logları</h2>
-                <div class="log-area" id="logArea">
-                    <span class="timestamp">[2026-02-14 10:30:00]</span> <span class="message">Sistem başlatıldı.</span><br>
-                    <span class="timestamp">[2026-02-14 10:30:05]</span> <span class="message">Müşteri 20260001 (Akgedik A27 D6) için bağlantı kontrolü yapıldı.</span><br>
-                    <span class="timestamp">[2026-02-14 10:30:10]</span> <span class="message">Hız profili 'Netron Gamer 100 Mbps' aktif edildi.</span><br>
-                </div>
+        <div class="card">
+            <h2>Finans & Faturalandırma</h2>
+            <div class="info"><span>Fatura Dönemi:</span> <strong>Şubat 2026</strong></div>
+            <div class="info"><span>Ödeme Durumu:</span> <strong style="color: #00ff00;">ÖDENDİ</strong></div>
+            <div class="info"><span>Kalan Borç:</span> <strong>0.00 TL</strong></div>
+            <div class="info"><span>Sistem Kaydı:</span> <strong>Uyumlu (5651)</strong></div>
+            <button class="btn btn-main" onclick="logEkle('E-Fatura müşteriye iletildi.')">Dijital Fatura Gönder</button>
+            <button class="btn btn-main" style="background:#444; color:white;" onclick="logEkle('Ödeme geçmişi raporu alındı.')">Ödeme Raporu Al</button>
+        </div>
+
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>Sistem Logları (Yasal Takip Merkezi)</h2>
+            <div class="log-box" id="logArea">
+                [21:50:04] Netron Core Server v1.0 Başlatıldı...<br>
+                [21:50:10] Akgedik A27 Daire 6: Bağlantı stabil, ping 5ms.<br>
+                [21:51:45] Sistem güvenliği kontrol edildi: Tehdit yok.<br>
             </div>
         </div>
     </div>
+</div>
 
-    <footer>
-        NETRON © 2026 - Tüm Hakları Berat Kral'a aittir.
-    </footer>
+<script>
+    function logEkle(mesaj) {
+        const box = document.getElementById('logArea');
+        const simdi = new Date().toLocaleTimeString();
+        box.innerHTML = `[${simdi}] ${mesaj}<br>` + box.innerHTML;
+        alert("Netron Sistemi: İşlem başarıyla kaydedildi.");
+    }
+</script>
 
-    <script>
-        // Müşteri verileri (şu anlık sabit, sonra veritabanından gelecek)
-        const musteriVerisi = {
-            adi: "Berat Kral",
-            adres: "Akgedik A27 Daire 6",
-            paket: "100 Mbps Gamer",
-            ip: "95.170.1.6",
-            aktif: true,
-            odeme: "ÖDENDİ",
-            borc: "0.00 TL",
-            sonOdeme: "14.03.2026"
-        };
-
-        // Paneldeki bilgileri güncelleme fonksiyonu
-        function guncellePanel() {
-            document.getElementById('musteriAdi').innerText = musteriVerisi.adi;
-            document.getElementById('musteriAdres').innerText = musteriVerisi.adres;
-            document.getElementById('musteriPaket').innerText = musteriVerisi.paket;
-            document.getElementById('musteriIP').innerText = musteriVerisi.ip;
-            
-            const durumTextElement = document.getElementById('musteriDurum');
-            const statusLightElement = document.getElementById('statusLight');
-
-            if (musteriVerisi.aktif) {
-                durumTextElement.innerHTML = `<span class="status-light status-active"></span>AKTİF`;
-                statusLightElement.classList.remove('status-inactive');
-                statusLightElement.classList.add('status-active');
-            } else {
-                durumTextElement.innerHTML = `<span class="status-light status-inactive"></span>PASİF`;
-                statusLightElement.classList.remove('status-active');
-                statusLightElement.classList.add('status-inactive');
-            }
-
-            document.getElementById('sonOdemeTarihi').innerText = musteriVerisi.sonOdeme;
-            document.getElementById('kalanBorc').innerText = musteriVerisi.borc;
-            document.getElementById('faturaDurum').innerHTML = `<span class="status-light ${musteriVerisi.odeme === 'ÖDENDİ' ? 'status-active' : 'status-danger'}"></span>${musteriVerisi.odeme}`;
-        }
-
-        // Log ekleme fonksiyonu
-        function addLog(message, type = 'info') {
-            const logArea = document.getElementById('logArea');
-            const timestamp = new Date().toLocaleString('tr-TR');
-            const logEntry = document.createElement('span');
-            logEntry.innerHTML = `<span class="timestamp">[${timestamp}]</span> <span class="message">${message}</span><br>`;
-            logArea.prepend(logEntry); // En yeni log en üste gelsin
-            // logArea.scrollTop = logArea.scrollHeight; // Eskisini alta at
-        }
-
-        // Buton fonksiyonları (Şu an sadece uyarı veriyor, sonra gerçek komut gönderecek)
-        function internetAc() {
-            musteriVerisi.aktif = true;
-            guncellePanel();
-            addLog("Müşteri bağlantısı AKTİF edildi.", 'success');
-            alert("NETRON CEO: " + musteriVerisi.adi + " için internet açıldı!");
-            // Buraya gerçek routera internet açma komutu gelecek
-        }
-
-        function internetKapat() {
-            musteriVerisi.aktif = false;
-            guncellePanel();
-            addLog("Müşteri bağlantısı PASİF edildi.", 'danger');
-            alert("NETRON CEO: " + musteriVerisi.adi + " için internet kapatıldı!");
-            // Buraya gerçek routera internet kapatma komutu gelecek
-        }
-
-        function hizDegistir() {
-            const yeniHiz = prompt("Yeni hızı girin (örn: 200 Mbps):");
-            if (yeniHiz) {
-                musteriVerisi.paket = yeniHiz;
-                guncellePanel();
-                addLog(`Müşteri hızı '${yeniHiz}' olarak değiştirildi.`, 'info');
-                alert("NETRON CEO: " + musteriVerisi.adi + " için hız " + yeniHiz + " olarak ayarlandı!");
-                // Buraya gerçek routera hız değiştirme komutu gelecek
-            }
-        }
-
-        function faturaYolla() {
-            alert("NETRON CEO: Fatura oluşturuldu ve " + musteriVerisi.adi + " adresine gönderildi!");
-            addLog("Müşteriye yeni fatura gönderildi.", 'info');
-            // Buraya fatura gönderme API entegrasyonu gelecek
-        }
-
-        function odemeAl() {
-            musteriVerisi.borc = "0.00 TL";
-            musteriVerisi.odeme = "ÖDENDİ";
-            guncellePanel();
-            alert("NETRON CEO: " + musteriVerisi.adi + " için ödeme alındı!");
-            addLog("Müşteriden ödeme alındı, borcu kapatıldı.", 'success');
-            // Buraya ödeme sistemine entegrasyon gelecek
-        }
-
-        // Sayfa yüklendiğinde paneli ilk verilerle doldur
-        window.onload = guncellePanel;
-
-    </script>
 </body>
 </html>
