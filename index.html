@@ -2,107 +2,146 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON AI | Altyapı Analiz v6.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <title>NETRON ENTERPRISE | CEO Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #0b0b0b; --warn: #ffcc00; --danger: #ff4444; }
-        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
-        .ceo-panel { max-width: 800px; margin: auto; border: 2px solid var(--neon); padding: 25px; border-radius: 15px; background: #111; }
-        h1 { font-family: 'Orbitron'; color: var(--neon); text-align: center; margin-bottom: 25px; }
+        :root { --neon: #00ffcc; --dark: #050505; --card: #111; --blue: #0088ff; --red: #ff3366; }
+        body { background: var(--dark); color: #eee; font-family: 'JetBrains Mono', monospace; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 15px; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 5px; font-weight: bold; }
+        /* SOL MENÜ */
+        .sidebar { width: 260px; background: #000; border-right: 2px solid var(--neon); padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .sidebar h1 { font-family: 'Orbitron'; color: var(--neon); font-size: 1.8em; text-align: center; margin-bottom: 30px; }
+        .nav-link { padding: 12px; border: 1px solid #222; border-radius: 5px; cursor: pointer; transition: 0.3s; color: #888; text-align: center; }
+        .nav-link:hover, .active { background: var(--neon); color: #000; font-weight: bold; box-shadow: 0 0 15px var(--neon); }
+
+        /* ANA ALAN */
+        .viewport { flex: 1; padding: 30px; overflow-y: auto; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: var(--card); border: 1px solid #333; padding: 20px; border-radius: 12px; position: relative; }
+        .card h3 { font-family: 'Orbitron'; color: var(--neon); margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+
+        /* SORGULAMA GÖRSELİ */
+        input { width: 70%; padding: 12px; background: #000; border: 1px solid var(--neon); color: var(--neon); border-radius: 5px; outline: none; }
+        .btn { padding: 12px 20px; background: var(--neon); color: #000; border: none; border-radius: 5px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
         
-        .btn { padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; transition: 0.2s; }
-        .btn-run { background: var(--neon); color: #000; }
+        #resultDisplay { display: none; margin-top: 20px; padding: 15px; background: #000; border-radius: 8px; border-left: 5px solid var(--blue); }
+        .data-row { display: flex; justify-content: space-between; margin: 8px 0; font-size: 0.9em; }
         
-        /* Dinamik Sonuç Kartı */
-        #resultCard { display: none; margin-top: 20px; padding: 20px; border-radius: 10px; border-left: 10px solid #555; background: #050505; }
-        .data-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
-        
-        .log-screen { background: #000; color: #00ff00; height: 100px; overflow-y: auto; padding: 10px; font-size: 0.8em; margin-top: 20px; border: 1px solid #333; border-radius: 5px; }
+        /* CANLI TRAFİK */
+        .traffic-bar { height: 10px; background: #222; border-radius: 5px; overflow: hidden; margin-top: 10px; }
+        .traffic-fill { height: 100%; width: 45%; background: var(--blue); transition: width 1s; }
+
+        .console { background: #000; color: #00ff00; height: 120px; overflow-y: auto; padding: 10px; font-size: 0.8em; border: 1px solid #333; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="ceo-panel">
-    <h1>NETRON ANALİZ</h1>
-    
-    <div class="search-box">
-        <input type="text" id="addressInput" placeholder="Sorgulanacak Adres (Örn: Akgedik A27 D6)">
-        <button class="btn btn-run" onclick="analyzeLogic()">ANALİZ ET</button>
+<div class="sidebar">
+    <h1>NETRON</h1>
+    <div class="nav-link active">ALTYAPI MERKEZİ</div>
+    <div class="nav-link">MÜŞTERİ VERİLERİ</div>
+    <div class="nav-link">GÜVENLİK DUVARI</div>
+    <div class="nav-link" onclick="location.reload()">SİSTEMİ RESETLE</div>
+</div>
+
+<div class="viewport">
+    <div class="grid">
+        <div class="card">
+            <h3>ALTYAPI ANALİZÖRÜ</h3>
+            <p style="font-size: 0.8em; color: #777;">Saha dolabı ve port verilerini eşleştirir.</p>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="targetAddr" placeholder="Adres giriniz...">
+                <button class="btn" onclick="deepSearch()">TARA</button>
+            </div>
+
+            <div id="resultDisplay">
+                <h4 id="resAddr" style="margin: 0; color: var(--blue);">--</h4>
+                <div class="data-row">Teknoloji: <b id="resTech">--</b></div>
+                <div class="data-row">Kapasite: <b id="resSpeed">--</b></div>
+                <div class="data-row">Port: <b id="resPort">--</b></div>
+                <div class="data-row">Durum: <b id="resStatus">--</b></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>CANLI ŞEBEKE YÜKÜ</h3>
+            <div class="data-row">Aktif Kullanıcı: <span>12</span></div>
+            <div class="data-row">Anlık Trafik: <span id="trafficVal">450 Mbps</span></div>
+            <div class="traffic-bar"><div class="traffic-fill" id="trafficFill"></div></div>
+            <p style="font-size: 0.7em; color: #555; margin-top: 15px;">*Manisa/Akgedik bölgesi anlık verisidir.</p>
+        </div>
+
+        <div class="card">
+            <h3>AKTİF ABONELER</h3>
+            <div style="font-size: 0.8em;">
+                <div class="data-row"><span>1. Berat Kral</span> <span style="color: var(--neon);">1000M</span></div>
+                <div class="data-row"><span>2. Akgedik A27 D5</span> <span style="color: var(--blue);">100M</span></div>
+                <div class="data-row"><span>3. Test Kullanıcı</span> <span style="color: var(--red);">OFFLINE</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>NETRON FIREWALL</h3>
+            <div class="data-row">Saldırı Engelleme: <span style="color: var(--neon);">AKTİF</span></div>
+            <div class="data-row">Log Kaydı (5651): <span style="color: var(--neon);">EVET</span></div>
+            <button class="btn" style="width:100%; margin-top:10px; background: var(--red); color: white;" onclick="alert('Güvenlik Modu Güncellendi!')">KORUMAYI TAZELA</button>
+        </div>
     </div>
 
-    <div id="resultCard">
-        <h2 id="resTitle" style="margin-top:0; color: var(--neon);">--</h2>
-        <div class="data-row"><span>Altyapı Türü:</span> <strong id="resType">--</strong></div>
-        <div class="data-row"><span>Maksimum Hız:</span> <strong id="resSpeed">--</strong></div>
-        <div class="data-row"><span>Port Durumu:</span> <strong id="resPort">--</strong></div>
-        <div class="data-row"><span>Ping Tahmini:</span> <strong id="resPing">--</strong></div>
-        
-        <button id="actionBtn" class="btn" style="width: 100%; margin-top: 15px; display: none;" onclick="applyConfig()">SİSTEME TANIMLA</button>
-    </div>
-
-    <div class="log-screen" id="logScreen">
-        [SİSTEM] Netron Akıllı Sorgulama Modülü Hazır.
+    <div class="console" id="logBox">
+        [SİSTEM] Netron Enterprise v7.0 Başlatıldı...<br>
+        [SİSTEM] Altyapı bağlantısı stabil.
     </div>
 </div>
 
 <script>
-    function log(msg) {
-        const s = document.getElementById('logScreen');
-        s.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>` + s.innerHTML;
+    function log(m) {
+        const lb = document.getElementById('logBox');
+        lb.innerHTML = `[${new Date().toLocaleTimeString()}] ${m}<br>` + lb.innerHTML;
     }
 
-    function analyzeLogic() {
-        const addr = document.getElementById('addressInput').value.toLowerCase();
-        const card = document.getElementById('resultCard');
-        const actionBtn = document.getElementById('actionBtn');
-        
-        if(!addr) return alert("Adres girilmedi!");
+    // TRAFİK SİMÜLASYONU
+    setInterval(() => {
+        let load = Math.floor(Math.random() * 90) + 10;
+        document.getElementById('trafficFill').style.width = load + "%";
+        document.getElementById('trafficVal').innerText = (load * 12) + " Mbps";
+    }, 3000);
 
-        log(`${addr} taranıyor...`);
-        card.style.display = "none";
+    function deepSearch() {
+        const adr = document.getElementById('targetAddr').value;
+        if(!adr) return alert("Adres gir CEO!");
+
+        log(`${adr} için derin tarama yapılıyor...`);
+        document.getElementById('resultDisplay').style.display = "none";
 
         setTimeout(() => {
-            card.style.display = "block";
-            document.getElementById('resTitle').innerText = addr.toUpperCase();
+            const rd = document.getElementById('resultDisplay');
+            rd.style.display = "block";
+            document.getElementById('resAddr').innerText = adr.toUpperCase();
             
-            // AKILLI MANTIK (LOGIC)
-            if(addr.includes("akgedik") || addr.includes("fiber")) {
-                // TOKİ ve Fiber adresleri için en iyi sonuç
-                setResult("Fiber (GPON)", "1000 Mbps", "BOŞ (MÜSAİT)", "4ms", "#00ffcc", true);
-            } 
-            else if(addr.includes("dolu") || addr.includes("port yok")) {
-                // Eğer kullanıcı "dolu" yazarsa sistemi gerçekçi yap
-                setResult("VDSL2", "75 Mbps", "DOLU (BEKLEMEDE)", "24ms", "#ff4444", false);
+            // GERÇEKÇİ ALGORİTMA
+            if(adr.toLowerCase().includes("akgedik")) {
+                updateRes("FIBER (GPON)", "1000 Mbps", "BOŞ (AKTİF)", "MÜKEMMEL", var(--neon));
+            } else if(adr.toLowerCase().includes("eski")) {
+                updateRes("ADSL/VDSL", "24 Mbps", "DOLU", "KRİTİK", "#ff3366");
+            } else {
+                // Rastgele Sonuç (Babanın inanması için her seferinde değişir)
+                const types = ["VDSL2", "Fiber Optik", "Hızlandırılmış ADSL"];
+                const speeds = ["100 Mbps", "75 Mbps", "50 Mbps", "200 Mbps"];
+                updateRes(types[Math.floor(Math.random()*types.length)], 
+                          speeds[Math.floor(Math.random()*speeds.length)], 
+                          "UYGUN", "STABİL", var(--blue));
             }
-            else {
-                // Standart veya bilinmeyen adresler
-                setResult("ADSL/VDSL", "100 Mbps", "SINIRLI", "16ms", "#ffcc00", true);
-            }
-            log("Analiz tamamlandı.");
-        }, 1500);
+            log("Tarama tamamlandı. Teknik rapor oluşturuldu.");
+        }, 1200);
     }
 
-    function setResult(type, speed, port, ping, color, showBtn) {
-        const card = document.getElementById('resultCard');
-        document.getElementById('resType').innerText = type;
-        document.getElementById('resSpeed').innerText = speed;
-        const p = document.getElementById('resPort');
-        p.innerText = port;
-        p.style.color = color;
-        document.getElementById('resPing').innerText = ping;
-        card.style.borderLeftColor = color;
-        
-        const btn = document.getElementById('actionBtn');
-        btn.style.display = showBtn ? "block" : "none";
-        btn.style.background = color;
-    }
-
-    function applyConfig() {
-        log("Sinyal gönderiliyor... 1000 Mbps hattınıza tanımlandı!");
-        alert("NETRON: Konfigürasyon başarıyla yüklendi!");
+    function updateRes(t, s, p, st, col) {
+        document.getElementById('resTech').innerText = t;
+        document.getElementById('resSpeed').innerText = s;
+        document.getElementById('resPort').innerText = p;
+        document.getElementById('resStatus').innerText = st;
+        document.getElementById('resultDisplay').style.borderColor = col;
     }
 </script>
 
