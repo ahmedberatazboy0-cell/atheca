@@ -2,107 +2,94 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON CEO | Global Network Operations Center</title>
+    <title>NETRON OS | Altyapı Kontrol Merkezi</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #050505; --card: #121212; --danger: #ff0055; }
-        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; margin: 0; padding: 20px; overflow-x: hidden; }
-        .container { max-width: 1200px; margin: auto; }
+        :root { --neon: #00ffcc; --dark: #050505; --card: #121212; --blue: #0088ff; }
+        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; border: 2px solid var(--neon); border-radius: 20px; padding: 25px; box-shadow: 0 0 30px rgba(0,255,204,0.1); }
         
-        /* Header Bölümü */
-        header { text-align: center; border: 2px solid var(--neon); border-radius: 15px; padding: 20px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(0,255,204,0.2); }
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 3.5em; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-        .subtitle { font-size: 1em; letter-spacing: 5px; color: #888; }
+        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        
+        .search-section { background: #1a1a1a; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #333; }
+        input { width: 70%; padding: 12px; border-radius: 5px; border: none; background: #000; color: var(--neon); font-family: 'JetBrains Mono'; }
+        
+        button { padding: 12px 25px; border-radius: 5px; border: none; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; transition: 0.3s; }
+        .btn-search { background: var(--neon); color: #000; }
+        .btn-giga { background: var(--blue); color: #fff; width: 100%; margin-top: 10px; display: none; }
+        button:hover { transform: scale(1.05); opacity: 0.9; }
 
-        .dashboard { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        #resultArea { margin-top: 20px; padding: 15px; border-radius: 10px; display: none; background: #000; border-left: 5px solid var(--neon); }
+        
+        .stats { display: flex; justify-content: space-between; margin-top: 20px; }
+        .stat-box { background: var(--card); padding: 15px; border-radius: 10px; width: 30%; text-align: center; border: 1px solid #222; }
+        .stat-box strong { color: var(--neon); display: block; font-size: 1.2em; }
 
-        /* Kart Yapısı */
-        .card { background: var(--card); border: 1px solid #333; border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card h2 { font-family: 'Orbitron'; color: var(--neon); font-size: 1.2em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
-
-        /* Donanım ve Hız Göstergesi */
-        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .stat-item { background: #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #222; }
-        .stat-item span { display: block; font-size: 0.8em; color: #666; }
-        .stat-item strong { font-size: 1.4em; color: var(--neon); }
-
-        /* Müşteri ve İşlem */
-        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
-        .btn-giga { background: linear-gradient(45deg, var(--neon), #0088ff); color: #000; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-family: 'Orbitron'; transition: 0.3s; }
-        .btn-giga:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--neon); }
-
-        /* Log Ekranı */
-        .log-box { background: #000; color: #00ff00; padding: 15px; height: 180px; overflow-y: scroll; border-radius: 8px; font-size: 0.85em; border: 1px solid #333; }
-        .timestamp { color: var(--neon); }
+        .log-box { background: #000; color: #00ff00; height: 100px; overflow-y: auto; padding: 10px; margin-top: 20px; font-size: 0.8em; border: 1px solid #333; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>NETRON</h1>
-        <div class="subtitle">CLOUDBASED NETWORK AUTOMATION v1.0</div>
-    </header>
+    <h1>NETRON CORE</h1>
+    <p style="text-align:center; color: #888;">Manisa Akgedik TOKİ Altyapı Yönetimi</p>
 
-    <div class="dashboard">
-        <div class="main-panel">
-            <div class="card">
-                <h2>SİSTEM VE DONANIM DURUMU</h2>
-                <div class="status-grid">
-                    <div class="stat-item"><span>MEVCUT DONANIM</span><strong>GIGA-ROUTER</strong></div>
-                    <div class="stat-item"><span>ALTYAPI TÜRÜ</span><strong>TOKİ FIBER</strong></div>
-                    <div class="stat-item"><span>TANILANAN HIZ</span><strong id="liveHiz">100 Mbps</strong></div>
-                    <div class="stat-item"><span>BÜTÇE KULLANIMI</span><strong>0 TL (YAZILIM)</strong></div>
-                </div>
-                
-                <div style="background: #1a1a1a; padding: 20px; border-radius: 10px;">
-                    <h3 style="margin-top:0; color: var(--neon);">CEO OPERASYON: Akgedik Hattı</h3>
-                    <p style="font-size: 0.9em; color: #ccc;">Evdeki 1000 Mbps kutuyu ve TOKİ altyapısını Netron yazılımıyla eşleştirin:</p>
-                    <button class="btn-giga" onclick="gigaAktifet()">1000 Mbps GIGA-FIBER AKTİF ET</button>
-                </div>
-            </div>
+    <div class="search-section">
+        <h3>Adres Altyapı Sorgula</h3>
+        <input type="text" id="addressInput" placeholder="Örn: Akgedik A27 Daire 6">
+        <button class="btn-search" onclick="sorgula()">SORGULA</button>
+    </div>
 
-            <div class="card" style="margin-top: 20px;">
-                <h2>AKTİF ABONE YÖNETİMİ</h2>
-                <div class="info-row"><span>ABONE ADI:</span> <strong>Berat Kral</strong></div>
-                <div class="info-row"><span>ADRES:</span> <strong>Manisa / Akgedik A27</strong></div>
-                <div class="info-row"><span>IP ADRESİ:</span> <strong>95.170.1.6 (NETRON-STATIC)</strong></div>
-                <div class="info-row"><span>DURUM:</span> <strong style="color: var(--neon);">AKTİF - ÇEVRİMİÇİ</strong></div>
-            </div>
-        </div>
+    <div id="resultArea">
+        <h2 id="resTitle" style="margin-top:0;">Sorgulanıyor...</h2>
+        <div class="info-row">Maksimum Hız: <strong id="resSpeed">--</strong></div>
+        <div class="info-row">Port Durumu: <strong style="color: #00ff00;">BOŞ (UYGUN)</strong></div>
+        <div class="info-row">Altyapı: <strong>FIBER (TOKİ-NET)</strong></div>
+        <button id="gigaBtn" class="btn-giga" onclick="aktivasyon()">1000 Mbps AKTİVASYONU BAŞLAT</button>
+    </div>
 
-        <div class="side-panel">
-            <div class="card">
-                <h2>TEKNİK LOGLAR (5651 UYUMLU)</h2>
-                <div class="log-box" id="logArea">
-                    [10:55:01] Netron Core Sunucusu Başlatıldı...<br>
-                    [10:55:05] Evdeki Giga-Router Algılandı.<br>
-                    [10:55:10] Altyapı Kontrolü: TOKİ Fiber (Stabil).<br>
-                </div>
-                <p style="font-size: 0.7em; color: #555; margin-top: 10px;">*Tüm trafik verileri yazılım tarafından şifrelenmektedir.</p>
-            </div>
+    <div class="stats">
+        <div class="stat-box"><span>DONANIM</span><strong id="hizStat">BEKLEMEDE</strong></div>
+        <div class="stat-box"><span>BÜTÇE</span><strong>0 TL</strong></div>
+        <div class="stat-box"><span>DURUM</span><strong id="durumStat">PASİF</strong></div>
+    </div>
 
-            <div class="card" style="margin-top: 20px; background: linear-gradient(135deg, #121212, #001a1a);">
-                <h2>CEO VİZYON NOTU</h2>
-                <p style="font-size: 0.85em; line-height: 1.6;">"Türkiye'deki dev firmaların kutularını ve kablolarını kullanarak, tamamen yazılım tabanlı bir internet imparatorluğu kuruyoruz. Bütçemiz 0 TL olsa da, beynimiz 1000 Mbps hızında!"</p>
-            </div>
-        </div>
+    <div class="log-box" id="logs">
+        [SİSTEM] Netron CEO Paneli Başlatıldı...
     </div>
 </div>
 
 <script>
-    function logEkle(mesaj) {
-        const box = document.getElementById('logArea');
-        const simdi = new Date().toLocaleTimeString();
-        box.innerHTML = `<span class="timestamp">[${simdi}]</span> ${mesaj}<br>` + box.innerHTML;
+    function logYaz(msg) {
+        const logs = document.getElementById('logs');
+        logs.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>` + logs.innerHTML;
     }
 
-    function gigaAktifet() {
-        document.getElementById('liveHiz').innerText = "1000 Mbps";
-        document.getElementById('liveHiz').style.color = "#00ffcc";
-        logEkle("SİSTEM UYARISI: TOKİ Altyapısı üzerinden Giga-Fiber aktif edildi!");
-        logEkle("Hız Profil Güncellendi: 100 -> 1000 Mbps");
-        alert("NETRON: Akgedik A27 Daire 6 için Gigabit hız başarıyla tanımlandı!");
+    function sorgula() {
+        const adr = document.getElementById('addressInput').value;
+        if(!adr) return alert("Adres gir CEO!");
+
+        logYaz(`${adr} için altyapı taraması başlatıldı...`);
+        document.getElementById('resultArea').style.display = "none";
+        
+        setTimeout(() => {
+            document.getElementById('resultArea').style.display = "block";
+            document.getElementById('resTitle').innerText = adr;
+            document.getElementById('resSpeed').innerText = "1000 Mbps (GIGA-READY)";
+            document.getElementById('gigaBtn').style.display = "block";
+            logYaz("Altyapı bulundu: TOKİ Fiber Optik.");
+        }, 1500);
+    }
+
+    function aktivasyon() {
+        logYaz("Aktivasyon sinyali gönderiliyor...");
+        setTimeout(() => {
+            document.getElementById('hizStat').innerText = "1000 Mbps";
+            document.getElementById('durumStat').innerText = "AKTİF";
+            document.getElementById('durumStat').style.color = "#00ffcc";
+            logYaz("BAŞARILI: Akgedik hattı üzerinden 1000 Mbps tanımlandı!");
+            alert("NETRON CEO: İşlem Başarılı. Evdeki kutu artık 1000 Mbps!");
+        }, 2000);
     }
 </script>
 
