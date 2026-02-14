@@ -2,112 +2,123 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON MANİSA | Şehir Altyapı Yönetimi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <title>NETRON NOC | Operatör Altyapı Yönetimi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #000; --tt: #0054a6; --vd: #e60000; }
-        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
-        .panel { max-width: 950px; margin: auto; border: 3px solid var(--neon); padding: 25px; border-radius: 20px; background: #080808; box-shadow: 0 0 50px rgba(0,255,204,0.1); }
-        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); letter-spacing: 5px; margin: 0; }
+        :root { --neon: #00ffcc; --bg: #050505; --card: #0f0f0f; --border: #222; --tt-blue: #0054a6; --vd-red: #e60000; }
+        body { background: var(--bg); color: #e0e0e0; font-family: 'JetBrains Mono', monospace; margin: 0; padding: 20px; font-size: 13px; }
+        .wrapper { max-width: 1100px; margin: auto; border: 1px solid var(--border); background: var(--card); border-radius: 4px; box-shadow: 0 0 50px rgba(0,0,0,1); }
         
-        .selector-area { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 25px 0; }
-        select, input { padding: 15px; background: #111; border: 1px solid #333; color: var(--neon); border-radius: 10px; font-family: 'JetBrains Mono'; outline: none; }
-        
-        .btn-scan { width: 100%; padding: 20px; background: var(--neon); color: #000; border: none; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; font-size: 1.2em; }
+        /* Üst Bar (Operatör Stili) */
+        .top-bar { background: #000; padding: 10px 20px; border-bottom: 2px solid var(--neon); display: flex; justify-content: space-between; align-items: center; }
+        .top-bar h1 { font-family: 'Orbitron'; margin: 0; font-size: 1.5em; color: var(--neon); }
+        .sys-info { color: #666; font-size: 0.8em; }
 
-        #result { display: none; background: #0c0c0c; border: 2px solid #222; border-radius: 15px; padding: 25px; margin-top: 20px; border-left: 10px solid var(--neon); }
-        .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
-        .tag { padding: 5px 12px; border-radius: 6px; font-weight: bold; color: #fff; }
+        /* Arama Alanı */
+        .search-grid { display: grid; grid-template-columns: 1fr 1.5fr 1fr 80px 150px; gap: 5px; padding: 15px; background: #111; border-bottom: 1px solid var(--border); }
+        select, input { background: #000; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 3px; outline: none; }
+        input:focus { border-color: var(--neon); }
+        .btn-query { background: var(--neon); color: #000; border: none; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; border-radius: 3px; }
 
-        .terminal { background: #000; height: 120px; overflow-y: auto; padding: 15px; border: 1px solid #222; color: #0f0; font-size: 0.8em; margin-top: 20px; border-radius: 10px; }
+        /* Ana Gösterge Tablosu */
+        .main-display { display: grid; grid-template-columns: 2.5fr 1fr; gap: 15px; padding: 15px; }
+        .data-card { background: #000; border: 1px solid var(--border); padding: 15px; border-radius: 4px; }
+        .card-header { color: var(--neon); font-size: 0.9em; font-weight: bold; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+
+        /* Veri Satırları */
+        .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #111; }
+        .label { color: #555; }
+        .val { font-weight: bold; }
+        .status-pill { padding: 2px 8px; border-radius: 2px; font-size: 0.8em; }
+
+        /* Log ve Terminal */
+        .terminal { background: #000; border: 1px solid #222; padding: 10px; height: 120px; overflow-y: scroll; color: #00ff00; font-size: 0.8em; font-family: 'JetBrains Mono'; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-<div class="panel">
-    <h1>NETRON MANISA</h1>
-    <p style="text-align:center; color: #888;">TÜM MANİSA İL VE İLÇE ALTYAPI ANALİZ MERKEZİ</p>
-
-    <div class="selector-area">
-        <select id="ilce">
-            <option value="yunusemre">YUNUSEMRE</option>
-            <option value="sehzadeler">ŞEHZADELER</option>
-            <option value="turgutlu">TURGUTLU</option>
-            <option value="akhisar">AKHİSAR</option>
-            <option value="salihli">SALİHLİ</option>
-        </select>
-        <input type="text" id="mahalle" placeholder="Mahalle (Örn: Akgedik)">
-        <input type="text" id="daire" placeholder="Daire No">
-    </div>
-    
-    <button class="btn-scan" onclick="manisaScan()">MANİSA SİNYAL TARAMASI BAŞLAT</button>
-
-    <div id="result">
-        <h2 id="resTitle" style="margin-top:0; color: var(--neon);">--</h2>
-        <div class="row"><span>Abone Kaydı:</span> <b id="resIsim" style="font-size: 1.1em;">--</b></div>
-        <div class="row"><span>Mevcut Operatör:</span> <span id="resOp" class="tag">--</span></div>
-        <div class="row"><span>Altyapı Türü:</span> <b id="resTur">--</b></div>
-        <div class="row"><span>Mevcut Hız:</span> <b id="resHiz">--</b></div>
-        <button class="btn-scan" style="width:100%; margin-top:20px; background:#0088ff; color:#fff;" onclick="alert('MANİSA GENELİ: Netron 1000 Mbps Sinyali Gönderildi!')">NETRON GIGA AKTİF ET</button>
+<div class="wrapper">
+    <div class="top-bar">
+        <h1>NETRON <span style="font-weight: 100;">NETWORK OPERATIONS</span></h1>
+        <div class="sys-info">MANISA_CENTRAL_NODE: <span class="blink" style="color:var(--neon)">CONNECTED</span></div>
     </div>
 
-    <div class="terminal" id="logs">[SYS] Netron Manisa Şehir Veritabanı Yüklendi. 17 İlçe Bağlı.</div>
+    <div class="search-grid">
+        <select id="ilce"><option>YUNUSEMRE</option><option>ŞEHZADELER</option></select>
+        <input type="text" id="mah" placeholder="MAHALLE (ÖRN: AKGEDİK)">
+        <input type="text" id="sok" placeholder="CADDE/SOKAK">
+        <input type="text" id="dai" placeholder="DAİRE">
+        <button class="btn-query" onclick="carrierQuery()">ANALİZ ET</button>
+    </div>
+
+    <div class="main-display">
+        <div class="data-card">
+            <div class="card-header">ABONE SERVİS BİLGİLERİ (OSS/BSS DATA)</div>
+            <div id="resultContent" style="display:none;">
+                <div class="row"><span class="label">ABONE ADI:</span> <span class="val" id="outName">--</span></div>
+                <div class="row"><span class="label">HİZMET NUMARASI:</span> <span class="val" id="outNo">1827394852</span></div>
+                <div class="row"><span class="label">GÜNCEL OPERATÖR:</span> <span id="outOp" class="status-pill">--</span></div>
+                <div class="row"><span class="label">HAT DURUMU:</span> <span class="val" style="color:#00ff00">AKTİF (SYNCHRONIZED)</span></div>
+                <div class="row"><span class="label">PORT KAPASİTESİ:</span> <span class="val" id="outCap">--</span></div>
+                <div class="row"><span class="label">MODEM SNR MARGIN:</span> <span class="val">8.4 dB</span></div>
+                <div class="row"><span class="label">SİNYAL ZAYIFLAMASI:</span> <span class="val">2.1 dB (FİBER)</span></div>
+                <button class="btn-query" style="width:100%; margin-top:15px; background:var(--tt-blue); color:#fff;" onclick="alert('Netron Core: Provisioning işlemi başlatıldı!')">NETRON GIGA-PROVISIONING</button>
+            </div>
+            <div id="placeholder" style="text-align:center; padding:50px; color:#333;">SORGULAMA BEKLENİYOR...</div>
+        </div>
+
+        <div class="data-card">
+            <div class="card-header">ŞEBEKE DURUMU</div>
+            <div class="row"><span class="label">SAHA DOLABI:</span> <span class="val">MAN-AKG-04</span></div>
+            <div class="row"><span class="label">LOKASYON:</span> <span class="val">AKGEDİK TOKİ</span></div>
+            <div class="row"><span class="label">IP BLOGU:</span> <span class="val">95.170.XX.XX</span></div>
+            <div class="row"><span class="label">PING (NOC):</span> <span class="val" style="color:var(--neon)">1 ms</span></div>
+        </div>
+    </div>
+
+    <div class="terminal" id="logs">
+        [LOGIN] Netron Enterprise v20.0 - Session: CEO_BERAT_ADMIN<br>
+        [READY] Manisa Infrastructure Database (MIDB) bağlantısı sağlandı.
+    </div>
 </div>
 
 <script>
-    function log(m) {
-        const t = document.getElementById('logs');
-        t.innerHTML = `[${new Date().toLocaleTimeString()}] ${m}<br>` + t.innerHTML;
-    }
+    function carrierQuery() {
+        const m = document.getElementById('mah').value.toUpperCase();
+        const d = document.getElementById('dai').value;
+        if(!m || !d) { alert("Eksik veri: Mahalle ve Daire girilmeli."); return; }
 
-    function manisaScan() {
-        const ilce = document.getElementById('ilce').value.toUpperCase();
-        const mahalle = document.getElementById('mahalle').value.toUpperCase();
-        const daire = document.getElementById('daire').value;
-        const res = document.getElementById('result');
-
-        if(!mahalle) return alert("Lütfen mahalle girin CEO!");
-
-        log(`MANİSA/${ilce}/${mahalle} bölgesi taranıyor...`);
-        res.style.display = "none";
+        document.getElementById('placeholder').style.display = "none";
+        document.getElementById('resultContent').style.display = "block";
+        const l = document.getElementById('logs');
+        l.innerHTML = `[QUERY] Analiz başlatıldı: ${m} DAİRE: ${d}...<br>` + l.innerHTML;
 
         setTimeout(() => {
-            res.style.display = "block";
-            document.getElementById('resTitle').innerText = `${ilce} / ${mahalle} D:${daire}`;
-            
-            // --- TÜM MANİSA İÇİN GERÇEKÇİ ALGORİTMA ---
-            const isimler = ["Mehmet Yılmaz", "Ahmet Demir", "Fatma Kaya", "Selin Aydın", "Hüseyin Şahin", "Zeynep Çelik"];
-            const ops = [
-                {n: "Türk Telekom", c: "#0054a6", s: "35 Mbps"},
-                {n: "Vodafone", c: "#e60000", s: "50 Mbps"},
-                {n: "TurkNet", c: "#5f259f", s: "100 Mbps"}
-            ];
-
-            // Akgedik ve Yeni Bölgeler İçin 1000 Mbps
-            if(mahalle.includes("AKGEDİK") || mahalle.includes("TOKİ")) {
-                let isim = (daire == "6") ? "BERAT KRAL (CEO)" : isimler[daire % isimler.length];
-                let hiz = (daire == "6") ? "1000 Mbps" : "100 Mbps";
-                show(isim, "FIBER (GPON)", hiz, "Türk Telekom", "#0054a6");
-            } 
-            // Eski mahalleler için VDSL/ADSL
-            else {
-                let iIdx = (daire || 1) % isimler.length;
-                let oIdx = (daire || 1) % ops.length;
-                show(isimler[iIdx], "VDSL / BAKIR", ops[oIdx].s, ops[oIdx].n, ops[oIdx].c);
+            // OPERATÖR ANALİZ MANTIĞI
+            if(m.includes("AKGEDİK") || m.includes("TOKİ")) {
+                if(d == "6") {
+                    setRes("BERAT KRAL (CEO)", "NETRON GIGA", "1000 Mbps / 1000 Mbps", "#00ffcc");
+                } else if(parseInt(d) % 2 == 0) {
+                    setRes("MEHMET ALİ YILMAZ", "TÜRK TELEKOM", "100 Mbps / 20 Mbps", "#0054a6");
+                } else {
+                    setRes("AYŞE DEMİR", "VODAFONE FIBER", "50 Mbps / 10 Mbps", "#e60000");
+                }
+            } else {
+                setRes("GİZLİ ABONE", "TURKNET", "100 Mbps (VDSL2)", "#5f259f");
             }
-
-            log(`Sorgulama Tamamlandı. Veriler Manisa Santralinden Çekildi.`);
-        }, 1500);
+            l.innerHTML = `[SUCCESS] Hat verileri senkronize edildi. SNR: 8.5dB Kapasite: OK<br>` + l.innerHTML;
+        }, 1200);
     }
 
-    function show(isim, tur, hiz, op, col) {
-        document.getElementById('resIsim').innerText = isim;
-        document.getElementById('resTur').innerText = tur;
-        document.getElementById('resHiz').innerText = hiz;
-        const opTag = document.getElementById('resOp');
-        opTag.innerText = op;
-        opTag.style.background = col;
-        document.getElementById('result').style.borderLeftColor = col;
+    function setRes(name, op, cap, col) {
+        document.getElementById('outName').innerText = name;
+        const o = document.getElementById('outOp');
+        o.innerText = op;
+        o.style.background = col;
+        o.style.color = "#fff";
+        document.getElementById('outCap').innerText = cap;
     }
 </script>
 
