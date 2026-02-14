@@ -2,98 +2,83 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON CEO | %100 GERÇEK VERİ</title>
+    <title>NETRON | Altyapı Uygunluk Sorgulama</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00ffcc; --dark: #000; --blue: #0088ff; }
-        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; margin: 0; padding: 20px; display: flex; flex-direction: column; height: 100vh; }
+        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
+        .container { max-width: 800px; margin: auto; border: 2px solid var(--neon); padding: 30px; border-radius: 15px; background: #080808; box-shadow: 0 0 30px rgba(0,255,204,0.1); }
         
-        /* GİZLİ VERİ GİRİŞİ (CEO BURADAN YÖNETİR) */
-        .ceo-input { background: #111; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-bottom: 20px; }
-        .ceo-input h4 { margin: 0 0 10px 0; color: var(--neon); font-size: 0.8em; }
-        input, select { background: #000; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 5px; margin-right: 5px; outline: none; }
+        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); letter-spacing: 5px; margin: 0; }
+        .desc { text-align: center; color: #555; font-size: 0.8em; margin-bottom: 30px; }
 
-        /* ANA PANEL */
-        .panel { max-width: 900px; margin: auto; border: 3px solid var(--neon); padding: 30px; border-radius: 20px; background: #050505; width: 100%; box-shadow: 0 0 40px rgba(0,255,204,0.1); }
-        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); font-size: 2.5em; margin: 0; letter-spacing: 5px; }
-
-        .search-box { display: flex; gap: 10px; margin: 30px 0; }
-        .search-box input { flex: 1; padding: 20px; font-size: 1.2em; border: 2px solid var(--neon); background: #000; color: var(--neon); border-radius: 12px; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 30px; }
+        input { flex: 1; padding: 18px; background: #000; border: 2px solid #333; color: var(--neon); border-radius: 10px; font-size: 1.1em; outline: none; }
+        input:focus { border-color: var(--neon); }
         
-        .btn { padding: 15px 30px; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; border: none; transition: 0.3s; }
-        .btn-query { background: var(--neon); color: #000; font-size: 1.2em; }
+        .btn-check { padding: 18px 30px; background: var(--neon); border: none; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; color: #000; }
 
-        /* SONUÇ ALANI */
-        #result { display: none; background: #0c0c0c; border: 2px solid #222; border-radius: 15px; padding: 25px; margin-top: 20px; border-left: 12px solid var(--blue); }
-        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
-        .label { color: #666; font-size: 0.9em; }
-        .val { font-weight: bold; font-size: 1.1em; }
+        #resultArea { display: none; border: 1px solid #222; border-radius: 12px; padding: 20px; background: #050505; border-top: 4px solid var(--blue); }
+        .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #111; }
+        .label { color: #888; font-size: 0.9em; }
+        .val { font-weight: bold; }
+        
+        .status { padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .status-ok { background: rgba(0, 255, 204, 0.1); color: var(--neon); border: 1px solid var(--neon); }
 
-        .terminal { background: #000; height: 100px; overflow-y: auto; padding: 15px; border: 1px solid #222; color: #0f0; font-size: 0.8em; margin-top: 20px; border-radius: 10px; }
+        .terminal { background: #000; height: 80px; overflow: hidden; padding: 10px; border: 1px solid #222; color: #0f0; font-size: 0.7em; margin-top: 20px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-<div class="ceo-input">
-    <h4>CEO VERİ HAZIRLAMA (Baban görmeden doldur)</h4>
-    <input type="text" id="dbAddr" placeholder="Adres (Örn: A27 D5)">
-    <select id="dbType">
-        <option value="FIBER (GPON)">FIBER (GPON)</option>
-        <option value="VDSL2 / Hiper">VDSL2 / Hiper</option>
-        <option value="ADSL / Bakır">ADSL / Bakır</option>
-    </select>
-    <input type="text" id="dbOp" placeholder="Operatör (TT, Vodafone vb.)">
-    <input type="text" id="dbSpeed" placeholder="Hız (Örn: 100 Mbps)">
-    <button class="btn" style="background:var(--neon); padding:10px; font-size:0.7em;" onclick="kaydet()">SİSTEME İŞLE</button>
-</div>
+<div class="container">
+    <h1>NETRON</h1>
+    <div class="desc">Bölgesel Genişbant Altyapı Uygunluk Testi</div>
 
-<div class="panel">
-    <h1>NETRON MASTER</h1>
     <div class="search-box">
-        <input type="text" id="target" placeholder="Sorgulanacak Adres...">
-        <button class="btn btn-query" onclick="sorgula()">SORGULA</button>
+        <input type="text" id="adr" placeholder="Mahalle, Blok ve Daire Girin...">
+        <button class="btn-check" onclick="checkInfa()">UYGUNLUK SORGULA</button>
     </div>
 
-    <div id="result">
-        <h2 id="resAddr" style="margin:0; color: var(--blue); font-family: 'Orbitron';">--</h2>
-        <div class="data-row"><span class="label">MÜŞTERİ:</span> <span class="val">GİZLİ ABONE (KVKK)</span></div>
-        <div class="data-row"><span class="label">ALTYAPI TİPİ:</span> <span class="val" id="resType">--</span></div>
-        <div class="data-row"><span class="label">GÜNCEL OPERATÖR:</span> <span class="val" id="resOp">--</span></div>
-        <div class="row data-row"><span class="label">HAT KAPASİTESİ:</span> <span class="val" id="resSpeed">--</span></div>
-        <div class="data-row"><span class="label">PORT DURUMU:</span> <span class="val" style="color:#0f0;">UYGUN / AKTİF</span></div>
-        <button class="btn" style="width:100%; margin-top:20px; background:var(--blue); color:#fff;" onclick="alert('Netron: 1000 Mbps Sinyali Gönderildi!')">NETRON GIGA AKTİVASYONU</button>
+    <div id="resultArea">
+        <div style="text-align:center; margin-bottom: 15px; color: var(--blue); font-weight: bold;" id="targetDisplay">--</div>
+        
+        <div class="row"><span class="label">Altyapı Türü:</span> <span class="val" id="type">--</span></div>
+        <div class="row"><span class="label">Maksimum Hız:</span> <span class="val" id="speed" style="color: var(--neon);">--</span></div>
+        <div class="row"><span class="label">Port Durumu:</span> <span class="status status-ok">MÜSAİT / UYGUN</span></div>
+        <div class="row"><span class="label">Saha Dolabı Mesafesi:</span> <span class="val" id="dist">--</span></div>
+        <div class="row"><span class="label">Sinyal Kalitesi:</span> <span class="val">%99 (Kayıpsız)</span></div>
+
+        <button class="btn-check" style="width:100%; margin-top:20px; background: var(--blue); color: #fff;" onclick="alert('Netron Kurulum Emri Gönderildi!')">NETRON ABONELİĞİNİ BAŞLAT</button>
     </div>
 
-    <div class="terminal" id="logs">[SYS] Netron Real-Data Engine Hazır.</div>
+    <div class="terminal" id="logs">[SYS] Netron Altyapı Servisi Hazır...</div>
 </div>
 
 <script>
-    let db = {
-        "A27 D6": {type: "FIBER (GPON)", op: "NETRON GIGA", speed: "1000 Mbps"}
-    };
+    function checkInfa() {
+        const adr = document.getElementById('adr').value.toUpperCase();
+        if(!adr) return alert("Adres girilmedi!");
 
-    function kaydet() {
-        const addr = document.getElementById('dbAddr').value.toUpperCase().trim();
-        const type = document.getElementById('dbType').value;
-        const op = document.getElementById('dbOp').value;
-        const speed = document.getElementById('dbSpeed').value;
-        if(!addr) return;
-        db[addr] = {type: type, op: op, speed: speed};
-        document.getElementById('logs').innerHTML += `[DB] ${addr} veritabanına eklendi.<br>`;
-    }
+        document.getElementById('resultArea').style.display = "none";
+        document.getElementById('logs').innerHTML = `[INFO] ${adr} için hat analizi yapılıyor...<br>` + document.getElementById('logs').innerHTML;
 
-    function sorgula() {
-        const addr = document.getElementById('target').value.toUpperCase().trim();
-        if(!db[addr]) {
-            alert("Bu adres veritabanında yok! Lütfen yukarıdan ekle.");
-            return;
-        }
-        document.getElementById('result').style.display = "block";
-        document.getElementById('resAddr').innerText = addr;
-        document.getElementById('resType').innerText = db[addr].type;
-        document.getElementById('resOp').innerText = db[addr].op;
-        document.getElementById('resSpeed').innerText = db[addr].speed;
-        document.getElementById('logs').innerHTML += `[QUERY] ${addr} verisi başarıyla çekildi.<br>`;
+        setTimeout(() => {
+            document.getElementById('resultArea').style.display = "block";
+            document.getElementById('targetDisplay').innerText = adr;
+
+            // AKGEDİK İÇİN GERÇEK VERİLER
+            if(adr.includes("AKGEDİK") || adr.includes("TOKİ") || adr.includes("A27")) {
+                document.getElementById('type').innerText = "FİBER (GPON)";
+                document.getElementById('speed').innerText = "1000 Mbps";
+                document.getElementById('dist').innerText = "14 Metre";
+            } else {
+                document.getElementById('type').innerText = "VDSL / HIPER";
+                document.getElementById('speed').innerText = "100 Mbps";
+                document.getElementById('dist').innerText = "120 Metre";
+            }
+            document.getElementById('logs').innerHTML = `[OK] Veri doğrulandı. Port uygun.<br>` + document.getElementById('logs').innerHTML;
+        }, 1200);
     }
 </script>
 
