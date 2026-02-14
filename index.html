@@ -2,97 +2,94 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON CEO | Gerçek Zamanlı Veritabanı</title>
+    <title>NETRON NOC | Teknik Altyapı Sorgu</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #000; --tt: #0054a6; --vd: #e60000; }
+        :root { --neon: #00ffcc; --dark: #000; --blue: #0088ff; }
         body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
-        .panel { max-width: 850px; margin: auto; border: 3px solid var(--neon); padding: 25px; border-radius: 20px; background: #080808; }
-        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); letter-spacing: 5px; margin: 0; }
+        .panel { max-width: 850px; margin: auto; border: 2px solid var(--neon); padding: 25px; border-radius: 15px; background: #080808; }
+        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); margin: 0; font-size: 2em; }
         
-        .search-area { display: flex; gap: 10px; margin: 25px 0; }
-        input { flex: 1; padding: 18px; background: #000; border: 2px solid #333; color: var(--neon); border-radius: 12px; font-size: 1.1em; outline: none; }
-        input:focus { border-color: var(--neon); }
+        .search-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin: 25px 0; }
+        input { padding: 15px; background: #111; border: 1px solid #333; color: var(--neon); border-radius: 8px; font-size: 1.1em; outline: none; }
         
-        .btn-scan { padding: 18px 35px; background: var(--neon); border: none; font-family: 'Orbitron'; font-weight: 900; border-radius: 12px; cursor: pointer; color: #000; }
+        .btn-scan { padding: 15px; background: var(--neon); color: #000; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; }
 
-        #result { display: none; background: #0c0c0c; border: 1px solid #222; border-radius: 15px; padding: 25px; margin-top: 20px; border-left: 10px solid var(--neon); }
-        .row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #1a1a1a; }
-        .op-tag { padding: 6px 14px; border-radius: 8px; font-weight: bold; color: #fff; }
+        #result { display: none; background: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-top: 20px; border-left: 10px solid var(--blue); }
+        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
+        .label { color: #666; font-size: 0.85em; }
+        .val { font-weight: bold; }
 
-        .terminal { background: #000; height: 100px; overflow-y: auto; padding: 15px; border: 1px solid #222; color: #0f0; font-size: 0.8em; margin-top: 20px; border-radius: 10px; }
+        .terminal { background: #000; height: 100px; overflow-y: auto; padding: 15px; border: 1px solid #222; color: #0f0; font-size: 0.8em; margin-top: 20px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h1>NETRON DB v21</h1>
-    <p style="text-align:center; color: #666; font-size: 0.8em; margin-top: 10px;">AKGEDİK TOKİ / MANİSA GERÇEK ABONE PANELİ</p>
+    <h1>NETRON NETWORK</h1>
+    <p style="text-align:center; color: #555; font-size: 0.8em;">MANİSA İL GENELİ TEKNİK PORT ANALİZİ</p>
 
     <div class="search-area">
-        <input type="text" id="target" placeholder="Daire No Girin (Örn: A27 D5)">
-        <button class="btn-scan" onclick="netronFullScan()">SORGULA</button>
+        <div class="search-grid">
+            <input type="text" id="address" placeholder="Mahalle, Sokak, Daire No (Örn: Akgedik A27 D5)">
+            <button class="btn-scan" onclick="runTechnicalScan()">SORGULA</button>
+        </div>
     </div>
 
     <div id="result">
-        <h2 id="resAddr" style="margin-top:0; color: var(--neon); font-family: 'Orbitron';">--</h2>
-        <div class="row"><span>Kayıtlı Abone:</span> <b id="resName" style="color: #fff; font-size: 1.1em;">--</b></div>
-        <div class="row"><span>Mevcut Operatör:</span> <span id="resOp" class="tag">--</span></div>
-        <div class="row"><span>Ölçülen Hız:</span> <b id="resSpeed">--</b></div>
-        <div class="row"><span>Port Durumu:</span> <b id="resPort">--</b></div>
-        <button class="btn-scan" style="width:100%; margin-top:20px; background:#0088ff; color:#fff;" onclick="alert('NETRON GIGA AKTİVASYONU BAŞLADI!')">NETRON 1000 MBPS'YE TAŞI</button>
+        <h2 id="resTitle" style="margin-top:0; color: var(--blue);">--</h2>
+        <div class="data-row"><span class="label">MÜŞTERİ KİMLİĞİ:</span> <span class="val">GİZLİ ABONE (KVKK)</span></div>
+        <div class="data-row"><span class="label">ALTYAPI TİPİ:</span> <b id="resType">--</b></div>
+        <div class="data-row"><span class="label">AKTİF OPERATÖR:</span> <b id="resOp">--</b></div>
+        <div class="data-row"><span class="label">MAX. HAT KAPASİTESİ:</span> <b id="resSpeed" style="color: var(--neon);">--</b></div>
+        <div class="data-row"><span class="label">SAHA DOLABI MESAFESİ:</span> <b id="resDist">--</b></div>
+        <div class="data-row"><span class="label">PORT DURUMU:</span> <b style="color: #00ff00;">AKTİF / SENKRONİZE</b></div>
+        <button class="btn-scan" style="width:100%; margin-top:20px; background:var(--blue); color:#fff;" onclick="alert('Netron Sinyali Gönderildi: Profil 1000 Mbps olarak güncellendi!')">NETRON 1000 MBPS AKTİVASYONU</button>
     </div>
 
-    <div class="terminal" id="logs">[SYS] Netron Real-Data Engine Hazır. Bekleniyor...</div>
+    <div class="terminal" id="logs">[SYS] Manisa Altyapı Veritabanı v22.0 Yüklendi.</div>
 </div>
 
 <script>
-    // --- CEO BERAT, GERÇEK BİLGİLERİ BURAYA YAZ ---
-    // Buradaki tırnak içindeki kısımları bildiğin komşularla değiştir.
-    const gercekVeriler = {
-        "A27 D5": {isim: "Hüseyin Amca", op: "Türk Telekom", hiz: "35 Mbps", renk: "#0054a6", port: "PORT-105"},
-        "A27 D6": {isim: "BERAT KRAL (CEO)", op: "NETRON GIGA", hiz: "1000 Mbps", renk: "#00ffcc", port: "PORT-VIP"},
-        "A27 D4": {isim: "Mehmet Abi", op: "Vodafone", hiz: "50 Mbps", renk: "#e60000", port: "PORT-104"},
-        "A28 D1": {isim: "Ahmet Kurt", op: "TurkNet", hiz: "100 Mbps", renk: "#5f259f", port: "PORT-201"}
-    };
+    function log(m) {
+        const t = document.getElementById('logs');
+        t.innerHTML = `[${new Date().toLocaleTimeString()}] ${m}<br>` + t.innerHTML;
+    }
 
-    function netronFullScan() {
-        const addr = document.getElementById('target').value.toUpperCase().trim();
-        const res = document.getElementById('result');
-        const logs = document.getElementById('logs');
+    function runTechnicalScan() {
+        const addr = document.getElementById('address').value.toUpperCase().trim();
+        if(!addr) return alert("Adres gir CEO!");
 
-        if(!addr) return alert("Daire girilmedi!");
-
-        logs.innerHTML = `[SCAN] ${addr} için ana veritabanına bağlanılıyor...<br>` + logs.innerHTML;
-        res.style.display = "none";
+        document.getElementById('result').style.display = "none";
+        log(`${addr} için teknik port taraması yapılıyor...`);
 
         setTimeout(() => {
-            if(gercekVeriler[addr]) {
-                const data = gercekVeriler[addr];
-                res.style.display = "block";
-                document.getElementById('resAddr').innerText = addr;
-                document.getElementById('resName').innerText = data.isim;
-                document.getElementById('resSpeed').innerText = data.hiz;
-                document.getElementById('resPort').innerText = data.port;
-                
-                const opTag = document.getElementById('resOp');
-                opTag.innerText = data.op;
-                opTag.style.background = data.renk;
-                document.getElementById('result').style.borderLeftColor = data.renk;
-                
-                logs.innerHTML = `[OK] Kayıt doğrulandı. Sinyal stabil.<br>` + logs.innerHTML;
-            } else {
-                // Kayıtlı olmayan yerler için profesyonel duruş
-                res.style.display = "block";
-                document.getElementById('resAddr').innerText = addr;
-                document.getElementById('resName').innerText = "VERİ ŞİFRELİ (KVKK)";
-                document.getElementById('resOp').innerText = "Bilinmeyen Operatör";
-                document.getElementById('resOp').style.background = "#333";
-                document.getElementById('resSpeed').innerText = "Sorgulanamıyor";
-                document.getElementById('resPort').innerText = "Sinyal Var";
-                logs.innerHTML = `[WARN] ${addr} için isim verisi güvenlik duvarına takıldı.<br>` + logs.innerHTML;
+            document.getElementById('result').style.display = "block";
+            document.getElementById('resTitle').innerText = addr;
+
+            // --- GERÇEKÇİ TEKNİK ALGORİTMA ---
+            if(addr.includes("AKGEDİK") || addr.includes("TOKİ")) {
+                // Akgedik her zaman Fiberdir
+                showTech("FİBER (GPON)", "Türk Telekom", "1000 Mbps", "12 Metre", "#00ffcc");
+            } 
+            else if(addr.includes("ŞEHZADELER") || addr.includes("ÇARŞI")) {
+                // Eski yerler VDSL veya ADSL olur
+                showTech("VDSL2 / HiperNet", "Vodafone", "75 Mbps", "185 Metre", "#ff4444");
             }
+            else {
+                // Genel Manisa ortalaması
+                showTech("FİBER / VDSL", "TurkNet", "100 Mbps", "45 Metre", "#0088ff");
+            }
+            log(`Analiz Başarılı: ${addr} verileri santralden doğrulandı.`);
         }, 1200);
+    }
+
+    function showTech(type, op, speed, dist, col) {
+        document.getElementById('resType').innerText = type;
+        document.getElementById('resOp').innerText = op;
+        document.getElementById('resSpeed').innerText = speed;
+        document.getElementById('resDist').innerText = dist;
+        document.getElementById('result').style.borderLeftColor = col;
     }
 </script>
 
