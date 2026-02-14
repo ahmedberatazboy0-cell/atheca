@@ -2,68 +2,123 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON CEO v8.0 | KESİN ÇALIŞAN SİSTEM</title>
+    <title>NETRON CEO | Altyapı & Operatör Kontrolü</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #000; --red: #ff0044; }
+        :root { --neon: #00ffcc; --dark: #000; --blue: #0088ff; --red: #ff3366; }
         body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
-        .panel { max-width: 800px; margin: auto; border: 4px solid var(--neon); padding: 20px; border-radius: 20px; box-shadow: 0 0 30px var(--neon); }
-        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); font-size: 3em; margin: 0; }
+        .panel { max-width: 850px; margin: auto; border: 3px solid var(--neon); padding: 25px; border-radius: 20px; background: #080808; }
+        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); letter-spacing: 3px; margin: 0; }
         
-        .section { background: #111; border: 1px solid #333; padding: 15px; margin-top: 20px; border-radius: 10px; }
-        input { width: 100%; padding: 15px; background: #000; border: 2px solid var(--neon); color: var(--neon); font-size: 1.1em; margin-bottom: 10px; box-sizing: border-box; }
+        .status-bar { display: flex; justify-content: space-around; background: #111; padding: 10px; border: 1px solid #333; margin: 15px 0; font-size: 0.75em; }
         
-        .btn { width: 100%; padding: 20px; cursor: pointer; border: none; font-family: 'Orbitron'; font-weight: 900; font-size: 1.2em; border-radius: 10px; transition: 0.1s; }
-        .btn-search { background: var(--neon); color: #000; margin-bottom: 10px; }
-        .btn-repair { background: #333; color: #fff; font-size: 0.8em; padding: 5px; width: auto; }
-        .btn:active { transform: scale(0.98); background: #fff; }
+        input { width: 100%; padding: 18px; background: #000; border: 2px solid #333; color: var(--neon); font-size: 1.1em; border-radius: 10px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--neon); box-shadow: 0 0 15px var(--neon); }
+        
+        .btn-search { width: 100%; padding: 20px; background: var(--neon); color: #000; border: none; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-search:hover { filter: brightness(1.2); }
 
-        #resultBox { display: none; background: #050505; border: 2px solid #0088ff; padding: 20px; margin-top: 20px; border-radius: 10px; animation: glow 1s infinite alternate; }
-        @keyframes glow { from { box-shadow: 0 0 5px #0088ff; } to { box-shadow: 0 0 20px #0088ff; } }
+        #resultArea { display: none; background: #111; border: 2px solid var(--blue); border-radius: 10px; padding: 20px; margin-top: 25px; }
         
-        .log { background: #000; height: 100px; overflow-y: scroll; padding: 10px; border: 1px solid #222; margin-top: 15px; color: #0f0; font-size: 0.8em; }
+        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; }
+        .label { color: #888; font-size: 0.85em; }
+        .value { color: #fff; font-weight: bold; }
+        .operator-tag { padding: 4px 10px; border-radius: 5px; font-size: 0.9em; }
+
+        .terminal { background: #000; height: 100px; overflow-y: scroll; padding: 10px; border: 1px solid #222; margin-top: 20px; color: #0f0; font-size: 0.8em; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <button class="btn-repair" onclick="location.reload()">SİSTEMİ SIFIRLA VE TAMİR ET</button>
-    <h1>NETRON</h1>
-    <p style="text-align:center; color: #666; margin-bottom: 20px;">AKGEDİK TOKİ ALTYAPI YÖNETİM MERKEZİ</p>
-
-    <div class="section">
-        <h3 style="color:var(--neon)">1. ADRES SORGULAMA</h3>
-        <input type="text" id="adresInput" placeholder="Adres gir (Örn: Akgedik A27 D5)">
-        <button class="btn btn-search" onclick="
-            var adr = document.getElementById('adresInput').value;
-            if(adr == '') { alert('Adres girmedin CEO!'); } else {
-                document.getElementById('log').innerHTML += '[OK] ' + adr + ' için port taranıyor...<br>';
-                document.getElementById('resultBox').style.display = 'block';
-                document.getElementById('resTitle').innerText = adr.toUpperCase();
-                if(adr.toLowerCase().includes('akgedik')) {
-                    document.getElementById('resHiz').innerText = '1000 Mbps (GIGA-FIBER)';
-                    document.getElementById('resPort').innerText = 'UYGUN (BOŞ)';
-                } else {
-                    document.getElementById('resHiz').innerText = '100 Mbps (VDSL)';
-                    document.getElementById('resPort').innerText = 'DOLU (SIRAYA ALINDI)';
-                }
-            }
-        ">SORGULAMAYI BAŞLAT</button>
+    <h1>NETRON MASTER</h1>
+    <div class="status-bar">
+        <span>BÖLGE: MANİSA / AKGEDİK</span>
+        <span>MODÜL: OPERATÖR ANALİZİ</span>
+        <span style="color: var(--neon);">ERİŞİM: CEO BERAT</span>
     </div>
 
-    <div id="resultBox">
-        <h2 id="resTitle" style="color:#0088ff; margin-top:0;">ADRES</h2>
-        <p>Altyapı: <b>Fiber Optik / GPON</b></p>
-        <p>Hız Kapasitesi: <b id="resHiz" style="color:var(--neon)">1000 Mbps</b></p>
-        <p>Liman Durumu: <b id="resPort">--</b></p>
-        <button class="btn" style="background:#0088ff; color:#fff;" onclick="alert('NETRON: Sinyal gönderildi! İnternet AKTİF.'); document.getElementById('log').innerHTML += '[OK] Sistem Aktif Edildi.<br>';">ABONELİĞİ BAŞLAT</button>
+    <div style="margin-top:20px;">
+        <input type="text" id="targetInput" placeholder="Adres veya Abone No Girin (Örn: A27 D5)">
+        <button class="btn-search" onclick="startAnalysis()">SİSTEMİ TARA</button>
     </div>
 
-    <div class="log" id="log">
-        [SİSTEM] Netron Engine v8.0 Yüklendi.<br>
-        [SİSTEM] CEO Berat Yetkisi Doğrulandı.<br>
+    <div id="resultArea">
+        <h2 id="resAddr" style="color: var(--blue); margin-top: 0; border-bottom: 2px solid #222; padding-bottom: 10px;">--</h2>
+        <div class="data-row"><span class="label">Mülk Sahibi:</span> <span class="value" id="resName">--</span></div>
+        <div class="data-row"><span class="label">Mevcut Operatör:</span> <span id="resOp" class="operator-tag">--</span></div>
+        <div class="data-row"><span class="label">Mevcut Hız:</span> <span class="value" id="resSpeed">--</span></div>
+        <div class="data-row"><span class="label">Netron Uyumluluk:</span> <span class="value" style="color: var(--neon);">%100 (GIGA-READY)</span></div>
+        
+        <button class="btn-search" style="background: var(--blue); color: #fff; font-size: 1em; margin-top: 15px;" onclick="upgradeNetron()">NETRON 1000 MBPS'YE TAŞI</button>
+    </div>
+
+    <div class="terminal" id="term">
+        [SYS] Altyapı sorgulama motoru aktif...<br>
+        [SYS] CEO Berat kontrolü devraldı.
     </div>
 </div>
+
+<script>
+    function log(msg) {
+        const t = document.getElementById('term');
+        t.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>` + t.innerHTML;
+    }
+
+    function startAnalysis() {
+        const input = document.getElementById('targetInput').value.trim().toLowerCase();
+        const res = document.getElementById('resultArea');
+        
+        if(!input) { alert("Lütfen adres girin kanka!"); return; }
+
+        log(`${input.toUpperCase()} için operatör sorgusu yapılıyor...`);
+        res.style.display = "none";
+
+        setTimeout(() => {
+            res.style.display = "block";
+            document.getElementById('resAddr').innerText = input.toUpperCase();
+            
+            // GELİŞMİŞ VERİTABANI MANTIĞI
+            if(input.includes("a27") && input.includes("5")) {
+                showData("Mehmet Yılmaz", "Türk Telekom", "35 Mbps", "#ff0000");
+            } 
+            else if(input.includes("a27") && input.includes("6")) {
+                showData("Berat Kral (CEO)", "Netron (VIP)", "1000 Mbps", "#00ffcc");
+            }
+            else if(input.includes("a27") && input.includes("10")) {
+                showData("Selin Demir", "Vodafone", "50 Mbps", "#ff3333");
+            }
+            else {
+                // Rastgele Veri (Babanı etkilemek için her seferinde değişen ama mantıklı veriler)
+                const ops = ["TurkNet", "Millenicom", "Türk Telekom", "Superonline"];
+                const names = ["Ahmet Kurt", "Zeynep Aydın", "Murat Şahin", "Hüseyin Çetin"];
+                const speeds = ["16 Mbps", "24 Mbps", "100 Mbps", "75 Mbps"];
+                
+                showData(names[Math.floor(Math.random()*names.length)], 
+                         ops[Math.floor(Math.random()*ops.length)], 
+                         speeds[Math.floor(Math.random()*speeds.length)], 
+                         "#555");
+            }
+            log("Sorgulama tamamlandı. Operatör verisi doğrulandı.");
+        }, 1300);
+    }
+
+    function showData(name, op, speed, color) {
+        document.getElementById('resName').innerText = name;
+        const opTag = document.getElementById('resOp');
+        opTag.innerText = op;
+        opTag.style.background = color;
+        document.getElementById('resSpeed').innerText = speed;
+    }
+
+    function upgradeNetron() {
+        log("Netron Giga-Fiber geçiş sinyali gönderiliyor...");
+        setTimeout(() => {
+            alert("NETRON: Müşteri Netron altyapısına başarıyla taşındı. Hız 1000 Mbps!");
+            log("İŞLEM BAŞARILI: Hat Netron Core'a bağlandı.");
+        }, 1200);
+    }
+</script>
 
 </body>
 </html>
