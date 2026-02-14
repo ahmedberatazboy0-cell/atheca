@@ -2,45 +2,54 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON | Müşteri Kontrol Merkezi</title>
+    <title>NETRON ULTIMATE | Yönetim Paneli</title>
     <style>
-        body { background-color: #0d0d0d; color: #00ff00; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .container { border: 2px solid #00ff00; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px #00ff00; width: 400px; text-align: center; }
-        h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
-        input { width: 80%; padding: 10px; margin: 10px 0; background: #1a1a1a; border: 1px solid #00ff00; color: #00ff00; border-radius: 5px; }
-        .btn-connect { background-color: #00ff00; color: #000; padding: 12px 25px; border: none; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
-        .btn-connect:hover { background-color: #008000; color: white; }
-        .admin-panel { margin-top: 20px; border-top: 1px dashed #00ff00; padding-top: 20px; font-size: 12px; }
-        .status { color: yellow; font-weight: bold; }
+        body { background-color: #050505; color: #00ff00; font-family: 'Courier New', monospace; padding: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: auto; }
+        .card { border: 2px solid #00ff00; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px #004400; background: #0a0a0a; }
+        h1, h2 { text-align: center; text-transform: uppercase; color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+        .stat { font-size: 18px; margin: 10px 0; border-bottom: 1px solid #113311; padding-bottom: 5px; }
+        .val { color: yellow; float: right; }
+        button { width: 100%; padding: 10px; margin-top: 10px; cursor: pointer; font-weight: bold; border: none; text-transform: uppercase; }
+        .btn-red { background: #aa0000; color: white; }
+        .btn-green { background: #00aa00; color: black; }
+        .btn-blue { background: #0055ff; color: white; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>NETRON v1</h1>
-        <p>Manisa Merkez Fiber Santrali</p>
-        
-        <input type="text" placeholder="Müşteri ID / Kullanıcı Adı">
-        <input type="password" placeholder="Erişim Şifresi">
-        <button class="btn-connect" onclick="connect()">İNTERNETE BAĞLAN</button>
+    <h1>--- NETRON NETWORK SYSTEMS ---</h1>
+    <h2 style="font-size: 14px;">Operatör: Berat Kral</h2>
 
-        <div class="admin-panel">
-            <p>Sistem Durumu: <span class="status">AKTİF (500-1000 Mbps)</span></p>
-            <p>Müşteri Mesafesi: <span class="status">30 KM</span></p>
-            <hr>
-            <p style="color: red; font-weight: bold;">YÖNETİCİ KONTROLÜ (BERAT KRAL)</p>
-            <button onclick="disconnect()" style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">MÜŞTERİ İNTERNETİNİ KES</button>
+    <div class="grid">
+        <div class="card">
+            <h2>Müşteri Durumu</h2>
+            <div class="stat">Bağlı Cihaz: <span class="val">1/8</span></div>
+            <div class="stat">Mesafe: <span class="val">30 KM</span></div>
+            <div class="stat">Sinyal Gücü: <span class="val">%85 (5GHz)</span></div>
+            <button class="btn-red" onclick="alert('Müşteri Erişimi Kesildi!')">Erişimi Durdur</button>
+            <button class="btn-green" onclick="alert('Hız Limiti Kaldırıldı!')">Turbo Modu Aç</button>
+        </div>
+
+        <div class="card">
+            <h2>Sunucu (i5 Laptop)</h2>
+            <div class="stat">Giriş Hızı: <span class="val">1000 Mbps</span></div>
+            <div class="stat">CPU Isısı: <span class="val">42°C</span></div>
+            <div class="stat">Uptime: <span class="val">7/24 Aktif</span></div>
+            <button class="btn-blue" onclick="alert('Sistem Soğutma Modu Aktif!')">Fanları Hızlandır</button>
+            <button class="btn-blue" onclick="location.reload()">Sistemi Resetle</button>
+        </div>
+
+        <div class="card" style="grid-column: span 2;">
+            <h2>Network Verileri</h2>
+            <div class="stat">Dış IP Adresi: <span class="val">94.54.5.108</span></div>
+            <div class="stat">Anlık Trafik: <span class="val">42.5 MB/s</span></div>
+            <button class="btn-green" onclick="window.open('https://www.speedtest.net')">Hız Testi Başlat</button>
         </div>
     </div>
 
     <script>
-        function connect() {
-            alert("Bağlantı talebi Netron sunucusuna (i5 Laptop) iletildi!");
-        }
-        function disconnect() {
-            alert("DİKKAT: Müşteri erişimi sonlandırılıyor! (Mobil Etkin Nokta Kapatılacak)");
-        }
+        console.log("Netron System v2.0 Online.");
     </script>
-
 </body>
 </html>
