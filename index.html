@@ -2,85 +2,45 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON | Altyapı Uygunluk Sorgulama</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <title>NETRON | Müşteri Kontrol Merkezi</title>
     <style>
-        :root { --neon: #00ffcc; --dark: #000; --blue: #0088ff; }
-        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
-        .container { max-width: 800px; margin: auto; border: 2px solid var(--neon); padding: 30px; border-radius: 15px; background: #080808; box-shadow: 0 0 30px rgba(0,255,204,0.1); }
-        
-        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); letter-spacing: 5px; margin: 0; }
-        .desc { text-align: center; color: #555; font-size: 0.8em; margin-bottom: 30px; }
-
-        .search-box { display: flex; gap: 10px; margin-bottom: 30px; }
-        input { flex: 1; padding: 18px; background: #000; border: 2px solid #333; color: var(--neon); border-radius: 10px; font-size: 1.1em; outline: none; }
-        input:focus { border-color: var(--neon); }
-        
-        .btn-check { padding: 18px 30px; background: var(--neon); border: none; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; color: #000; }
-
-        #resultArea { display: none; border: 1px solid #222; border-radius: 12px; padding: 20px; background: #050505; border-top: 4px solid var(--blue); }
-        .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #111; }
-        .label { color: #888; font-size: 0.9em; }
-        .val { font-weight: bold; }
-        
-        .status { padding: 4px 10px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
-        .status-ok { background: rgba(0, 255, 204, 0.1); color: var(--neon); border: 1px solid var(--neon); }
-
-        .terminal { background: #000; height: 80px; overflow: hidden; padding: 10px; border: 1px solid #222; color: #0f0; font-size: 0.7em; margin-top: 20px; border-radius: 8px; }
+        body { background-color: #0d0d0d; color: #00ff00; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .container { border: 2px solid #00ff00; padding: 30px; border-radius: 15px; box-shadow: 0 0 20px #00ff00; width: 400px; text-align: center; }
+        h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; }
+        input { width: 80%; padding: 10px; margin: 10px 0; background: #1a1a1a; border: 1px solid #00ff00; color: #00ff00; border-radius: 5px; }
+        .btn-connect { background-color: #00ff00; color: #000; padding: 12px 25px; border: none; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
+        .btn-connect:hover { background-color: #008000; color: white; }
+        .admin-panel { margin-top: 20px; border-top: 1px dashed #00ff00; padding-top: 20px; font-size: 12px; }
+        .status { color: yellow; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>NETRON</h1>
-    <div class="desc">Bölgesel Genişbant Altyapı Uygunluk Testi</div>
-
-    <div class="search-box">
-        <input type="text" id="adr" placeholder="Mahalle, Blok ve Daire Girin...">
-        <button class="btn-check" onclick="checkInfa()">UYGUNLUK SORGULA</button>
-    </div>
-
-    <div id="resultArea">
-        <div style="text-align:center; margin-bottom: 15px; color: var(--blue); font-weight: bold;" id="targetDisplay">--</div>
+    <div class="container">
+        <h1>NETRON v1</h1>
+        <p>Manisa Merkez Fiber Santrali</p>
         
-        <div class="row"><span class="label">Altyapı Türü:</span> <span class="val" id="type">--</span></div>
-        <div class="row"><span class="label">Maksimum Hız:</span> <span class="val" id="speed" style="color: var(--neon);">--</span></div>
-        <div class="row"><span class="label">Port Durumu:</span> <span class="status status-ok">MÜSAİT / UYGUN</span></div>
-        <div class="row"><span class="label">Saha Dolabı Mesafesi:</span> <span class="val" id="dist">--</span></div>
-        <div class="row"><span class="label">Sinyal Kalitesi:</span> <span class="val">%99 (Kayıpsız)</span></div>
+        <input type="text" placeholder="Müşteri ID / Kullanıcı Adı">
+        <input type="password" placeholder="Erişim Şifresi">
+        <button class="btn-connect" onclick="connect()">İNTERNETE BAĞLAN</button>
 
-        <button class="btn-check" style="width:100%; margin-top:20px; background: var(--blue); color: #fff;" onclick="alert('Netron Kurulum Emri Gönderildi!')">NETRON ABONELİĞİNİ BAŞLAT</button>
+        <div class="admin-panel">
+            <p>Sistem Durumu: <span class="status">AKTİF (500-1000 Mbps)</span></p>
+            <p>Müşteri Mesafesi: <span class="status">30 KM</span></p>
+            <hr>
+            <p style="color: red; font-weight: bold;">YÖNETİCİ KONTROLÜ (BERAT KRAL)</p>
+            <button onclick="disconnect()" style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">MÜŞTERİ İNTERNETİNİ KES</button>
+        </div>
     </div>
 
-    <div class="terminal" id="logs">[SYS] Netron Altyapı Servisi Hazır...</div>
-</div>
-
-<script>
-    function checkInfa() {
-        const adr = document.getElementById('adr').value.toUpperCase();
-        if(!adr) return alert("Adres girilmedi!");
-
-        document.getElementById('resultArea').style.display = "none";
-        document.getElementById('logs').innerHTML = `[INFO] ${adr} için hat analizi yapılıyor...<br>` + document.getElementById('logs').innerHTML;
-
-        setTimeout(() => {
-            document.getElementById('resultArea').style.display = "block";
-            document.getElementById('targetDisplay').innerText = adr;
-
-            // AKGEDİK İÇİN GERÇEK VERİLER
-            if(adr.includes("AKGEDİK") || adr.includes("TOKİ") || adr.includes("A27")) {
-                document.getElementById('type').innerText = "FİBER (GPON)";
-                document.getElementById('speed').innerText = "1000 Mbps";
-                document.getElementById('dist').innerText = "14 Metre";
-            } else {
-                document.getElementById('type').innerText = "VDSL / HIPER";
-                document.getElementById('speed').innerText = "100 Mbps";
-                document.getElementById('dist').innerText = "120 Metre";
-            }
-            document.getElementById('logs').innerHTML = `[OK] Veri doğrulandı. Port uygun.<br>` + document.getElementById('logs').innerHTML;
-        }, 1200);
-    }
-</script>
+    <script>
+        function connect() {
+            alert("Bağlantı talebi Netron sunucusuna (i5 Laptop) iletildi!");
+        }
+        function disconnect() {
+            alert("DİKKAT: Müşteri erişimi sonlandırılıyor! (Mobil Etkin Nokta Kapatılacak)");
+        }
+    </script>
 
 </body>
 </html>
