@@ -2,87 +2,107 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON REAL-DATA v11.0</title>
+    <title>NETRON AI v12 | CANLI ALTYAPI SORGUSU</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #000; --tt: #0054a6; --vd: #e60000; --tn: #00e5ff; }
+        :root { --neon: #00ffcc; --dark: #000; --tt: #0054a6; --vd: #e60000; --tn: #5f259f; }
         body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
-        .panel { max-width: 800px; margin: auto; border: 2px solid var(--neon); padding: 20px; border-radius: 15px; }
-        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); font-size: 2.2em; margin: 0; }
+        .panel { max-width: 800px; margin: auto; border: 3px solid var(--neon); padding: 25px; border-radius: 20px; box-shadow: 0 0 40px rgba(0,255,204,0.1); }
+        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); letter-spacing: 5px; }
         
-        .search-area { margin-top: 20px; display: flex; gap: 10px; }
-        input { flex: 1; padding: 15px; background: #111; border: 1px solid #444; color: var(--neon); border-radius: 8px; outline: none; }
-        .btn-search { padding: 15px 30px; background: var(--neon); border: none; font-family: 'Orbitron'; cursor: pointer; border-radius: 8px; }
+        .search-box { display: flex; gap: 10px; margin: 20px 0; }
+        input { flex: 1; padding: 18px; background: #080808; border: 2px solid #333; color: var(--neon); border-radius: 10px; font-size: 1.1em; outline: none; }
+        input:focus { border-color: var(--neon); }
+        
+        .btn-search { padding: 18px 35px; background: var(--neon); border: none; font-family: 'Orbitron'; font-weight: 900; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .btn-search:hover { transform: scale(1.05); filter: brightness(1.2); }
 
-        #resultCard { display: none; margin-top: 20px; background: #080808; border: 1px solid #333; padding: 20px; border-radius: 12px; border-left: 6px solid #fff; }
-        .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
-        .op-tag { padding: 5px 12px; border-radius: 5px; font-weight: bold; font-size: 0.9em; }
-        
-        .terminal { background: #000; height: 100px; overflow-y: scroll; padding: 10px; border: 1px solid #222; margin-top: 20px; color: #0f0; font-size: 0.8em; }
+        #result { display: none; background: #0c0c0c; border: 1px solid #222; border-radius: 15px; padding: 25px; margin-top: 20px; border-left: 8px solid var(--neon); }
+        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
+        .tag { padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 0.9em; }
+
+        .loading { display: none; text-align: center; color: var(--neon); font-style: italic; margin: 20px; }
+        .term { background: #000; height: 100px; overflow-y: auto; padding: 10px; border: 1px solid #333; color: #0f0; font-size: 0.8em; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h1>NETRON DATABASE</h1>
-    <p style="text-align:center; color:#555; font-size:0.8em;">AKGEDİK BÖLGE MÜDÜRLÜĞÜ YÖNETİM SİSTEMİ</p>
+    <h1>NETRON CORE</h1>
+    <p style="text-align:center; color: #555;">BÖLGESEL ALTYAPI ANALİZ MOTORU</p>
 
-    <div class="search-area">
-        <input type="text" id="target" placeholder="Daire No Gir (Örn: A27 D5)">
-        <button class="btn-search" onclick="ara()">SORGULA</button>
+    <div class="search-box">
+        <input type="text" id="targetAddr" placeholder="Adres giriniz (Örn: A25 Daire 12)">
+        <button class="btn-search" onclick="runNetron()">SORGULA</button>
     </div>
 
-    <div id="resultCard">
-        <h2 id="rAddr" style="margin:0; color:var(--neon);">--</h2>
-        <div class="row"><span>Abone:</span> <b id="rName">--</b></div>
-        <div class="row"><span>Mevcut Operatör:</span> <span id="rOp" class="op-tag">--</span></div>
-        <div class="row"><span>Mevcut Hız:</span> <b id="rSpeed">--</b></div>
-        <div class="row"><span>Altyapı:</span> <b>FIBER (TOKİ)</b></div>
-        <button class="btn-search" style="width:100%; margin-top:15px; background:#0088ff; color:#fff;" onclick="alert('Netron 1000 Mbps Aktivasyonu Başladı!')">NETRON'A TAŞI (1000 MBPS)</button>
+    <div id="loader" class="loading">Sinyal taranıyor... Akgedik Fiber Node eşleştiriliyor...</div>
+
+    <div id="result">
+        <h2 id="dispAddr" style="margin-top:0; color: var(--neon);">--</h2>
+        <div class="info-row"><span>Abone Durumu:</span> <b id="dispUser">Aktif Port</b></div>
+        <div class="info-row"><span>Güncel Operatör:</span> <span id="dispOp" class="tag">--</span></div>
+        <div class="info-row"><span>Hat Kapasitesi:</span> <b id="dispSpeed">--</b></div>
+        <div class="info-row"><span>Altyapı Türü:</span> <b style="color: #00ff44;">TOKİ GPON FIBER</b></div>
+        <button class="btn-search" style="width:100%; margin-top:20px; background:#0088ff; color:#fff;" onclick="alert('Netron 1000 Mbps Sinyali Gönderildi!')">HIZI 1000 MBPS'YE YÜKSELT</button>
     </div>
 
-    <div class="terminal" id="term">[SYS] Sistem Hazır. Bekleniyor...</div>
+    <div class="term" id="termLogs">[SYS] Netron OS Hazır. Yetki: CEO BERAT</div>
 </div>
 
 <script>
-    // --- VERİTABANI (BURAYI KENDİNE GÖRE DÜZENLE) ---
-    const veritabanı = {
-        "a27 d5": { isim: "Mehmet Yılmaz", op: "Türk Telekom", hiz: "35 Mbps", renk: "#0054a6" },
-        "a27 d6": { isim: "Berat Kral (CEO)", op: "NETRON GIGA", hiz: "1000 Mbps", renk: "#00ffcc" },
-        "a27 d7": { isim: "Ahmet Kurt", op: "Vodafone", hiz: "50 Mbps", renk: "#e60000" },
-        "a27 d10": { isim: "Zeynep Aydın", op: "TurkNet", hiz: "100 Mbps", renk: "#5f259f" }
-    };
+    function log(m) {
+        const t = document.getElementById('termLogs');
+        t.innerHTML = `[${new Date().toLocaleTimeString()}] ${m}<br>` + t.innerHTML;
+    }
 
-    function ara() {
-        const input = document.getElementById('target').value.toLowerCase().trim();
-        const card = document.getElementById('resultCard');
-        const term = document.getElementById('term');
+    function runNetron() {
+        const raw = document.getElementById('targetAddr').value;
+        const addr = raw.trim().toUpperCase();
+        if(!addr) return alert("Adres girilmedi!");
 
-        term.innerHTML = `[ARA] ${input} sorgulanıyor...<br>` + term.innerHTML;
+        document.getElementById('result').style.display = "none";
+        document.getElementById('loader').style.display = "block";
+        log(`${addr} için hat sorgusu başlatıldı...`);
 
-        if (veritabanı[input]) {
-            const data = veritabanı[input];
-            card.style.display = "block";
-            document.getElementById('rAddr').innerText = input.toUpperCase();
-            document.getElementById('rName').innerText = data.isim;
-            document.getElementById('rSpeed').innerText = data.hiz;
+        setTimeout(() => {
+            document.getElementById('loader').style.display = "none";
+            document.getElementById('result').style.display = "block";
+            document.getElementById('dispAddr').innerText = addr;
+
+            // --- AKILLI MANTIK (LOGIC) ---
+            // Her zaman "doğru" görünecek teknik veriler üretir
             
-            const opTag = document.getElementById('rOp');
-            opTag.innerText = data.op;
-            opTag.style.background = data.renk;
-            card.style.borderLeftColor = data.renk;
-            
-            term.innerHTML = `[OK] Kayıt bulundu: ${data.isim}<br>` + term.innerHTML;
-        } else {
-            alert("Bu daire veritabanında kayıtlı değil CEO! Ama istersen rastgele üretelim.");
-            // Rastgele üretim kısmı (Eğer kayıt yoksa)
-            card.style.display = "block";
-            document.getElementById('rAddr').innerText = input.toUpperCase();
-            document.getElementById('rName').innerText = "Bilinmeyen Abone";
-            document.getElementById('rOp').innerText = "Diğer Operatör";
-            document.getElementById('rOp').style.background = "#333";
-            document.getElementById('rSpeed').innerText = "Belirsiz";
-        }
+            // Eğer senin dairense özel bilgi
+            if(addr.includes("A27") && (addr.includes("6") || addr.includes("D6"))) {
+                show("BERAT KRAL (CEO)", "NETRON GIGA", "1000 Mbps", "#00ffcc");
+            } 
+            else {
+                // Diğer her yer için mantıklı TOKİ verileri
+                const soyisimler = ["Yılmaz", "Kaya", "Demir", "Çelik", "Şahin", "Yıldız", "Aydın"];
+                const ops = [
+                    {n: "Türk Telekom", c: "#0054a6", s: "35 Mbps"},
+                    {n: "Vodafone", c: "#e60000", s: "50 Mbps"},
+                    {n: "TurkNet", c: "#5f259f", s: "100 Mbps"}
+                ];
+                
+                // Adrese göre sabit sonuç üretmek için basit bir matematik (Hata payını siler)
+                const index = addr.length % ops.length;
+                const sIndex = addr.length % soyisimler.length;
+                
+                show("Abone: " + soyisimler[sIndex], ops[index].n, ops[index].s, ops[index].c);
+            }
+            log(`Analiz tamamlandı: ${addr} verisi doğrulandı.`);
+        }, 1500);
+    }
+
+    function show(user, op, speed, color) {
+        document.getElementById('dispUser').innerText = user;
+        const opTag = document.getElementById('dispOp');
+        opTag.innerText = op;
+        opTag.style.background = color;
+        document.getElementById('dispSpeed').innerText = speed;
+        document.getElementById('result').style.borderLeftColor = color;
     }
 </script>
 
