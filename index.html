@@ -2,52 +2,82 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON NOC | Teknik Altyapı Sorgu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <title>NETRON CEO | ULTIMATE INFRASTRUCTURE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #000; --blue: #0088ff; }
+        :root { --neon: #00ffcc; --dark: #000; --blue: #0088ff; --red: #ff3366; }
         body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; padding: 20px; }
-        .panel { max-width: 850px; margin: auto; border: 2px solid var(--neon); padding: 25px; border-radius: 15px; background: #080808; }
-        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); margin: 0; font-size: 2em; }
+        .panel { max-width: 950px; margin: auto; border: 3px solid var(--neon); padding: 25px; border-radius: 20px; background: #080808; box-shadow: 0 0 60px rgba(0,255,204,0.15); }
         
-        .search-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin: 25px 0; }
-        input { padding: 15px; background: #111; border: 1px solid #333; color: var(--neon); border-radius: 8px; font-size: 1.1em; outline: none; }
+        h1 { font-family: 'Orbitron'; text-align: center; color: var(--neon); letter-spacing: 6px; margin: 0; text-shadow: 0 0 10px var(--neon); }
+        .sub-header { text-align: center; color: #555; font-size: 0.8em; margin-bottom: 20px; text-transform: uppercase; }
+
+        /* Arama Alanı */
+        .search-container { display: grid; grid-template-columns: 1fr 1fr 100px 150px; gap: 10px; margin-bottom: 20px; }
+        input, select { padding: 15px; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 10px; font-size: 1em; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--neon); box-shadow: 0 0 10px var(--neon); }
         
-        .btn-scan { padding: 15px; background: var(--neon); color: #000; border: none; border-radius: 8px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; }
+        .btn-query { background: var(--neon); color: #000; border: none; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; border-radius: 10px; transition: 0.3s; }
+        .btn-query:hover { transform: scale(1.02); filter: brightness(1.1); }
 
-        #result { display: none; background: #0c0c0c; border: 1px solid #222; border-radius: 12px; padding: 20px; margin-top: 20px; border-left: 10px solid var(--blue); }
-        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1a1a; }
-        .label { color: #666; font-size: 0.85em; }
-        .val { font-weight: bold; }
+        /* Sonuç Kartı */
+        #resultCard { display: none; background: #0c0c0c; border: 2px solid #222; border-radius: 15px; padding: 25px; margin-top: 20px; border-left: 12px solid var(--blue); animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1a1a1a; }
+        .label { color: #666; font-size: 0.8em; }
+        .val { font-weight: bold; font-size: 1em; }
 
-        .terminal { background: #000; height: 100px; overflow-y: auto; padding: 15px; border: 1px solid #222; color: #0f0; font-size: 0.8em; margin-top: 20px; border-radius: 8px; }
+        /* Efsane Netron Butonları */
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; }
+        .btn-netron { padding: 18px; border: none; border-radius: 10px; font-family: 'Orbitron'; font-weight: 900; cursor: pointer; transition: 0.3s; color: #fff; }
+        .btn-giga { background: var(--blue); box-shadow: 0 4px 15px rgba(0, 136, 255, 0.4); }
+        .btn-turbo { background: #6200ea; box-shadow: 0 4px 15px rgba(98, 0, 234, 0.4); }
+        .btn-netron:hover { transform: translateY(-3px); filter: brightness(1.2); }
+
+        .terminal { background: #000; height: 100px; overflow-y: auto; padding: 15px; border: 1px solid #222; color: #0f0; font-size: 0.8em; margin-top: 20px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
 <div class="panel">
-    <h1>NETRON NETWORK</h1>
-    <p style="text-align:center; color: #555; font-size: 0.8em;">MANİSA İL GENELİ TEKNİK PORT ANALİZİ</p>
+    <h1>NETRON CONTROL</h1>
+    <div class="sub-header">Manisa Altyapı & Provisioning Yönetim Merkezi</div>
 
-    <div class="search-area">
-        <div class="search-grid">
-            <input type="text" id="address" placeholder="Mahalle, Sokak, Daire No (Örn: Akgedik A27 D5)">
-            <button class="btn-scan" onclick="runTechnicalScan()">SORGULA</button>
+    <div class="search-container">
+        <select id="ilce">
+            <option value="YUNUSEMRE">YUNUSEMRE</option>
+            <option value="ŞEHZADELER">ŞEHZADELER</option>
+        </select>
+        <input type="text" id="mahalle" placeholder="Mahalle/Site (Örn: Akgedik TOKİ)">
+        <input type="text" id="daire" placeholder="Daire">
+        <button class="btn-query" onclick="fullNetronScan()">SORGULA</button>
+    </div>
+
+    <div id="resultCard">
+        <div style="color: var(--neon); font-family: 'Orbitron'; margin-bottom: 15px; font-size: 1.2em;" id="outAddr">--</div>
+        
+        <div class="data-grid">
+            <div>
+                <div class="row"><span class="label">ABONE:</span> <span class="val">GİZLİ (KVKK)</span></div>
+                <div class="row"><span class="label">OPERATÖR:</span> <span class="val" id="outOp">--</span></div>
+                <div class="row"><span class="label">ALTYAPI:</span> <span class="val" id="outType">--</span></div>
+            </div>
+            <div>
+                <div class="row"><span class="label">MAX KAPASİTE:</span> <span class="val" id="outSpeed" style="color: var(--neon);">--</span></div>
+                <div class="row"><span class="label">SİNYAL GÜCÜ:</span> <span class="val" style="color: #0f0;">-18.5 dBm (OPTIMAL)</span></div>
+                <div class="row"><span class="label">PORT DURUMU:</span> <span class="val">AKTİF</span></div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-netron btn-giga" onclick="netronAction('1000 Mbps GigaFiber')">NETRON GIGA-FIBER (1000M)</button>
+            <button class="btn-netron btn-turbo" onclick="netronAction('Turbo Boost')">NETRON TURBO BOOST</button>
         </div>
     </div>
 
-    <div id="result">
-        <h2 id="resTitle" style="margin-top:0; color: var(--blue);">--</h2>
-        <div class="data-row"><span class="label">MÜŞTERİ KİMLİĞİ:</span> <span class="val">GİZLİ ABONE (KVKK)</span></div>
-        <div class="data-row"><span class="label">ALTYAPI TİPİ:</span> <b id="resType">--</b></div>
-        <div class="data-row"><span class="label">AKTİF OPERATÖR:</span> <b id="resOp">--</b></div>
-        <div class="data-row"><span class="label">MAX. HAT KAPASİTESİ:</span> <b id="resSpeed" style="color: var(--neon);">--</b></div>
-        <div class="data-row"><span class="label">SAHA DOLABI MESAFESİ:</span> <b id="resDist">--</b></div>
-        <div class="data-row"><span class="label">PORT DURUMU:</span> <b style="color: #00ff00;">AKTİF / SENKRONİZE</b></div>
-        <button class="btn-scan" style="width:100%; margin-top:20px; background:var(--blue); color:#fff;" onclick="alert('Netron Sinyali Gönderildi: Profil 1000 Mbps olarak güncellendi!')">NETRON 1000 MBPS AKTİVASYONU</button>
-    </div>
-
-    <div class="terminal" id="logs">[SYS] Manisa Altyapı Veritabanı v22.0 Yüklendi.</div>
+    <div class="terminal" id="logs">[SYS] Netron OS v24.0 Yüklendi. Manisa Merkez Santrali Bağlı...</div>
 </div>
 
 <script>
@@ -56,40 +86,49 @@
         t.innerHTML = `[${new Date().toLocaleTimeString()}] ${m}<br>` + t.innerHTML;
     }
 
-    function runTechnicalScan() {
-        const addr = document.getElementById('address').value.toUpperCase().trim();
-        if(!addr) return alert("Adres gir CEO!");
+    function fullNetronScan() {
+        const ilce = document.getElementById('ilce').value;
+        const mah = document.getElementById('mahalle').value.toUpperCase();
+        const dai = document.getElementById('daire').value;
 
-        document.getElementById('result').style.display = "none";
-        log(`${addr} için teknik port taraması yapılıyor...`);
+        if(!mah || !dai) return alert("Lütfen Mahalle ve Daire bilgilerini girin CEO!");
+
+        log(`${mah} lokasyonu için port taraması başlatıldı...`);
+        document.getElementById('resultCard').style.display = "none";
 
         setTimeout(() => {
-            document.getElementById('result').style.display = "block";
-            document.getElementById('resTitle').innerText = addr;
+            const card = document.getElementById('resultCard');
+            card.style.display = "block";
+            document.getElementById('outAddr').innerText = `${ilce} / ${mah} / DAİRE: ${dai}`;
 
-            // --- GERÇEKÇİ TEKNİK ALGORİTMA ---
-            if(addr.includes("AKGEDİK") || addr.includes("TOKİ")) {
-                // Akgedik her zaman Fiberdir
-                showTech("FİBER (GPON)", "Türk Telekom", "1000 Mbps", "12 Metre", "#00ffcc");
-            } 
-            else if(addr.includes("ŞEHZADELER") || addr.includes("ÇARŞI")) {
-                // Eski yerler VDSL veya ADSL olur
-                showTech("VDSL2 / HiperNet", "Vodafone", "75 Mbps", "185 Metre", "#ff4444");
+            // --- GERÇEKÇİ TEKNİK MANTIK ---
+            if(mah.includes("AKGEDİK") || mah.includes("TOKİ") || mah.includes("A27")) {
+                // Akgedik için Fiber verisi
+                setValues("TÜRK TELEKOM", "FİBER (GPON)", "1000 Mbps", "#00ffcc");
+            } else if(ilce === "ŞEHZADELER") {
+                // Şehzadeler merkez için VDSL verisi
+                setValues("VODAFONE", "VDSL2 / HIPER", "75 Mbps", "#ff3366");
+            } else {
+                // Diğer yerler
+                setValues("TURKNET", "VDSL / FİBER", "100 Mbps", "#0088ff");
             }
-            else {
-                // Genel Manisa ortalaması
-                showTech("FİBER / VDSL", "TurkNet", "100 Mbps", "45 Metre", "#0088ff");
-            }
-            log(`Analiz Başarılı: ${addr} verileri santralden doğrulandı.`);
-        }, 1200);
+            log(`Veri Doğrulandı: Port ID ${Math.floor(Math.random()*9000)+1000} aktif.`);
+        }, 1300);
     }
 
-    function showTech(type, op, speed, dist, col) {
-        document.getElementById('resType').innerText = type;
-        document.getElementById('resOp').innerText = op;
-        document.getElementById('resSpeed').innerText = speed;
-        document.getElementById('resDist').innerText = dist;
-        document.getElementById('result').style.borderLeftColor = col;
+    function setValues(op, type, speed, col) {
+        document.getElementById('outOp').innerText = op;
+        document.getElementById('outType').innerText = type;
+        document.getElementById('outSpeed').innerText = speed;
+        document.getElementById('resultCard').style.borderLeftColor = col;
+    }
+
+    function netronAction(type) {
+        log(`[ACTION] ${type} aktivasyonu için sinyal gönderiliyor...`);
+        setTimeout(() => {
+            alert(`NETRON CORE: ${type} başarıyla tanımlandı!`);
+            log(`[OK] ${type} başarıyla aktif edildi.`);
+        }, 1000);
     }
 </script>
 
