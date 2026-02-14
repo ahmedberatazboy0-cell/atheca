@@ -5,15 +5,32 @@ const trafficChart = new Chart(ctx, {
     data: {
         labels: [],
         datasets: [
-            { label: 'Upload (B/s)', data: [], borderColor: '#0f0', backgroundColor: 'rgba(0,255,0,0.1)', fill: true },
-            { label: 'Download (B/s)', data: [], borderColor: '#f0f', backgroundColor: 'rgba(255,0,255,0.1)', fill: true }
+            { 
+                label: 'Upload (B/s)', 
+                data: [], 
+                borderColor: '#0f0', 
+                backgroundColor: 'rgba(0,255,0,0.1)',
+                fill: true
+            },
+            { 
+                label: 'Download (B/s)', 
+                data: [], 
+                borderColor: '#f0f', 
+                backgroundColor: 'rgba(255,0,255,0.1)',
+                fill: true
+            }
         ]
     },
     options: {
         responsive: true,
         maintainAspectRatio: false,
-        scales: { x: { ticks: { color: '#0f0' } }, y: { ticks: { color: '#0f0' } } },
-        plugins: { legend: { labels: { color: '#0f0' } } }
+        scales: { 
+            x: { ticks: { color: '#0f0' } }, 
+            y: { ticks: { color: '#0f0' } } 
+        },
+        plugins: {
+            legend: { labels: { color: '#0f0' } }
+        }
     }
 });
 
@@ -27,7 +44,7 @@ function randomIP() {
     return '192.168.0.' + random(2, 254);
 }
 
-// Geçmiş veri havuzu (20 adet, başlangıç değerleri)
+// Geçmiş veri havuzu (20 adet)
 let history = [];
 for (let i = 0; i < 20; i++) {
     history.push({ time: '00:00', up: random(1000, 5000), down: random(2000, 8000) });
