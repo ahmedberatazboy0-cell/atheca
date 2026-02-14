@@ -2,134 +2,107 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>NETRON | Global Network & ISP Operations</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>NETRON CEO | Global Network Operations Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ffcc; --dark: #050505; --card-bg: #121212; --danger: #ff0055; --success: #00ff66; }
-        body { background: var(--dark); color: #fff; font-family: 'Roboto Mono', monospace; margin: 0; overflow-x: hidden; }
-        .sidebar { width: 220px; height: 100vh; background: #0a0a0a; position: fixed; border-right: 1px solid #222; padding: 20px; }
-        .main-content { margin-left: 260px; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--neon); padding-bottom: 10px; margin-bottom: 20px; }
-        .header h1 { font-family: 'Orbitron', sans-serif; color: var(--neon); margin: 0; text-shadow: 0 0 10px var(--neon); }
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
-        .stat-card { background: var(--card-bg); padding: 15px; border-radius: 10px; border: 1px solid #333; text-align: center; }
-        .stat-card h3 { font-size: 0.8em; color: #888; margin: 0; }
-        .stat-card p { font-size: 1.5em; font-weight: bold; margin: 5px 0; color: var(--neon); }
-        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-        .panel { background: var(--card-bg); border-radius: 12px; border: 1px solid #222; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .panel h2 { color: var(--neon); font-size: 1.1em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
-        .customer-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; font-size: 0.9em; }
-        .status-pill { padding: 3px 8px; border-radius: 10px; font-size: 0.75em; }
-        .online { background: rgba(0, 255, 102, 0.1); color: var(--success); border: 1px solid var(--success); }
-        .btn { background: var(--neon); color: #000; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        .log-area { background: #000; color: var(--neon); font-size: 0.8em; height: 150px; overflow-y: scroll; padding: 10px; border: 1px solid #333; margin-top: 10px; }
-        canvas { max-height: 200px; }
+        :root { --neon: #00ffcc; --dark: #050505; --card: #121212; --danger: #ff0055; }
+        body { background: var(--dark); color: #fff; font-family: 'JetBrains Mono', monospace; margin: 0; padding: 20px; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: auto; }
+        
+        /* Header Bölümü */
+        header { text-align: center; border: 2px solid var(--neon); border-radius: 15px; padding: 20px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(0,255,204,0.2); }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 3.5em; margin: 0; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
+        .subtitle { font-size: 1em; letter-spacing: 5px; color: #888; }
+
+        .dashboard { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+        /* Kart Yapısı */
+        .card { background: var(--card); border: 1px solid #333; border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card h2 { font-family: 'Orbitron'; color: var(--neon); font-size: 1.2em; border-bottom: 1px solid #333; padding-bottom: 10px; margin-top: 0; }
+
+        /* Donanım ve Hız Göstergesi */
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .stat-item { background: #1a1a1a; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #222; }
+        .stat-item span { display: block; font-size: 0.8em; color: #666; }
+        .stat-item strong { font-size: 1.4em; color: var(--neon); }
+
+        /* Müşteri ve İşlem */
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #222; }
+        .btn-giga { background: linear-gradient(45deg, var(--neon), #0088ff); color: #000; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-family: 'Orbitron'; transition: 0.3s; }
+        .btn-giga:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--neon); }
+
+        /* Log Ekranı */
+        .log-box { background: #000; color: #00ff00; padding: 15px; height: 180px; overflow-y: scroll; border-radius: 8px; font-size: 0.85em; border: 1px solid #333; }
+        .timestamp { color: var(--neon); }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h2 style="color: var(--neon); font-family: 'Orbitron';">NETRON</h2>
-    <p style="font-size: 0.7em; color: #666;">v1.2 ENTERPRISE</p>
-    <div style="margin-top: 50px;">
-        <p>🟢 Dashboard</p>
-        <p>👤 Customers</p>
-        <p>📊 Analytics</p>
-        <p>⚙️ Network Config</p>
-        <p>📄 Legal Logs</p>
-    </div>
-</div>
+<div class="container">
+    <header>
+        <h1>NETRON</h1>
+        <div class="subtitle">CLOUDBASED NETWORK AUTOMATION v1.0</div>
+    </header>
 
-<div class="main-content">
-    <div class="header">
-        <h1>OPERATIONS CENTER</h1>
-        <div>
-            <span>SYSTEM STATUS: <strong style="color: var(--success);">OPTIMAL</strong></span>
-        </div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-card"><h3>TOTAL ABONE</h3><p>1,248</p></div>
-        <div class="stat-card"><h3>ANLIK TRAFİK</h3><p>4.8 Gbps</p></div>
-        <div class="stat-card"><h3>AYLIK CİRO</h3><p>₺142,500</p></div>
-        <div class="stat-card"><h3>UPTIME</h3><p>%99.99</p></div>
-    </div>
-
-    <div class="dashboard-grid">
-        <div class="panel">
-            <h2>NETWORK TRAFFIC (LIVE)</h2>
-            <canvas id="trafficChart"></canvas>
-            
-            <h2 style="margin-top: 20px;">ABONE YÖNETİMİ</h2>
-            <div class="customer-row">
-                <span>Berat Kral</span>
-                <span>Akgedik A27 Daire 6</span>
-                <span class="status-pill online">AKTİF</span>
-                <span style="color: var(--neon);">100 Mbps</span>
+    <div class="dashboard">
+        <div class="main-panel">
+            <div class="card">
+                <h2>SİSTEM VE DONANIM DURUMU</h2>
+                <div class="status-grid">
+                    <div class="stat-item"><span>MEVCUT DONANIM</span><strong>GIGA-ROUTER</strong></div>
+                    <div class="stat-item"><span>ALTYAPI TÜRÜ</span><strong>TOKİ FIBER</strong></div>
+                    <div class="stat-item"><span>TANILANAN HIZ</span><strong id="liveHiz">100 Mbps</strong></div>
+                    <div class="stat-item"><span>BÜTÇE KULLANIMI</span><strong>0 TL (YAZILIM)</strong></div>
+                </div>
+                
+                <div style="background: #1a1a1a; padding: 20px; border-radius: 10px;">
+                    <h3 style="margin-top:0; color: var(--neon);">CEO OPERASYON: Akgedik Hattı</h3>
+                    <p style="font-size: 0.9em; color: #ccc;">Evdeki 1000 Mbps kutuyu ve TOKİ altyapısını Netron yazılımıyla eşleştirin:</p>
+                    <button class="btn-giga" onclick="gigaAktifet()">1000 Mbps GIGA-FIBER AKTİF ET</button>
+                </div>
             </div>
-            <div class="customer-row">
-                <span>Rıfat Depo</span>
-                <span>Manisa Merkez Sk. 12</span>
-                <span class="status-pill online">AKTİF</span>
-                <span style="color: var(--neon);">50 Mbps</span>
+
+            <div class="card" style="margin-top: 20px;">
+                <h2>AKTİF ABONE YÖNETİMİ</h2>
+                <div class="info-row"><span>ABONE ADI:</span> <strong>Berat Kral</strong></div>
+                <div class="info-row"><span>ADRES:</span> <strong>Manisa / Akgedik A27</strong></div>
+                <div class="info-row"><span>IP ADRESİ:</span> <strong>95.170.1.6 (NETRON-STATIC)</strong></div>
+                <div class="info-row"><span>DURUM:</span> <strong style="color: var(--neon);">AKTİF - ÇEVRİMİÇİ</strong></div>
             </div>
-            <button class="btn" onclick="addMusteri()">YENİ ABONE TANIMLA (AKGEDİK)</button>
         </div>
 
-        <div class="panel">
-            <h2>GELİR/GİDER ANALİZİ</h2>
-            <div style="height: 150px;"><canvas id="revenueChart"></canvas></div>
-            
-            <h2 style="margin-top: 20px;">5651 YASAL LOGLAR</h2>
-            <div class="log-area" id="logBox">
-                [21:55:01] BGP Peer Connected: Turk Telekom<br>
-                [21:55:12] Akgedik Node-A27 Online.<br>
-                [21:56:45] Backup System: Active.<br>
+        <div class="side-panel">
+            <div class="card">
+                <h2>TEKNİK LOGLAR (5651 UYUMLU)</h2>
+                <div class="log-box" id="logArea">
+                    [10:55:01] Netron Core Sunucusu Başlatıldı...<br>
+                    [10:55:05] Evdeki Giga-Router Algılandı.<br>
+                    [10:55:10] Altyapı Kontrolü: TOKİ Fiber (Stabil).<br>
+                </div>
+                <p style="font-size: 0.7em; color: #555; margin-top: 10px;">*Tüm trafik verileri yazılım tarafından şifrelenmektedir.</p>
             </div>
-            <button class="btn" style="background: #333; color: #fff;" onclick="logTemizle()">LOGLARI MÜHÜRLE (E-İMZA)</button>
+
+            <div class="card" style="margin-top: 20px; background: linear-gradient(135deg, #121212, #001a1a);">
+                <h2>CEO VİZYON NOTU</h2>
+                <p style="font-size: 0.85em; line-height: 1.6;">"Türkiye'deki dev firmaların kutularını ve kablolarını kullanarak, tamamen yazılım tabanlı bir internet imparatorluğu kuruyoruz. Bütçemiz 0 TL olsa da, beynimiz 1000 Mbps hızında!"</p>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Grafik: Trafik
-    const ctx = document.getElementById('trafficChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['1s', '2s', '3s', '4s', '5s', '6s'],
-            datasets: [{
-                label: 'Download (Gbps)',
-                data: [3.2, 4.5, 3.8, 5.2, 4.8, 6.1],
-                borderColor: '#00ffcc',
-                tension: 0.4
-            }]
-        },
-        options: { responsive: true, scales: { y: { display: false } } }
-    });
-
-    // Grafik: Gelir
-    const ctx2 = document.getElementById('revenueChart').getContext('2d');
-    new Chart(ctx2, {
-        type: 'doughnut',
-        data: {
-            labels: ['Net Kar', 'Maliyet', 'Vergi'],
-            datasets: [{
-                data: [60, 25, 15],
-                backgroundColor: ['#00ffcc', '#333', '#ff0055']
-            }]
-        }
-    });
-
-    function logEkle(msg) {
-        const box = document.getElementById('logBox');
-        box.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>` + box.innerHTML;
+    function logEkle(mesaj) {
+        const box = document.getElementById('logArea');
+        const simdi = new Date().toLocaleTimeString();
+        box.innerHTML = `<span class="timestamp">[${simdi}]</span> ${mesaj}<br>` + box.innerHTML;
     }
 
-    function addMusteri() {
-        alert("Akgedik Bölgesi için yeni port açılıyor...");
-        logEkle("Yeni Abone Talebi Alındı: Akgedik A27 D7");
+    function gigaAktifet() {
+        document.getElementById('liveHiz').innerText = "1000 Mbps";
+        document.getElementById('liveHiz').style.color = "#00ffcc";
+        logEkle("SİSTEM UYARISI: TOKİ Altyapısı üzerinden Giga-Fiber aktif edildi!");
+        logEkle("Hız Profil Güncellendi: 100 -> 1000 Mbps");
+        alert("NETRON: Akgedik A27 Daire 6 için Gigabit hız başarıyla tanımlandı!");
     }
 </script>
 
