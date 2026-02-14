@@ -3,184 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NETRON ULTIMATE v7.0 · GitHub Pages</title>
+    <title>NETRON ULTIMATE v7.0</title>
+    <link rel="stylesheet" href="/static/style.css">
     <!-- Chart.js kütüphanesi -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #0a0a0a;
-            color: #0f0;
-            font-family: 'Share Tech Mono', monospace;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .header {
-            border: 2px solid #0f0;
-            padding: 20px;
-            margin-bottom: 30px;
-            background: #111;
-            box-shadow: 0 0 20px rgba(0,255,0,0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .header h1 {
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px #0f0;
-        }
-        .version {
-            color: #f0f;
-            font-size: 1.2rem;
-            margin-left: 10px;
-        }
-        .status-bar {
-            font-size: 1.2rem;
-            border: 1px solid #0f0;
-            padding: 10px;
-        }
-        .dashboard {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .panel {
-            flex: 1 1 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .widget {
-            border: 1px solid #0f0;
-            background: #111;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0,255,0,0.2);
-        }
-        .widget h2 {
-            border-bottom: 1px solid #0f0;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            color: #0f0;
-            font-size: 1.3rem;
-        }
-        .clients-count {
-            font-size: 3rem;
-            text-align: center;
-            margin: 10px 0;
-            font-weight: bold;
-            text-shadow: 0 0 15px #0f0;
-        }
-        .clients-bar {
-            width: 100%;
-            height: 20px;
-            background: #222;
-            border: 1px solid #0f0;
-        }
-        .bar-fill {
-            height: 100%;
-            background: #0f0;
-            width: 0%;
-            transition: width 0.3s;
-        }
-        .traffic-values {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            font-family: inherit;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-        }
-        .btn.danger {
-            background: #300;
-            color: #f00;
-            border-color: #f00;
-        }
-        .btn.danger:hover {
-            background: #f00;
-            color: #000;
-            box-shadow: 0 0 20px red;
-        }
-        .btn.success {
-            background: #030;
-            color: #0f0;
-            border-color: #0f0;
-        }
-        .btn.success:hover {
-            background: #0f0;
-            color: #000;
-        }
-        .btn.warning {
-            background: #330;
-            color: #ff0;
-            border-color: #ff0;
-        }
-        .btn.warning:hover {
-            background: #ff0;
-            color: #000;
-        }
-        .btn.normal {
-            background: #111;
-            color: #0ff;
-            border-color: #0ff;
-        }
-        .btn.normal:hover {
-            background: #0ff;
-            color: #000;
-        }
-        .ddos-logs {
-            max-height: 100px;
-            overflow-y: auto;
-            font-size: 0.8rem;
-            color: #f00;
-            border: 1px solid #0f0;
-            padding: 5px;
-            margin-top: 10px;
-        }
-        .info div {
-            margin: 5px 0;
-            font-size: 1.1rem;
-        }
-        #cold-mode-status {
-            color: #ff0;
-            font-weight: bold;
-        }
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .status-bar {
-                margin-top: 10px;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>NETRON ULTIMATE <span class="version">v7.0</span></h1>
             <div class="status-bar">
-                <span class="ip">IP: 94.54.5.108</span>
-                <span class="speed">🌐 40 Mbps</span>
+                <span class="ip" id="external-ip">IP: 94.54.5.108</span>
+                <span class="speed">⬇️ <span id="speed-download">40</span> Mbps / ⬆️ <span id="speed-upload">10</span> Mbps</span>
             </div>
         </div>
 
@@ -193,6 +27,8 @@
                     <div class="clients-bar">
                         <div class="bar-fill" id="clients-bar" style="width:0%"></div>
                     </div>
+                    <!-- İsteğe bağlı IP listesi -->
+                    <div id="device-list" style="font-size:0.8rem; margin-top:10px; color:#0f0;"></div>
                 </div>
 
                 <div class="widget traffic">
@@ -234,104 +70,7 @@
         </div>
     </div>
 
-    <script>
-        // Grafik
-        const ctx = document.getElementById('trafficChart').getContext('2d');
-        const trafficChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [
-                    { label: 'Upload (B/s)', data: [], borderColor: '#0f0', backgroundColor: 'rgba(0,255,0,0.1)', fill: true },
-                    { label: 'Download (B/s)', data: [], borderColor: '#f0f', backgroundColor: 'rgba(255,0,255,0.1)', fill: true }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { x: { ticks: { color: '#0f0' } }, y: { ticks: { color: '#0f0' } } },
-                plugins: { legend: { labels: { color: '#0f0' } } }
-            }
-        });
-
-        // Rastgele sayı üretici
-        function random(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
-        // Geçmiş veri havuzu (20 adet)
-        let history = [];
-        for (let i = 0; i < 20; i++) {
-            history.push({ time: '00:00', up: random(1000, 5000), down: random(2000, 8000) });
-        }
-
-        // DDoS uyarı listesi
-        let ddosAlerts = [];
-
-        function updateDashboard() {
-            // Bağlı cihazlar
-            const connected = random(0, 8);
-            document.getElementById('clients-count').innerText = connected + '/8';
-            document.getElementById('clients-bar').style.width = (connected / 8 * 100) + '%';
-
-            // Trafik
-            const up = random(1000, 10000);
-            const down = random(2000, 15000);
-            document.getElementById('upload-speed').innerText = up;
-            document.getElementById('download-speed').innerText = down;
-
-            // Grafik zaman etiketi
-            const now = new Date();
-            const timeStr = now.getHours() + ':' + now.getMinutes().toString().padStart(2, '0');
-            history.push({ time: timeStr, up: up, down: down });
-            if (history.length > 20) history.shift();
-
-            trafficChart.data.labels = history.map(item => item.time);
-            trafficChart.data.datasets[0].data = history.map(item => item.up);
-            trafficChart.data.datasets[1].data = history.map(item => item.down);
-            trafficChart.update();
-
-            // DDoS istek/sn simülasyonu
-            const reqPerSec = random(10, 50);
-            document.getElementById('requests-per-sec').innerText = reqPerSec;
-
-            // Rastgele DDoS uyarısı üret (30% ihtimalle)
-            if (Math.random() > 0.7) {
-                const alertIp = '192.168.1.' + random(2, 254);
-                ddosAlerts.push({ 
-                    ip: alertIp, 
-                    time: now.toLocaleTimeString('tr-TR'), 
-                    count: random(31, 60) 
-                });
-                if (ddosAlerts.length > 10) ddosAlerts.shift();
-            }
-
-            const logsDiv = document.getElementById('ddos-logs');
-            logsDiv.innerHTML = '';
-            ddosAlerts.slice().reverse().forEach(alert => {
-                logsDiv.innerHTML += `<div>[${alert.time}] ${alert.ip} (${alert.count})</div>`;
-            });
-
-            // Sistem bilgileri (CPU, RAM)
-            document.getElementById('cpu-usage').innerText = '%' + random(5, 60);
-            document.getElementById('ram-usage').innerText = '%' + random(20, 70);
-        }
-
-        // Butonlar
-        document.getElementById('internet-kes').addEventListener('click', () => alert('⚠️ İnternet kesildi (simülasyon)'));
-        document.getElementById('internet-ac').addEventListener('click', () => alert('🌐 İnternet açıldı (simülasyon)'));
-        document.getElementById('fan-cold').addEventListener('click', () => {
-            document.getElementById('cold-mode-status').innerText = 'AKTİF';
-            alert('❄️ Cold mod aktif (simülasyon)');
-        });
-        document.getElementById('fan-normal').addEventListener('click', () => {
-            document.getElementById('cold-mode-status').innerText = 'PASİF';
-            alert('🔥 Normal mod (simülasyon)');
-        });
-
-        // İlk güncelleme ve periyodik güncelleme
-        updateDashboard();
-        setInterval(updateDashboard, 2000);
-    </script>
+    <!-- JavaScript -->
+    <script src="/static/script.js"></script>
 </body>
 </html>
